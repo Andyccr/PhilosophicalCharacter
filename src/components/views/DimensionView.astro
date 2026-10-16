@@ -1,0 +1,57 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { dimensionList, dimensions } from '@/data/dimensions';
+import { getPhilosopher } from '@/data/philosophers/profiles';
+import { getTradition } from '@/data/traditions/catalog';
+import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
+import type { DimensionDefinition, Locale } from '@/types/model';
+
+interface Props { locale: Locale; dimension?: DimensionDefinition }
+const { locale, dimension } = Astro.props;
+const m = messages[locale];
+---
+{dimension ? (
+  <BaseLayout locale={locale} path={`/philosophy/${dimension.id}`} title={`${dimension.plainName[locale]} — NOEMA`} description={dimension.summary[locale]}>
+    <article class="mx-auto max-w-3xl px-4 py-12">
+      <p class="kicker">{dimension.technicalName[locale]} · {dimension.leftLetter}/{dimension.rightLetter}</p>
+      <h1 class="serif mt-3 text-5xl">{dimension.plainName[locale]}</h1>
+      <p class="mt-4 text-lg">{dimension.question[locale]}</p>
+      <p class="mt-4">{dimension.summary[locale]}</p>
+      <h2 class="serif mt-8 text-2xl">{dimension.leftPole[locale]}</h2>
+      <p class="mt-3">{dimension.leftEssay[locale]}</p>
+      <h2 class="serif mt-8 text-2xl">{dimension.rightPole[locale]}</h2>
+      <p class="mt-3">{dimension.rightEssay[locale]}</p>
+      <h2 class="serif mt-8 text-2xl">{m.provisional}</h2>
+      <p class="mt-3">{dimension.mixedEssay[locale]}</p>
+      <h2 class="serif mt-8 text-2xl">{m.disclaimer}</h2>
+      <ul class="mt-3 list-disc pl-5">{dimension.notThis.map((item) => <li>{item[locale]}</li>)}</ul>
+      <h2 class="serif mt-8 text-2xl">{m.traditions}</h2>
+      <ul class="mt-3">{dimension.relatedTraditionSlugs.map((slug) => {
+        const tradition = getTradition(slug);
+        return tradition ? <li><a href={localePath(locale, `/traditions/${slug}`)}>{tradition.name[locale]}</a></li> : null;
+      })}</ul>
+      <h2 class="serif mt-8 text-2xl">{m.philosophers}</h2>
+      <ul class="mt-3">{dimension.relatedPhilosopherSlugs.map((slug) => {
+        const philosopher = getPhilosopher(slug);
+        return philosopher ? <li><a href={localePath(locale, `/philosophers/${slug}`)}>{philosopher.name[locale]}</a></li> : null;
+      })}</ul>
+    </article>
+  </BaseLayout>
+) : (
+  <BaseLayout locale={locale} path="/philosophy" title={`${m.dimensions} — NOEMA`} description={m.axesLead}>
+    <div class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{m.dimensions}</h1>
+      <p class="mt-4">{m.axesLead}</p>
+      <ul class="mt-8 grid gap-4">
+        {dimensionList.map((item) => (
+          <li class="border-t border-line pt-4">
+            <a class="serif text-2xl" href={localePath(locale, `/philosophy/${item.id}`)}>{item.plainName[locale]}</a>
+            <p class="text-sm text-muted">{item.leftPole[locale]} / {item.rightPole[locale]}</p>
+            <p class="mt-2">{item.question[locale]}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </BaseLayout>
+)}

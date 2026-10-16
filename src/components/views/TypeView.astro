@@ -1,0 +1,74 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { families } from '@/data/archetypes/families';
+import { archetypesInFamily } from '@/data/archetypes';
+import { getTradition } from '@/data/traditions/catalog';
+import { readings } from '@/data/readings';
+import { standingIssues } from '@/data/tensions/standing';
+import { dimensions } from '@/data/dimensions';
+import { DIMENSION_IDS } from '@/lib/scoring/config';
+import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
+import type { Archetype, Locale } from '@/types/model';
+
+interface Props { locale: Locale; archetype: Archetype }
+const { locale, archetype } = Astro.props;
+const m = messages[locale];
+const family = families[archetype.familyId];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: archetype.seoTitle[locale],
+  description: archetype.seoDescription[locale],
+  inLanguage: locale === 'zh' ? 'zh-Hans' : 'en',
+};
+---
+<BaseLayout locale={locale} path={`/types/${archetype.code.toLowerCase()}`} title={archetype.seoTitle[locale]} description={archetype.seoDescription[locale]} jsonLd={[jsonLd]}>
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <p class="kicker"><a href={localePath(locale, `/families/${family.id}`)}>{family.name[locale]}</a></p>
+    <h1 class="serif mt-3 text-4xl md:text-6xl">{archetype.name[locale]}</h1>
+    <p class="mono mt-3 text-iris">{archetype.code.split('').join(' · ')}</p>
+    <p class="mt-6 text-lg">{archetype.thesis[locale]}</p>
+    <p class="mt-4 text-sm text-muted">{m.notDiagnosis}</p>
+    {archetype.worldview.map((paragraph) => <p class="mt-4">{paragraph[locale]}</p>)}
+    <h2 class="serif mt-10 text-2xl">{m.relatedAxes}</h2>
+    <ul class="mt-3">
+      {DIMENSION_IDS.map((id) => (
+        <li>
+          <a href={localePath(locale, `/philosophy/${id}`)}>{dimensions[id].plainName[locale]}</a>
+          {' — '}
+          {archetype.poles[id] === 'left' ? dimensions[id].leftPole[locale] : dimensions[id].rightPole[locale]}
+        </li>
+      ))}
+    </ul>
+    <h2 class="serif mt-8 text-2xl">{m.strengths}</h2>
+    <ul class="mt-3 list-disc pl-5">{archetype.strengths.map((item) => <li>{item[locale]}</li>)}</ul>
+    <h2 class="serif mt-8 text-2xl">{m.blindSpots}</h2>
+    <ul class="mt-3 list-disc pl-5">{archetype.blindSpots.map((item) => <li>{item[locale]}</li>)}</ul>
+    <h2 class="serif mt-8 text-2xl">{m.pressure}</h2>
+    <p class="mt-3">{archetype.pairingPressure[locale]}</p>
+    <h2 class="serif mt-8 text-2xl">{m.standing}</h2>
+    {archetype.standingIssueIds.map((id) => {
+      const issue = standingIssues.find((item) => item.id === id);
+      return issue ? <section class="mt-4"><h3 class="serif text-xl">{issue.title[locale]}</h3><p class="mt-2">{issue.explanation[locale]}</p></section> : null;
+    })}
+    <h2 class="serif mt-8 text-2xl">{m.reflection}</h2>
+    <ol class="mt-3 list-decimal pl-5">{archetype.reflection.map((item) => <li class="mt-2">{item[locale]}</li>)}</ol>
+    <h2 class="serif mt-8 text-2xl">{m.traditionsTitle}</h2>
+    <ul class="mt-3">
+      {archetype.traditionSlugs.map((slug) => {
+        const tradition = getTradition(slug);
+        return tradition ? <li><a href={localePath(locale, `/traditions/${slug}`)}>{tradition.name[locale]}</a></li> : null;
+      })}
+    </ul>
+    <h2 class="serif mt-8 text-2xl">{m.readingsTitle}</h2>
+    <ul class="mt-3">
+      {archetype.readingIds.map((id) => {
+        const work = readings.find((item) => item.id === id);
+        return work ? <li>{work.citation[locale]}</li> : null;
+      })}
+    </ul>
+    <p class="mt-8 text-sm">{m.familyLabel}: {family.rule[locale]}</p>
+    <p class="mt-6"><a class="btn" href={localePath(locale, '/test')}>{m.start}</a></p>
+  </article>
+</BaseLayout>

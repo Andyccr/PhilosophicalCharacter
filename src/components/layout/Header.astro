@@ -1,0 +1,72 @@
+---
+import { localePath, otherLocale } from '@/lib/localization/path';
+import { messages } from '@/lib/localization/messages';
+import type { Locale } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const m = messages[locale];
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const items = [
+  { href: localePath(locale, '/test'), label: m.questionnaire, key: '/test' },
+  { href: localePath(locale, '/types'), label: m.archetypes, key: '/types' },
+  { href: localePath(locale, '/atlas'), label: m.atlas, key: '/atlas' },
+  { href: localePath(locale, '/methodology'), label: m.method, key: '/methodology' },
+];
+---
+
+<header class="border-b border-line">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+    <a href={localePath(locale, '/')} class="no-underline">
+      <span class="serif block text-2xl tracking-[0.18em]">NOEMA</span>
+      <span class="kicker">{m.kicker}</span>
+    </a>
+    <nav class="hidden items-center gap-6 md:flex" aria-label="Primary">
+      {items.map((item) => (
+        <a href={item.href} aria-current={pathname === item.href ? 'page' : undefined} class:list={['text-sm', pathname === item.href && 'text-iris']}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <div class="flex items-center gap-3">
+      <a class="text-sm" href={localePath(otherLocale(locale), path)}>{m.language}</a>
+      <button type="button" class="btn secondary min-h-10 px-3 text-sm" data-theme-toggle data-dark={m.themeToDark} data-light={m.themeToLight}>
+        {m.themeToDark}
+      </button>
+      <details class="nav-details relative md:hidden">
+        <summary class="btn secondary min-h-10 cursor-pointer px-3 text-sm">{m.menu}</summary>
+        <div class="absolute right-0 z-20 mt-2 w-56 border border-line bg-paper p-3">
+          {items.map((item) => (
+            <a class="block py-2" href={item.href}>{item.label}</a>
+          ))}
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector('[data-theme-toggle]');
+  if (button instanceof HTMLButtonElement) {
+    const sync = () => {
+      const dark = document.documentElement.classList.contains('dark');
+      button.textContent = dark ? button.dataset.light ?? '' : button.dataset.dark ?? '';
+      button.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    };
+    sync();
+    button.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      try {
+        localStorage.setItem('noema.theme', dark ? 'dark' : 'light');
+      } catch {
+        /* keep the visual toggle if storage is blocked */
+      }
+      sync();
+    });
+  }
+</script>

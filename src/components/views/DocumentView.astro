@@ -1,0 +1,84 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { articles } from '@/data/articles/catalog';
+import { experiments } from '@/data/experiments/catalog';
+import { glossary } from '@/data/articles/catalog';
+import { scoringDocumentation } from '@/lib/scoring/config';
+import { getLegal } from '@/data/legal';
+import { dimensions } from '@/data/dimensions';
+import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
+import type { Article, Locale, ThoughtExperiment } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+  article?: Article;
+  experiment?: ThoughtExperiment;
+  kind: 'articles' | 'article' | 'experiments' | 'experiment' | 'glossary' | 'methodology' | 'legal';
+  legalSlug?: string;
+}
+const { locale, article, experiment, kind, legalSlug } = Astro.props;
+const m = messages[locale];
+const legal = legalSlug ? getLegal(legalSlug) : undefined;
+---
+{kind === 'articles' && (
+  <BaseLayout locale={locale} path="/articles" title={`${m.articles} — NOEMA`} description={m.methodLead}>
+    <div class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{m.articles}</h1>
+      <ul class="mt-8 grid gap-4">{articles.map((item) => <li class="border-t border-line pt-4"><a class="serif text-2xl" href={localePath(locale, `/articles/${item.slug}`)}>{item.title[locale]}</a><p class="mt-2">{item.description[locale]}</p></li>)}</ul>
+    </div>
+  </BaseLayout>
+)}
+{kind === 'article' && article && (
+  <BaseLayout locale={locale} path={`/articles/${article.slug}`} title={`${article.title[locale]} — NOEMA`} description={article.description[locale]}>
+    <article class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{article.title[locale]}</h1>
+      {article.sections.map((section) => <section class="mt-8"><h2 class="serif text-2xl">{section.heading[locale]}</h2><p class="mt-3">{section.body[locale]}</p></section>)}
+    </article>
+  </BaseLayout>
+)}
+{kind === 'experiments' && (
+  <BaseLayout locale={locale} path="/experiments" title={`${m.experiments} — NOEMA`} description={m.previewBody}>
+    <div class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{m.experiments}</h1>
+      <ul class="mt-8 grid gap-4">{experiments.map((item) => <li class="border-t border-line pt-4"><a class="serif text-2xl" href={localePath(locale, `/experiments/${item.slug}`)}>{item.title[locale]}</a><p class="mt-2">{item.summary[locale]}</p></li>)}</ul>
+    </div>
+  </BaseLayout>
+)}
+{kind === 'experiment' && experiment && (
+  <BaseLayout locale={locale} path={`/experiments/${experiment.slug}`} title={`${experiment.title[locale]} — NOEMA`} description={experiment.summary[locale]}>
+    <article class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{experiment.title[locale]}</h1>
+      <p class="mt-4 text-sm text-muted">{experiment.attribution[locale]}</p>
+      {experiment.essay.map((paragraph) => <p class="mt-4">{paragraph[locale]}</p>)}
+      <ul class="mt-6">{experiment.dimensions.map((id) => <li><a href={localePath(locale, `/philosophy/${id}`)}>{dimensions[id].plainName[locale]}</a></li>)}</ul>
+      <ul class="mt-4">{experiment.references.map((link) => <li><a href={link.href} rel="noreferrer noopener">{link.label}</a></li>)}</ul>
+    </article>
+  </BaseLayout>
+)}
+{kind === 'glossary' && (
+  <BaseLayout locale={locale} path="/glossary" title={`${m.glossary} — NOEMA`} description={m.axesLead}>
+    <div class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{m.glossary}</h1>
+      <dl class="mt-8">{glossary.map((entry) => <div class="border-t border-line py-4"><dt class="serif text-2xl">{entry.term[locale]}</dt><dd class="mt-2">{entry.definition[locale]}</dd></div>)}</dl>
+    </div>
+  </BaseLayout>
+)}
+{kind === 'methodology' && (
+  <BaseLayout locale={locale} path="/methodology" title={`${m.method} — NOEMA`} description={m.methodLead}>
+    <article class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{m.methodTitle}</h1>
+      <p class="mt-4">{m.methodLead}</p>
+      {scoringDocumentation.map((section) => <section class="mt-8"><h2 class="serif text-2xl">{section.heading[locale]}</h2><p class="mt-3">{section.body[locale]}</p></section>)}
+      <p class="mt-8"><a href={localePath(locale, '/articles/limits-of-the-model')}>{m.articles}</a></p>
+    </article>
+  </BaseLayout>
+)}
+{kind === 'legal' && legal && (
+  <BaseLayout locale={locale} path={`/${legal.slug}`} title={`${legal.title[locale]} — NOEMA`} description={legal.description[locale]}>
+    <article class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{legal.title[locale]}</h1>
+      {legal.sections.map((section) => <section class="mt-8"><h2 class="serif text-2xl">{section.heading[locale]}</h2><p class="mt-3">{section.body[locale]}</p></section>)}
+    </article>
+  </BaseLayout>
+)}

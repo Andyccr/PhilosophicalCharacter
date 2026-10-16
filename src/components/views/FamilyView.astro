@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { archetypesInFamily } from '@/data/archetypes';
+import { families } from '@/data/archetypes/families';
+import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
+import type { FamilyId, Locale } from '@/types/model';
+
+interface Props { locale: Locale; familyId: FamilyId }
+const { locale, familyId } = Astro.props;
+const family = families[familyId];
+const m = messages[locale];
+---
+<BaseLayout locale={locale} path={`/families/${familyId}`} title={`${family.name[locale]} — NOEMA`} description={family.rule[locale]}>
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <p class="kicker">{m.families}</p>
+    <h1 class="serif mt-3 text-5xl">{family.name[locale]}</h1>
+    <p class="mt-4 text-gold">{family.rule[locale]}</p>
+    <p class="mt-6">{family.essay[locale]}</p>
+    <p class="mt-4 text-sm text-muted">{m.notDiagnosis}</p>
+    <ul class="mt-8 grid gap-4">
+      {archetypesInFamily(familyId).map((archetype) => (
+        <li class="border-t border-line pt-4">
+          <a href={localePath(locale, `/types/${archetype.code.toLowerCase()}`)}>
+            <span class="mono text-xs">{archetype.code}</span>
+            <span class="block serif text-2xl">{archetype.name[locale]}</span>
+          </a>
+          <p class="mt-2">{archetype.thesis[locale]}</p>
+        </li>
+      ))}
+    </ul>
+  </article>
+</BaseLayout>

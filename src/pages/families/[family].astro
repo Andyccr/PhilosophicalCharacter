@@ -1,0 +1,11 @@
+---
+import FamilyView from '@/components/views/FamilyView.astro';
+import { FAMILY_ORDER } from '@/data/archetypes/families';
+
+export function getStaticPaths() {
+  return FAMILY_ORDER.map((familyId) => ({ params: { family: familyId }, props: { familyId } }));
+}
+
+const { familyId } = Astro.props;
+---
+<FamilyView locale="en" familyId={familyId} />

@@ -1,0 +1,56 @@
+---
+import '@/styles/global.css';
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import { absoluteUrl, htmlLang, localePath } from '@/lib/localization/path';
+import type { Locale } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  jsonLd?: unknown[];
+}
+
+const { locale, title, description, path, noindex = false, jsonLd = [] } = Astro.props;
+const canonicalPath = localePath(locale, path);
+const canonical = absoluteUrl(canonicalPath);
+const enUrl = absoluteUrl(localePath('en', path));
+const zhUrl = absoluteUrl(localePath('zh', path));
+---
+
+<!doctype html>
+<html lang={htmlLang(locale)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="zh-Hans" href={zhUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:locale:alternate" content={locale === 'zh' ? 'en_US' : 'zh_CN'} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <script is:inline src="/theme-init.js"></script>
+    {jsonLd.map((entry) => (
+      <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+    ))}
+  </head>
+  <body>
+    <a class="skip" href="#main">{locale === 'zh' ? '跳到正文' : 'Skip to content'}</a>
+    <Header locale={locale} path={path} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { dimensionList } from '@/data/dimensions';
+import { philosophers } from '@/data/philosophers/profiles';
+import { traditions } from '@/data/traditions/catalog';
+import { experiments } from '@/data/experiments/catalog';
+import { articles } from '@/data/articles/catalog';
+import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
+import type { Locale } from '@/types/model';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const m = messages[locale];
+const groups = [
+  { title: m.dimensions, href: '/philosophy', items: dimensionList.map((item) => ({ href: `/philosophy/${item.id}`, label: item.plainName[locale] })) },
+  { title: m.philosophers, href: '/philosophers', items: philosophers.map((item) => ({ href: `/philosophers/${item.slug}`, label: item.name[locale] })) },
+  { title: m.traditions, href: '/traditions', items: traditions.map((item) => ({ href: `/traditions/${item.slug}`, label: item.name[locale] })) },
+  { title: m.experiments, href: '/experiments', items: experiments.map((item) => ({ href: `/experiments/${item.slug}`, label: item.title[locale] })) },
+  { title: m.articles, href: '/articles', items: articles.map((item) => ({ href: `/articles/${item.slug}`, label: item.title[locale] })) },
+];
+---
+<BaseLayout locale={locale} path="/atlas" title={`${m.atlas} — NOEMA`} description={m.atlasLead}>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <h1 class="serif text-5xl">{m.atlas}</h1>
+    <p class="mt-4 max-w-3xl">{m.atlasLead}</p>
+    <div class="mt-10 grid gap-10 md:grid-cols-2">
+      {groups.map((group) => (
+        <section>
+          <h2 class="serif text-2xl"><a href={localePath(locale, group.href)}>{group.title}</a></h2>
+          <ul class="mt-3 columns-1 gap-8 sm:columns-2">
+            {group.items.map((item) => (
+              <li class="mb-1 break-inside-avoid"><a href={localePath(locale, item.href)}>{item.label}</a></li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
