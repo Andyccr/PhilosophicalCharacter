@@ -1,0 +1,14 @@
+---
+import TypeView from '@/components/views/TypeView.astro';
+import { archetypes } from '@/data/archetypes';
+
+export function getStaticPaths() {
+  return archetypes.map((archetype) => ({
+    params: { code: archetype.code.toLowerCase() },
+    props: { archetype },
+  }));
+}
+
+const { archetype } = Astro.props;
+---
+<TypeView locale="en" archetype={archetype} />

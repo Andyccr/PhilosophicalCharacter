@@ -1,0 +1,35 @@
+---
+import { localePath } from '@/lib/localization/path';
+import { messages } from '@/lib/localization/messages';
+import type { Locale } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const m = messages[locale];
+const links = [
+  ['/privacy', m.privacy],
+  ['/terms', m.terms],
+  ['/disclaimer', m.disclaimer],
+  ['/contact', m.contact],
+  ['/premium', m.premium],
+  ['/glossary', m.glossary],
+  ['/compare', m.compare],
+  ['/articles', m.articles],
+] as const;
+---
+
+<footer class="mt-20 border-t border-line">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-[1.4fr_1fr]">
+    <div>
+      <p class="serif text-2xl tracking-[0.16em]">NOEMA</p>
+      <p class="mt-4 max-w-xl text-sm text-muted">{m.footerNote}</p>
+    </div>
+    <ul class="grid grid-cols-2 gap-2 text-sm">
+      {links.map(([href, label]) => (
+        <li><a href={localePath(locale, href)}>{label}</a></li>
+      ))}
+    </ul>
+  </div>
+</footer>

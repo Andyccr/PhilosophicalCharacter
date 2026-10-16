@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { traditions } from '@/data/traditions/catalog';
+import { getPhilosopher } from '@/data/philosophers/profiles';
+import { dimensions } from '@/data/dimensions';
+import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
+import type { Locale, Tradition } from '@/types/model';
+
+interface Props { locale: Locale; tradition?: Tradition }
+const { locale, tradition } = Astro.props;
+const m = messages[locale];
+---
+{tradition ? (
+  <BaseLayout locale={locale} path={`/traditions/${tradition.slug}`} title={`${tradition.name[locale]} — NOEMA`} description={tradition.summary[locale]}>
+    <article class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{tradition.name[locale]}</h1>
+      <p class="mt-4 text-lg">{tradition.summary[locale]}</p>
+      <p class="mt-4">{tradition.essay[locale]}</p>
+      <h2 class="serif mt-8 text-2xl">{m.dimensions}</h2>
+      <ul>{tradition.dimensions.map((id) => <li><a href={localePath(locale, `/philosophy/${id}`)}>{dimensions[id].plainName[locale]}</a></li>)}</ul>
+      <h2 class="serif mt-8 text-2xl">{m.philosophers}</h2>
+      <ul>{tradition.philosopherSlugs.map((slug) => {
+        const philosopher = getPhilosopher(slug);
+        return philosopher ? <li><a href={localePath(locale, `/philosophers/${slug}`)}>{philosopher.name[locale]}</a></li> : null;
+      })}</ul>
+      <ul class="mt-6">{tradition.references.map((link) => <li><a href={link.href} rel="noreferrer noopener">{link.label}</a></li>)}</ul>
+    </article>
+  </BaseLayout>
+) : (
+  <BaseLayout locale={locale} path="/traditions" title={`${m.traditions} — NOEMA`} description={m.atlasLead}>
+    <div class="mx-auto max-w-3xl px-4 py-12">
+      <h1 class="serif text-5xl">{m.traditions}</h1>
+      <ul class="mt-8 grid gap-4">
+        {traditions.map((item) => (
+          <li class="border-t border-line pt-4">
+            <a class="serif text-2xl" href={localePath(locale, `/traditions/${item.slug}`)}>{item.name[locale]}</a>
+            <p class="mt-2">{item.summary[locale]}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </BaseLayout>
+)}

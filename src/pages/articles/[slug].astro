@@ -1,0 +1,11 @@
+---
+import DocumentView from '@/components/views/DocumentView.astro';
+import { articles } from '@/data/articles/catalog';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+const { article } = Astro.props;
+---
+<DocumentView locale="en" kind="article" article={article} />

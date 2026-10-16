@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { ResultsApp } from '@/components/results/ResultsApp';
+import { messages } from '@/lib/localization/messages';
+import type { Locale } from '@/types/model';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const m = messages[locale];
+---
+<BaseLayout locale={locale} path="/results" title={`${m.archetypes} — NOEMA`} description={m.notDiagnosis} noindex={true}>
+  <ResultsApp client:load locale={locale} />
+  <noscript><p class="mx-auto max-w-3xl px-4 py-10">{m.noResultBody}</p></noscript>
+</BaseLayout>

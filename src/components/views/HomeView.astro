@@ -1,0 +1,148 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { getArchetype } from '@/data/archetypes';
+import { dimensionList } from '@/data/dimensions';
+import { philosophers } from '@/data/philosophers/profiles';
+import { messages } from '@/lib/localization/messages';
+import { absoluteUrl, localePath } from '@/lib/localization/path';
+import type { Locale } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const m = messages[locale];
+const example = getArchetype('MECDFI');
+const faq = [
+  {
+    q: { en: 'Is this a personality test?', zh: '这是人格测验吗？' },
+    a: { en: 'No. It is an exploratory questionnaire about philosophical assumptions. It does not diagnose personality, mental health, intelligence, or character.', zh: '不是。它是一份关于哲学假定的探索性问卷。它不诊断人格、心理健康、智力或品格。' },
+  },
+  {
+    q: { en: 'Where do my answers go?', zh: '我的回答去了哪里？' },
+    a: { en: 'They stay in this browser unless you download them or copy a score link. The score link does not include the answers themselves.', zh: '它们留在这个浏览器里，除非你下载它们或复制一条分数链接。分数链接本身不包含回答。' },
+  },
+  {
+    q: { en: 'What if I cannot decide?', zh: '如果我无法决定呢？' },
+    a: { en: 'Choose “I cannot determine,” or skip the question. Neither response is scored as 50.', zh: '选择“我无法判断”，或跳过这道题。两种回应都不会被计成 50。' },
+  },
+  {
+    q: { en: 'Why are there only two poles?', zh: '为什么只有两个极？' },
+    a: { en: 'The line is a compression. Compatibilism, virtue ethics, and several non-European traditions are described in the atlas precisely because the line cannot hold them.', zh: '这条线是一种压缩。相容论、德性伦理，以及若干非欧洲传统出现在图谱中，正是因为这条线装不下它们。' },
+  },
+];
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'NOEMA',
+    url: absoluteUrl(localePath(locale, '/')),
+    description: m.heroQuestion,
+    inLanguage: locale === 'zh' ? 'zh-Hans' : 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q[locale],
+      acceptedAnswer: { '@type': 'Answer', text: item.a[locale] },
+    })),
+  },
+];
+---
+
+<BaseLayout locale={locale} path="/" title={`NOEMA — ${m.heroThree}`} description={m.heroQuestion} jsonLd={jsonLd}>
+  <section class="mx-auto max-w-6xl px-4 py-16 md:py-24">
+    <p class="kicker">01 — {m.kicker}</p>
+    <h1 class="serif mt-6 max-w-4xl text-4xl leading-[1.05] md:text-7xl">
+      {m.heroOne}<br />{m.heroTwo}<br /><em class="text-iris">{m.heroThree}</em>
+    </h1>
+    <p class="mt-8 max-w-2xl text-xl">{m.heroQuestion}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn" href={localePath(locale, '/test')} data-testid="start">{m.start}</a>
+      <a class="btn secondary" href={localePath(locale, '/methodology')}>{m.readMethod}</a>
+      <a id="resume-link" class="btn secondary" hidden href={localePath(locale, '/test')}>{m.resume}</a>
+    </div>
+    <p class="mt-4 text-sm text-muted">{m.heroNote}</p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8">
+    <p class="kicker">02</p>
+    <h2 class="serif mt-3 text-3xl md:text-5xl">{m.axesTitle}</h2>
+    <p class="mt-4 max-w-2xl text-muted">{m.axesLead}</p>
+    <ol class="mt-8 grid gap-4 md:grid-cols-2">
+      {dimensionList.map((dimension, index) => (
+        <li class="frame p-5">
+          <p class="mono text-xs text-gold">0{index + 1}</p>
+          <h3 class="serif mt-2 text-2xl"><a href={localePath(locale, `/philosophy/${dimension.id}`)}>{dimension.plainName[locale]}</a></h3>
+          <p class="mt-2 text-sm text-muted">{dimension.leftPole[locale]} · {dimension.rightPole[locale]}</p>
+          <p class="mt-3">{dimension.summary[locale]}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-2">
+    <div>
+      <p class="kicker">03</p>
+      <h2 class="serif mt-3 text-3xl">{m.previewTitle}</h2>
+      <p class="mt-4">{m.previewBody}</p>
+      <a class="mt-4 inline-block" href={localePath(locale, '/experiments/experience-machine')}>{m.previewLink}</a>
+    </div>
+    <div class="frame p-6">
+      <p class="kicker">{m.illustration}</p>
+      <h2 class="serif mt-3 text-3xl">{m.exampleTitle}</h2>
+      {example && <p class="mono mt-2 text-iris">{example.code}</p>}
+      {example && <p class="serif text-2xl">{example.name[locale]}</p>}
+      {example && <p class="mt-3 text-sm">{example.thesis[locale]}</p>}
+      <p class="mt-4 text-sm text-muted">{m.exampleNote}</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-8">
+    <p class="kicker">04</p>
+    <h2 class="serif mt-3 text-3xl">{m.atlasTitle}</h2>
+    <p class="mt-4 max-w-2xl">{m.atlasLead}</p>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+      {['plato', 'confucius', 'aristotle', 'nagarjuna', 'beauvoir', 'zhuangzi', 'kant', 'mozi'].map((slug) => philosophers.find((philosopher) => philosopher.slug === slug)).filter((philosopher) => philosopher !== undefined).map((philosopher) => (
+        <li class="border-t border-line pt-3">
+          <a href={localePath(locale, `/philosophers/${philosopher.slug}`)}>{philosopher.name[locale]}</a>
+          <p class="text-sm text-muted">{philosopher.dates[locale]}</p>
+        </li>
+      ))}
+    </ul>
+    <a class="mt-6 inline-block" href={localePath(locale, '/atlas')}>{m.atlas}</a>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <h2 class="serif text-3xl">{m.faqTitle}</h2>
+    {faq.map((item) => (
+      <details class="faq">
+        <summary>{item.q[locale]}</summary>
+        <p class="mt-3 text-muted">{item.a[locale]}</p>
+      </details>
+    ))}
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <div>
+        <h2 class="serif text-2xl">{m.methodTitle}</h2>
+        <p class="mt-3 text-sm">{m.methodLead}</p>
+        <a href={localePath(locale, '/methodology')}>{m.methodLink}</a>
+      </div>
+      <div>
+        <h2 class="serif text-2xl">{m.privacyTitle}</h2>
+        <p class="mt-3 text-sm">{m.privacyLead}</p>
+        <a href={localePath(locale, '/privacy')}>{m.privacyLink}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const link = document.querySelector('#resume-link');
+  try {
+    if (link && localStorage.getItem('noema.assessment.v1')) link.removeAttribute('hidden');
+  } catch {
+    /* leave the resume link hidden when storage cannot be read */
+  }
+</script>

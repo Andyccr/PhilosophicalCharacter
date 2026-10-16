@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { CompareApp } from '@/components/results/CompareApp';
+import { messages } from '@/lib/localization/messages';
+import type { Locale } from '@/types/model';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const m = messages[locale];
+---
+<BaseLayout locale={locale} path="/compare" title={`${m.compare} — NOEMA`} description={m.compareLead}>
+  <CompareApp client:load locale={locale} />
+</BaseLayout>

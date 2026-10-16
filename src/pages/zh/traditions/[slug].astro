@@ -1,0 +1,11 @@
+---
+import TraditionView from '@/components/views/TraditionView.astro';
+import { traditions } from '@/data/traditions/catalog';
+
+export function getStaticPaths() {
+  return traditions.map((tradition) => ({ params: { slug: tradition.slug }, props: { tradition } }));
+}
+
+const { tradition } = Astro.props;
+---
+<TraditionView locale="zh" tradition={tradition} />
