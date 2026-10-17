@@ -5,8 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://Andyccr.github.io',
-  base: '/PhilosophicalCharacter',
+  // Cloudflare Workers serve at site root. Override via SITE / BASE_PATH if needed.
+  site: process.env.SITE ?? 'https://noema.andyccr.workers.dev',
+  base: process.env.BASE_PATH ?? '/',
   output: 'static',
   trailingSlash: 'never',
   i18n: {

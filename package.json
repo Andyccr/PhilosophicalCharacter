@@ -8,6 +8,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "wrangler deploy",
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test"
