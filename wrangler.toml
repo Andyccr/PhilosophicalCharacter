@@ -1,5 +1,9 @@
-name = "noema"
+# Must match the Cloudflare Worker name (Workers Builds: philosophicalcharacter).
+name = "philosophicalcharacter"
 compatibility_date = "2026-10-14"
+
+# Empty block is required for `npx wrangler preview` (PR/preview builds).
+previews = { }
 
 # Static Astro output for Workers (replaces the Hello World worker).
 [assets]
