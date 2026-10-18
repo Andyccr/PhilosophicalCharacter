@@ -13,7 +13,7 @@ npm install
 npm run dev
 ```
 
-The app is a static Astro site. Scoring runs in the browser. There is no database, account system, or AI API.
+Scoring still runs in the browser. Paid copy is assembled by the Cloudflare Worker after a verified PayPal capture. There is no account system and no AI API.
 
 ```bash
 npm test
@@ -22,17 +22,27 @@ npm run preview
 npm run test:e2e
 ```
 
+`npm run dev` is the Astro UI only (`/api/*` is not served). For checkout and unlock locally:
+
+```bash
+cp .dev.vars.example .dev.vars
+# fill sandbox PayPal credentials and UNLOCK_HMAC_KEY
+npx wrangler kv namespace create PURCHASES
+# put the returned id in wrangler.toml, then:
+npm run build && npx wrangler dev
+```
+
 Playwright needs a browser once: `npx playwright install chromium`.
 
 ## Deploy
 
-The production build is the `dist/` directory. Cloudflare Pages can serve it directly.
+Cloudflare Workers is the primary host (`wrangler.toml` name `philosophicalcharacter`). The Worker serves `/api/*` and static assets from `dist/`.
 
 - Build command: `npm run build`
+- Deploy command: `npm run deploy` (`wrangler deploy`)
 - Output directory: `dist`
-- `wrangler.toml` sets `pages_build_output_dir`
 
-Set `site` in `astro.config.ts` to the real origin before launch so canonical URLs, the sitemap, and Open Graph URLs are correct. No API keys belong in client code. `PUBLIC_PAYMENT_PROVIDER` is documented in `.env.example`; leaving it empty keeps checkout unavailable.
+Do not put PayPal secrets in client code or in `wrangler.toml`. GitHub Pages deploy is unchanged by this Worker API.
 
 ## Scoring
 
@@ -85,15 +95,52 @@ A real study could preregister the item bank; recruit beyond self-selected visit
 
 ## Payment
 
-The questionnaire is free to complete. The profile, indices, and tension notes stay hidden until PayPal marks the payment completed.
+The questionnaire is free to complete. The results page shows the six-letter code, editorial family, and a shareable summary. Indices, the full reading, and tension notes are returned only from `POST /api/profile` after the Worker verifies a PayPal Orders v2 capture.
 
-Checkout uses this hosted PayPal page:
+Live charges stay **off** until you flip them. `PAYMENTS_LIVE` defaults to `false` and `PAYPAL_ENV` defaults to `sandbox`. The live PayPal API is used only when **both** `PAYMENTS_LIVE=true` and `PAYPAL_ENV=live`.
 
-`https://www.paypal.com/ncp/payment/RXABC8JDX86YQ`
+### Owner setup (PayPal + Cloudflare)
 
-The listed price is EUR 4.99. The PayPal page is where the charge happens. Clicking the button does not unlock the profile, and a pending status does not either.
+1. In the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/), create an app.
+2. Copy the **sandbox** Client ID and Secret. Do not start with live credentials.
+3. Enable Checkout / Orders v2 for that app. Do not use a no-code hosted payment link.
+4. In Cloudflare, create KV:
 
-In the PayPal payment-link settings, set the return URL to the live site’s `/results` path (for example `https://your-domain/results`). PayPal should send the browser back with `tx` (or `txn_id`) and `st=Completed`. This static site stores that transaction id in `localStorage` and then opens the profile already saved on the device. It does not receive card numbers, and it does not get a server-signed confirmation from PayPal. Clearing site data on this browser removes the unlock.
+```bash
+npx wrangler kv namespace create PURCHASES
+```
+
+Put the returned id in `wrangler.toml` under `[[kv_namespaces]]` (`binding = "PURCHASES"`).
+
+5. Put Worker secrets (never commit the values):
+
+```bash
+npx wrangler secret put PAYPAL_CLIENT_ID
+npx wrangler secret put PAYPAL_CLIENT_SECRET
+npx wrangler secret put UNLOCK_HMAC_KEY
+```
+
+`UNLOCK_HMAC_KEY` should be a long random string (at least 32 characters). Example: `openssl rand -base64 48`.
+
+6. Leave the `[vars]` block as shipped:
+
+```toml
+PAYMENTS_LIVE = "false"
+PAYPAL_ENV = "sandbox"
+```
+
+7. Only when sandbox checkout, capture, restore, and unlock are verified, switch to live:
+   - Create a **live** PayPal app and put those credentials with the same `wrangler secret put` commands.
+   - Set `PAYPAL_ENV = "live"` **and** `PAYMENTS_LIVE = "true"` in `wrangler.toml` (or the Cloudflare dashboard vars) and redeploy.
+   - If either flag is not live, the Worker keeps calling `https://api-m.sandbox.paypal.com`.
+
+### Restore
+
+The Worker does not send email. KV stores a SHA-256 of the normalized payer email plus the PayPal order id. Restore is: user enters **email + order id**. Both must match. The Worker then issues a new HMAC unlock token. Tokens are stored in `localStorage` (`noema.access.v1`) and sent as `Authorization: Bearer`, never as cookies.
+
+### PDF
+
+`GET /api/report.pdf` checks the unlock token, then returns **501**. There is no server-side PDF (Workers Free CPU is too tight, and a CJK font must not be bundled into the Worker). Use the results page print stylesheet and the browser’s “Save as PDF”.
 
 ## Fonts and privacy
 

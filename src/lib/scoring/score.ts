@@ -1,5 +1,5 @@
 import { questions, QUESTION_VERSION } from '@/data/questions/bank';
-import { activateTensions } from '@/data/tensions/rules';
+import { activateTensions } from '@/data/tensions/detect';
 import {
   DIMENSION_IDS,
   MODEL_VERSION,

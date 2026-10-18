@@ -12,20 +12,28 @@ function memory() {
 }
 
 describe('PayPal return', () => {
-  it('ignores a normal visit and a pending payment', () => {
-    expect(parsePaypalReturn('')).toEqual({ ok: false, reason: 'absent' });
-    expect(parsePaypalReturn('?st=Pending&tx=8K123456789012345')).toEqual({ ok: false, reason: 'not_completed' });
-    expect(parsePaypalReturn('?st=Completed')).toEqual({ ok: false, reason: 'incomplete' });
-    expect(parsePaypalReturn('?paid=1')).toEqual({ ok: false, reason: 'absent' });
+  it('ignores a normal visit, a pending hosted-link leftover, and a forged Completed tx', () => {
+    expect(parsePaypalReturn('')).toEqual({ kind: 'none' });
+    expect(parsePaypalReturn('?st=Pending&tx=8K123456789012345')).toEqual({ kind: 'none' });
+    expect(parsePaypalReturn('?st=Completed&tx=8K123456789012345&amt=4.99&cc=EUR')).toEqual({ kind: 'none' });
+    expect(parsePaypalReturn('?paid=1')).toEqual({ kind: 'none' });
   });
 
-  it('accepts a completed transaction id and stores only that', () => {
-    const parsed = parsePaypalReturn('?tx=8K123456789012345&st=Completed&amt=4.99&cc=EUR');
-    expect(parsed).toEqual({ ok: true, transactionId: '8K123456789012345' });
+  it('extracts a PayPal order id for server capture and does not store it as access', () => {
+    expect(parsePaypalReturn('?token=5O190127TN364715T&PayerID=ABC')).toEqual({
+      kind: 'capture',
+      orderId: '5O190127TN364715T',
+    });
     const storage = memory();
-    const access = writeAccess(storage, '8K123456789012345');
-    expect(access?.status).toBe('Completed');
-    expect(readAccess(storage)?.transactionId).toBe('8K123456789012345');
-    expect(clearPaypalQuery('https://noema.example/results?tx=8K123456789012345&st=Completed#v=1')).toBe('/results#v=1');
+    expect(readAccess(storage)).toBeNull();
+    expect(clearPaypalQuery('https://noema.example/results?token=5O190127TN364715T&PayerID=ABC#v=1')).toBe('/results#v=1');
+  });
+
+  it('stores only a signed token pair, never a Completed status', () => {
+    const storage = memory();
+    const access = writeAccess(storage, 'aaa.bbb', '5O190127TN364715T');
+    expect(access?.token).toBe('aaa.bbb');
+    expect(readAccess(storage)?.orderId).toBe('5O190127TN364715T');
+    expect(JSON.stringify(readAccess(storage))).not.toContain('Completed');
   });
 });

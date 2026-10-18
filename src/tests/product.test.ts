@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { clearSession, readSession, writeSession, type StorageLike } from '@/lib/storage/session';
 import { parseShareHash, shareUrl } from '@/lib/sharing/link';
 import { shareCardSvg } from '@/lib/sharing/card';
-import { getPaymentProvider } from '@/lib/payment/provider';
+import { PREMIUM_PRODUCT } from '@/lib/payment/provider';
 import { localePath } from '@/lib/localization/path';
 import { primaryPoleAnswers, scoreAssessment } from '@/lib/scoring/score';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
@@ -84,15 +84,14 @@ describe('persistence, sharing, and payment', () => {
     expect(svg).not.toContain('ont-01');
   });
 
-  it('sends checkout to the PayPal page and does not invent a paid status', () => {
-    const provider = getPaymentProvider();
-    const result = provider.beginCheckout('noema-report');
-    expect(provider.isConfigured()).toBe(true);
-    expect(result).toEqual({
-      status: 'redirect',
-      url: 'https://www.paypal.com/ncp/payment/RXABC8JDX86YQ',
+  it('lists the premium product without inventing a paid status', () => {
+    expect(PREMIUM_PRODUCT).toEqual({
+      id: 'noema-report',
+      priceEur: 4.99,
+      currency: 'EUR',
+      amount: '4.99',
     });
-    expect(JSON.stringify(result)).not.toContain('paid');
-    expect(JSON.stringify(result)).not.toContain('success');
+    expect(JSON.stringify(PREMIUM_PRODUCT)).not.toContain('paid');
+    expect(JSON.stringify(PREMIUM_PRODUCT)).not.toContain('success');
   });
 });

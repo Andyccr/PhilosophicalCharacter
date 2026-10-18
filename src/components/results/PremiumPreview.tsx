@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getArchetype } from '@/data/archetypes';
-import { dimensions } from '@/data/dimensions';
-import { getTensionRule } from '@/data/tensions/rules';
-import { readings } from '@/data/readings';
+import { FreePreview } from '@/components/results/FreePreview';
+import { LockedReport } from '@/components/results/LockedReport';
 import { Paywall } from '@/components/results/Paywall';
-import { narrativeFor } from '@/lib/interpretation/describe';
+import type { PaidProfile, ProfileRequest, UnlockRecord } from '@/lib/api/contract';
+import { freePreview } from '@/lib/interpretation/preview';
 import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
-import { readAccess } from '@/lib/payment/access';
+import { readAccess, writeAccess } from '@/lib/payment/access';
+import { PaymentClient } from '@/lib/payment/client';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
 import { scoreAssessment } from '@/lib/scoring/score';
 import { browserStorage, readSession } from '@/lib/storage/session';
@@ -16,71 +16,78 @@ import type { AssessmentResult, Locale } from '@/types/model';
 export function PremiumPreview({ locale }: { locale: Locale }) {
   const m = messages[locale];
   const [ready, setReady] = useState(false);
-  const [paid, setPaid] = useState(false);
+  const [access, setAccess] = useState<UnlockRecord | null>(null);
   const [result, setResult] = useState<AssessmentResult | null>(null);
+  const [paid, setPaid] = useState<PaidProfile | null>(null);
 
   useEffect(() => {
     const storage = browserStorage();
-    setPaid(readAccess(storage) !== null);
+    setAccess(readAccess(storage));
     const stored = readSession(storage);
     if (stored.ok) setResult(scoreAssessment(stored.session.answers));
     setReady(true);
   }, []);
 
+  useEffect(() => {
+    if (!access || !result) {
+      setPaid(null);
+      return;
+    }
+    const body: ProfileRequest = {
+      locale,
+      assignment: result.assignment,
+      dimensions: Object.fromEntries(
+        DIMENSION_IDS.map((id) => [
+          id,
+          {
+            score: result.dimensions[id].score,
+            inclination: result.dimensions[id].inclination,
+            inconsistency: result.dimensions[id].inconsistency,
+            directionalCount: result.dimensions[id].directionalCount,
+            applicableCount: result.dimensions[id].applicableCount,
+          },
+        ]),
+      ) as ProfileRequest['dimensions'],
+      tensionIds: result.tensions.map((tension) => tension.id),
+    };
+    let cancelled = false;
+    void PaymentClient.fetchProfile(access.token, body).then((profile) => {
+      if (!cancelled) setPaid(profile);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [access, locale, result]);
+
   if (!ready) return <p className="mx-auto max-w-3xl px-4 py-16">{m.loading}</p>;
-  if (!paid) return <Paywall locale={locale} />;
+  if (!access) {
+    return (
+      <article className="mx-auto max-w-3xl px-4 py-12">
+        <Paywall
+          locale={locale}
+          onUnlocked={(token, orderId) => setAccess(writeAccess(browserStorage(), token, orderId))}
+        />
+      </article>
+    );
+  }
   if (!result) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-16">
         <h1 className="serif text-4xl">{m.noResultTitle}</h1>
         <p className="mt-4">{m.noResultBody}</p>
-        <a className="btn mt-6" href={localePath(locale, '/test')}>{m.start}</a>
+        <a className="btn mt-6" href={localePath(locale, '/test')}>
+          {m.start}
+        </a>
       </section>
     );
   }
 
-  const archetype = result.assignment.code ? getArchetype(result.assignment.code) : undefined;
+  const preview = freePreview(locale, result.assignment, m.withheldBody);
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12" data-testid="results">
+    <article className="mx-auto max-w-3xl px-4 py-12">
       <p className="kicker">{m.premiumTitle}</p>
-      {archetype && (
-        <section className="mt-6">
-          <h1 className="serif text-4xl">{archetype.name[locale]}</h1>
-          <p className="mt-3">{archetype.thesis[locale]}</p>
-        </section>
-      )}
-      <div className="mt-8 grid gap-8">
-        {DIMENSION_IDS.map((id) => (
-          <section key={id}>
-            <h2 className="serif text-2xl">{dimensions[id].technicalName[locale]}</h2>
-            <p className="mt-3">{narrativeFor(result.dimensions[id], locale)}</p>
-          </section>
-        ))}
-        {result.tensions.map((tension) => {
-          const rule = getTensionRule(tension.id);
-          if (!rule) return null;
-          return (
-            <section key={tension.id}>
-              <h2 className="serif text-2xl">{rule.problem[locale]}</h2>
-              <p className="mt-3">{rule.explanation[locale]}</p>
-              <p className="mt-3">{rule.alternatives[locale]}</p>
-              <p className="mt-3">{rule.followUp[locale]}</p>
-            </section>
-          );
-        })}
-        {archetype && (
-          <section>
-            <h2 className="serif text-2xl">{m.readingsTitle}</h2>
-            <ol className="mt-3 list-decimal pl-5">
-              {archetype.readingIds.map((id) => {
-                const work = readings.find((item) => item.id === id);
-                return work ? <li key={id}>{work.citation[locale]}</li> : null;
-              })}
-            </ol>
-          </section>
-        )}
-      </div>
-      <p className="mt-8 text-sm">{m.notDiagnosis}</p>
+      <FreePreview locale={locale} preview={preview} />
+      {paid && <LockedReport locale={locale} profile={paid} />}
     </article>
   );
 }

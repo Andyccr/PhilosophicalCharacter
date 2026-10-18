@@ -1,11 +1,34 @@
 # Must match the Cloudflare Worker name (Workers Builds: philosophicalcharacter).
 name = "philosophicalcharacter"
+main = "worker/index.ts"
 compatibility_date = "2026-10-14"
 
 # Empty block is required for `npx wrangler preview` (PR/preview builds).
 previews = { }
 
-# Static Astro output for Workers (replaces the Hello World worker).
+# Static Astro output plus `/api/*` on the Worker.
 [assets]
 directory = "./dist"
+binding = "ASSETS"
 not_found_handling = "404-page"
+run_worker_first = ["/api/*"]
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+
+# Live charges stay off until the owner sets BOTH of:
+#   PAYMENTS_LIVE = "true"
+#   PAYPAL_ENV = "live"
+# and puts live PayPal credentials. Sandbox is the default.
+[vars]
+PAYMENTS_LIVE = "false"
+PAYPAL_ENV = "sandbox"
+
+# Replace ids after: npx wrangler kv namespace create PURCHASES
+[[kv_namespaces]]
+binding = "PURCHASES"
+id = "replace-with-wrangler-kv-namespace-create"
+preview_id = "replace-with-wrangler-kv-namespace-create"

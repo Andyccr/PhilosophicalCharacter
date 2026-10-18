@@ -91,7 +91,6 @@ export interface ActivatedTension {
   id: string;
   kind: TensionKind;
   dimensions: DimensionId[];
-  because: Localized;
 }
 
 export interface AssessmentResult {
@@ -253,9 +252,3 @@ export type CheckoutResult =
   | { status: 'not_configured'; messageKey: 'notConfigured' }
   | { status: 'redirect'; url: string }
   | { status: 'unavailable'; messageKey: 'unavailable' };
-
-export interface PaymentProvider {
-  id: string;
-  isConfigured(): boolean;
-  beginCheckout(productId: string): CheckoutResult;
-}

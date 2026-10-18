@@ -59,21 +59,42 @@ test('homepage, questionnaire, results, share, and retake', async ({ page }) => 
   await page.locator('input[type="radio"]').first().check();
   await page.getByTestId('finish').click();
 
+  await expect(page.getByTestId('free-preview')).toBeVisible();
   await expect(page.getByTestId('paywall')).toBeVisible();
-  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute(
-    'href',
-    'https://www.paypal.com/ncp/payment/RXABC8JDX86YQ',
-  );
+  await expect(page.getByTestId('paypal-checkout')).toBeVisible();
+  await expect(page.getByTestId('paypal-checkout')).not.toHaveAttribute('href');
   await expect(page.getByText('Directional index')).toHaveCount(0);
   await expect(page.getByText('Payment successful')).toHaveCount(0);
 
-  await page.goto('/en/results?tx=8K123456789012345&st=Pending');
-  await expect(page.getByTestId('paywall')).toBeVisible();
-  await expect(page.getByText('not marked this payment as completed')).toBeVisible();
-
   await page.goto('/en/results?tx=8K123456789012345&st=Completed&amt=4.99&cc=EUR');
+  await expect(page.getByTestId('paywall')).toBeVisible();
+  await expect(page.getByTestId('results')).toHaveCount(0);
+  await expect(page.getByText('Directional index')).toHaveCount(0);
+
+  await page.goto('/en/results?token=5O190127TN364715T');
+  await expect(page.getByTestId('paywall')).toBeVisible();
+  await expect(page.getByText('has not completed this payment')).toBeVisible();
+
+  await page.route('**/api/profile', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(mockPaidProfile()),
+    });
+  });
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'noema.access.v1',
+      JSON.stringify({
+        version: 1,
+        token: 'testpayload.testsag',
+        orderId: '5O190127TN364715T',
+        unlockedAt: '2026-10-18T00:00:00.000Z',
+      }),
+    );
+  });
+  await page.goto('/en/results');
   await expect(page.getByTestId('results')).toBeVisible();
-  await expect(page).not.toHaveURL(/tx=/);
   await expect(page.getByText('Not a measure of personality', { exact: false })).toBeVisible();
   await page.getByTestId('copy-link').click();
   const field = page.getByLabel('Copy score link');
@@ -112,13 +133,52 @@ test('chinese home and mobile navigation', async ({ page }) => {
   await expect(page.getByRole('link', { name: '问卷' }).last()).toBeVisible();
 });
 
-test('unpaid profile stays sealed and checkout opens PayPal', async ({ page }) => {
+test('unpaid profile stays sealed and checkout is not a hosted PayPal link', async ({ page }) => {
   await page.goto('/en/premium');
   await expect(page.getByTestId('paywall')).toBeVisible();
-  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute(
-    'href',
-    'https://www.paypal.com/ncp/payment/RXABC8JDX86YQ',
-  );
+  await expect(page.getByTestId('paypal-checkout')).toBeVisible();
+  await expect(page.getByTestId('paypal-checkout')).not.toHaveAttribute('href');
   await expect(page.getByText('Payment successful')).toHaveCount(0);
   await expect(page.getByText('Directional index')).toHaveCount(0);
 });
+
+function mockPaidProfile() {
+  const axis = (id: string, label: string) => ({
+    id,
+    label,
+    leftPole: 'Left',
+    rightPole: 'Right',
+    score: 12,
+    directionalCount: 8,
+    applicableCount: 8,
+    description: `${label}: directional index 12`,
+    narrative: `${label} narrative`,
+    disagreement: 'Answers on this axis mostly agree in direction.',
+  });
+  return {
+    locale: 'en',
+    assignment: { status: 'definitive', code: 'MECDFI', reasons: [] },
+    code: 'MECDFI',
+    name: 'Measured Inquirer',
+    familyId: 'explorers',
+    familyName: 'Explorers',
+    summary: 'A public summary.',
+    axes: [
+      axis('ontology', 'Reality'),
+      axis('epistemology', 'Knowledge'),
+      axis('ethics', 'Morality'),
+      axis('agency', 'Freedom'),
+      axis('meaning', 'Meaning'),
+      axis('society', 'Social life'),
+    ],
+    worldview: ['A worldview paragraph.'],
+    strengths: ['A strength.'],
+    blindSpots: ['A blind spot.'],
+    pairingPressure: 'A pressure.',
+    reflection: ['A question?'],
+    tensions: [],
+    standing: [],
+    readings: [],
+    typePath: '/en/types/mecdfl',
+  };
+}
