@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { checkoutRedirectUrl } from '@/lib/checkout/target';
+import { messages } from '@/lib/localization/messages';
+import type { Locale } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const m = messages[locale];
+const target = checkoutRedirectUrl();
+---
+
+<BaseLayout
+  locale={locale}
+  path="/checkout"
+  title={`${m.checkoutTitle} — NOEMA`}
+  description={m.checkoutBody}
+  noindex={true}
+>
+  <Fragment slot="head">
+    {target && <meta http-equiv="refresh" content={`0;url=${target}`} />}
+  </Fragment>
+  <section class="mx-auto max-w-3xl px-4 py-16">
+    <p class="kicker">{m.payKicker}</p>
+    <h1 class="serif mt-4 text-4xl">{m.checkoutTitle}</h1>
+    <p class="mt-6">{m.checkoutBody}</p>
+    {
+      target ? (
+        <a class="btn mt-8" data-testid="checkout-fallback" data-checkout-target href={target}>
+          {m.checkoutContinue}
+        </a>
+      ) : (
+        <p class="mt-8" role="status">
+          {m.notConfigured}
+        </p>
+      )
+    }
+  </section>
+  <script>
+    const link = document.querySelector('[data-checkout-target]');
+    if (link instanceof HTMLAnchorElement && link.href) {
+      window.location.replace(link.href);
+    }
+  </script>
+</BaseLayout>

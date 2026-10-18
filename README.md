@@ -26,13 +26,34 @@ Playwright needs a browser once: `npx playwright install chromium`.
 
 ## Deploy
 
-The production build is the `dist/` directory. Cloudflare Pages can serve it directly.
+The production origin is the Cloudflare Worker `philosophicalcharacter`:
+
+`https://philosophicalcharacter.andyycrccrhjuswcax.workers.dev`
+
+Workers Builds deploys static assets from `dist/`. GitHub Pages also builds `dist/` via `.github/workflows/deploy.yml` (do not change that workflow here). Canonical URLs, the sitemap, hreflang, and Open Graph URLs use the Cloudflare origin by default.
 
 - Build command: `npm run build`
 - Output directory: `dist`
-- `wrangler.toml` sets `pages_build_output_dir`
+- Override the canonical origin with `SITE` and the asset base with `BASE_PATH` if another host needs different values. The GitHub Pages workflow does not set them, so that build keeps `base: /` and inherits the Cloudflare canonical.
 
-Set `site` in `astro.config.ts` to the real origin before launch so canonical URLs, the sitemap, and Open Graph URLs are correct. No API keys belong in client code. `PUBLIC_PAYMENT_PROVIDER` is documented in `.env.example`; leaving it empty keeps checkout unavailable.
+No API keys belong in client code. `PUBLIC_PAYMENT_PROVIDER` is documented in `.env.example`; leaving it empty keeps checkout unavailable.
+
+### Cloudflare Web Analytics
+
+The site can load Cloudflare Web Analytics, a cookieless beacon (no cookies, not an advertising pixel). It is injected only when both of these are true at **build** time:
+
+1. `PUBLIC_CF_ANALYTICS_TOKEN` is set
+2. `WORKERS_CI=1` (Workers Builds sets this automatically)
+
+GitHub Pages builds, local `npm run build`, and `npm run dev` emit no beacon if either condition is missing.
+
+To enable it on production:
+
+1. In the Cloudflare dashboard, open **Analytics & Logs** → **Web Analytics**.
+2. Add a site for `philosophicalcharacter.andyycrccrhjuswcax.workers.dev` (or open the existing site).
+3. Copy the site token from the JS snippet (`data-cf-beacon='{"token":"…"}'`).
+4. On the `philosophicalcharacter` Worker, open **Settings** → **Builds** → **Variables and secrets** (build variables, not runtime Worker vars) and set `PUBLIC_CF_ANALYTICS_TOKEN` to that token.
+5. Rebuild / redeploy. If the token is unset, the pages contain no analytics script.
 
 ## Scoring
 
@@ -99,4 +120,4 @@ In the PayPal payment-link settings, set the return URL to the live site’s `/r
 
 Source Serif 4, Source Sans 3, and IBM Plex Mono are served from the site build under the SIL Open Font License. Chinese text falls back to fonts already on the device, so the page does not download a full CJK webfont.
 
-The default experience stores answers and the theme choice in `localStorage`. It does not set cookies or load third-party analytics. See `/privacy`. Hosting on Cloudflare Pages may still create ordinary connection logs under Cloudflare’s own policy.
+The default experience stores answers and the theme choice in `localStorage`. It does not set cookies. See `/privacy`. Hosting on Cloudflare may still create ordinary connection logs under Cloudflare’s own policy. When `PUBLIC_CF_ANALYTICS_TOKEN` is set on a Workers Builds production build, pages also include Cloudflare Web Analytics (a cookieless beacon). GitHub Pages builds do not include it.

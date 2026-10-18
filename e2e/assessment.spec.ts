@@ -60,10 +60,7 @@ test('homepage, questionnaire, results, share, and retake', async ({ page }) => 
   await page.getByTestId('finish').click();
 
   await expect(page.getByTestId('paywall')).toBeVisible();
-  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute(
-    'href',
-    'https://www.paypal.com/ncp/payment/RXABC8JDX86YQ',
-  );
+  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute('href', '/en/checkout');
   await expect(page.getByText('Directional index')).toHaveCount(0);
   await expect(page.getByText('Payment successful')).toHaveCount(0);
 
@@ -115,10 +112,7 @@ test('chinese home and mobile navigation', async ({ page }) => {
 test('unpaid profile stays sealed and checkout opens PayPal', async ({ page }) => {
   await page.goto('/en/premium');
   await expect(page.getByTestId('paywall')).toBeVisible();
-  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute(
-    'href',
-    'https://www.paypal.com/ncp/payment/RXABC8JDX86YQ',
-  );
+  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute('href', '/en/checkout');
   await expect(page.getByText('Payment successful')).toHaveCount(0);
   await expect(page.getByText('Directional index')).toHaveCount(0);
 });

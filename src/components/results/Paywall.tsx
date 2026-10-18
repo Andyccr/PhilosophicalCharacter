@@ -1,5 +1,5 @@
-import { PAYPAL_CHECKOUT_URL } from '@/lib/payment/provider';
 import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
 import type { Locale } from '@/types/model';
 
 export function Paywall({ locale, notice }: { locale: Locale; notice?: string }) {
@@ -15,7 +15,7 @@ export function Paywall({ locale, notice }: { locale: Locale; notice?: string })
           {notice}
         </p>
       )}
-      <a className="btn mt-8" data-testid="paypal-checkout" href={PAYPAL_CHECKOUT_URL}>
+      <a className="btn mt-8" data-testid="paypal-checkout" href={localePath(locale, '/checkout')}>
         {m.payAction}
       </a>
       <p className="mt-6 max-w-2xl text-sm text-muted">{m.payReturn}</p>

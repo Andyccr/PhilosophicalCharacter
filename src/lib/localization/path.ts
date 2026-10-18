@@ -1,3 +1,4 @@
+import { CLOUDFLARE_ORIGIN } from '@/lib/site';
 import type { Locale, Localized } from '@/types/model';
 
 export const DEFAULT_LOCALE: Locale = 'zh';
@@ -103,7 +104,7 @@ export function localeRedirect(pathname: string, preference: string | null | und
 export function siteOrigin(): string {
   const site = import.meta.env.SITE;
   if (typeof site === 'string' && site.length > 0) return site.replace(/\/$/, '');
-  return 'https://noema.example';
+  return CLOUDFLARE_ORIGIN;
 }
 
 export function absoluteUrl(path: string): string {
