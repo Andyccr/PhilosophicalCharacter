@@ -8,10 +8,23 @@ import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
 import { readAccess, writeAccess } from '@/lib/payment/access';
 import { PaymentClient } from '@/lib/payment/client';
-import { DIMENSION_IDS } from '@/lib/scoring/config';
+import { buildShareCardInput } from '@/lib/share-card/input';
+import { runtimeShareCardHost } from '@/lib/share-card/host';
+import { DIMENSION_IDS, scoringConfig } from '@/lib/scoring/config';
 import { scoreAssessment } from '@/lib/scoring/score';
 import { browserStorage, readSession } from '@/lib/storage/session';
+import type { SharedProfile } from '@/lib/sharing/link';
 import type { AssessmentResult, Locale } from '@/types/model';
+
+function profileFromResult(result: AssessmentResult): SharedProfile {
+  return {
+    scores: Object.fromEntries(DIMENSION_IDS.map((id) => [id, result.dimensions[id].score])) as SharedProfile['scores'],
+    disagreement: Object.fromEntries(
+      DIMENSION_IDS.map((id) => [id, (result.dimensions[id].inconsistency ?? 0) >= scoringConfig.inconsistencyMixed]),
+    ) as SharedProfile['disagreement'],
+    assignment: result.assignment,
+  };
+}
 
 export function PremiumPreview({ locale }: { locale: Locale }) {
   const m = messages[locale];
@@ -83,10 +96,11 @@ export function PremiumPreview({ locale }: { locale: Locale }) {
   }
 
   const preview = freePreview(locale, result.assignment, m.withheldBody);
+  const card = buildShareCardInput(profileFromResult(result), locale, runtimeShareCardHost());
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
       <p className="kicker">{m.premiumTitle}</p>
-      <FreePreview locale={locale} preview={preview} />
+      <FreePreview locale={locale} preview={preview} card={card} />
       {paid && <LockedReport locale={locale} profile={paid} />}
     </article>
   );

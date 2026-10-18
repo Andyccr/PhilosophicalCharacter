@@ -62,9 +62,19 @@ test('homepage, questionnaire, results, share, and retake', async ({ page }) => 
   await expect(page.getByTestId('free-preview')).toBeVisible();
   await expect(page.getByTestId('paywall')).toBeVisible();
   await expect(page.getByTestId('paypal-checkout')).toBeVisible();
-  await expect(page.getByTestId('paypal-checkout')).not.toHaveAttribute('href');
+  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute('href', '/en/checkout');
+  await expect(page.getByTestId('locked-section')).toContainText('Philosophers from related traditions');
+  await expect(page.getByTestId('locked-section')).toContainText('not a similarity score');
+  await expect(page.getByTestId('share-card')).toBeVisible();
+  await expect(page.getByTestId('share-card')).toHaveAttribute('data-ready', 'true');
+  await expect(page.getByTestId('share-card-landscape')).toHaveAttribute('width', '1200');
+  await expect(page.getByTestId('share-card-portrait')).toHaveAttribute('width', '1080');
   await expect(page.getByText('Directional index')).toHaveCount(0);
   await expect(page.getByText('Payment successful')).toHaveCount(0);
+
+  await page.getByTestId('copy-link').click();
+  await expect(page.getByLabel('Copy score link')).toBeVisible();
+  expect(await page.getByLabel('Copy score link').inputValue()).toContain('#v=1');
 
   await page.goto('/en/results?tx=8K123456789012345&st=Completed&amt=4.99&cc=EUR');
   await expect(page.getByTestId('paywall')).toBeVisible();
@@ -105,9 +115,9 @@ test('homepage, questionnaire, results, share, and retake', async ({ page }) => 
   expect(link).not.toContain('age-04');
 
   const downloadPromise = page.waitForEvent('download');
-  await page.getByTestId('download-svg').click();
+  await page.getByTestId('download-png-landscape').click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toContain('.svg');
+  expect(download.suggestedFilename()).toContain('.png');
 
   await page.getByTestId('retake').click();
   await page.getByTestId('confirm-retake').click();
@@ -137,7 +147,7 @@ test('unpaid profile stays sealed and checkout is not a hosted PayPal link', asy
   await page.goto('/en/premium');
   await expect(page.getByTestId('paywall')).toBeVisible();
   await expect(page.getByTestId('paypal-checkout')).toBeVisible();
-  await expect(page.getByTestId('paypal-checkout')).not.toHaveAttribute('href');
+  await expect(page.getByTestId('paypal-checkout')).toHaveAttribute('href', '/en/checkout');
   await expect(page.getByText('Payment successful')).toHaveCount(0);
   await expect(page.getByText('Directional index')).toHaveCount(0);
 });

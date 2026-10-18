@@ -11,17 +11,22 @@ const islandFiles = [
   'src/components/results/FreePreview.tsx',
   'src/components/results/LockedReport.tsx',
   'src/components/results/CompareApp.tsx',
+  'src/components/results/share-card/ShareCard.tsx',
+  'src/lib/share-card/input.ts',
+  'src/lib/share-card/catalog.ts',
+  'src/lib/share-card/draw.ts',
 ];
 
 describe('paid copy stays off the results islands', () => {
   it('does not import archetype essays, dimension essays, or tension copy', () => {
     const sources = islandFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
-    expect(sources).not.toContain("from '@/data/archetypes'");
+    expect(sources).not.toMatch(/from '@\/data\/archetypes'/);
     expect(sources).not.toContain("from '@/data/dimensions'");
     expect(sources).not.toContain("from '@/data/tensions/rules'");
     expect(sources).not.toContain("from '@/data/tensions/standing'");
     expect(sources).not.toContain("from '@/lib/interpretation/describe'");
     expect(sources).not.toContain('paypal.com/ncp/payment');
+    expect(sources).not.toContain('noema.andyccr.workers.dev');
   });
 
   it('free preview is code, family, and summary without axis indices', () => {

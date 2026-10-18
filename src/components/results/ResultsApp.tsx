@@ -8,7 +8,8 @@ import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
 import { clearPaypalQuery, parsePaypalReturn, readAccess, writeAccess } from '@/lib/payment/access';
 import { PaymentClient } from '@/lib/payment/client';
-import { shareCardSvg, type ShareCardInput } from '@/lib/sharing/card';
+import { buildShareCardInput } from '@/lib/share-card/input';
+import { runtimeShareCardHost } from '@/lib/share-card/host';
 import { parseShareHash, shareUrl, type SharedProfile } from '@/lib/sharing/link';
 import { DIMENSION_IDS, classifyInclination, scoringConfig } from '@/lib/scoring/config';
 import { scoreAssessment } from '@/lib/scoring/score';
@@ -176,20 +177,7 @@ export function ResultsApp({ locale }: { locale: Locale }) {
   const assignment = view.kind === 'shared' ? view.profile.assignment : view.result.assignment;
   const preview = freePreview(locale, assignment, m.withheldBody);
   const shareProfile = view.kind === 'shared' ? view.profile : profileFromResult(view.result);
-
-  const cardInput: ShareCardInput | null = paid
-    ? {
-        kicker: m.cardKicker,
-        title: paid.name ?? m.withheld,
-        code: paid.code ? paid.code.split('').join(' · ') : '—',
-        family: paid.familyName ?? '',
-        summary: paid.summary ?? m.withheldBody,
-        rows: paid.axes.map((axis) => ({ label: axis.label, value: axis.score === null ? '—' : String(axis.score) })),
-        disclaimer: m.cardDisclaimer,
-        badge:
-          assignment.status === 'definitive' ? m.definitive : assignment.status === 'provisional' ? m.provisional : m.withheld,
-      }
-    : null;
+  const card = buildShareCardInput(shareProfile, locale, runtimeShareCardHost());
 
   function urlForShare(): string {
     return shareUrl(window.location.origin, localePath(locale, '/results'), shareProfile);
@@ -213,39 +201,6 @@ export function ResultsApp({ locale }: { locale: Locale }) {
     anchor.download = filename;
     anchor.click();
     URL.revokeObjectURL(url);
-  }
-
-  function downloadSvg() {
-    if (!cardInput) return;
-    download('noema-profile.svg', new Blob([shareCardSvg(cardInput)], { type: 'image/svg+xml' }));
-  }
-
-  async function downloadPng() {
-    if (!cardInput) return;
-    try {
-      await document.fonts.ready;
-      const canvas = document.createElement('canvas');
-      canvas.width = 1200;
-      canvas.height = 760;
-      const context = canvas.getContext('2d');
-      if (!context) throw new Error('canvas');
-      const image = new Image();
-      const svg = shareCardSvg(cardInput);
-      const blob = new Blob([svg], { type: 'image/svg+xml' });
-      const src = URL.createObjectURL(blob);
-      await new Promise<void>((resolve, reject) => {
-        image.onload = () => resolve();
-        image.onerror = () => reject(new Error('image'));
-        image.src = src;
-      });
-      context.drawImage(image, 0, 0);
-      URL.revokeObjectURL(src);
-      const png = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
-      if (!png) throw new Error('png');
-      download('noema-profile.png', png);
-    } catch {
-      setStatus(m.pngFailed);
-    }
   }
 
   async function nativeShare() {
@@ -281,7 +236,7 @@ export function ResultsApp({ locale }: { locale: Locale }) {
           {m.sharedBanner} {localResult && <a href={localePath(locale, '/results')}>{m.myResult}</a>}
         </p>
       )}
-      <FreePreview locale={locale} preview={preview} />
+      <FreePreview locale={locale} preview={preview} card={card} />
       {!access && <Paywall locale={locale} notice={paymentNotice} onUnlocked={unlock} />}
       {access && paidError && (
         <p className="no-print mt-6 border border-line p-4" role="alert">
@@ -292,22 +247,12 @@ export function ResultsApp({ locale }: { locale: Locale }) {
       {paid && <LockedReport locale={locale} profile={paid} />}
 
       <div className="no-print mt-10 flex flex-wrap gap-3" data-share-url={shareField}>
-        {paid && (
-          <>
-            <button type="button" className="btn" onClick={() => void copyLink()} data-testid="copy-link">
-              {m.copyLink}
-            </button>
-            <button type="button" className="btn secondary" onClick={() => void nativeShare()}>
-              {m.shareNative}
-            </button>
-            <button type="button" className="btn secondary" onClick={downloadSvg} data-testid="download-svg">
-              {m.downloadSvg}
-            </button>
-            <button type="button" className="btn secondary" onClick={() => void downloadPng()}>
-              {m.downloadPng}
-            </button>
-          </>
-        )}
+        <button type="button" className="btn" onClick={() => void copyLink()} data-testid="copy-link">
+          {m.copyLink}
+        </button>
+        <button type="button" className="btn secondary" onClick={() => void nativeShare()}>
+          {m.shareNative}
+        </button>
         <button type="button" className="btn secondary" onClick={() => setConfirm(true)} data-testid="retake">
           {m.retake}
         </button>

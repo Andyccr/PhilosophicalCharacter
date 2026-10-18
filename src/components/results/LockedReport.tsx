@@ -17,7 +17,7 @@ export function LockedReport({ locale, profile }: { locale: Locale; profile: Pai
   }));
 
   return (
-    <div className="paid-report mt-10" data-testid="results">
+    <div className="paid-report mt-10 print:mt-0" data-testid="results">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <RadarChart
           scores={DIMENSION_IDS.map((id) => profile.axes.find((axis) => axis.id === id)?.score ?? null)}

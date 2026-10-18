@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { pending } from '@/lib/share-card/copy';
 import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
 import { ApiError, PaymentClient } from '@/lib/payment/client';
@@ -18,20 +19,7 @@ export function Paywall({
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [orderId, setOrderId] = useState('');
-
-  async function checkout() {
-    setBusy(true);
-    setError('');
-    try {
-      const path = localePath(locale, '/results');
-      const created = await PaymentClient.createCheckout({ returnPath: path, cancelPath: path });
-      window.location.assign(created.approvalUrl);
-    } catch (caught) {
-      setBusy(false);
-      if (caught instanceof ApiError && caught.status === 503) setError(m.notConfigured);
-      else setError(m.unavailable);
-    }
-  }
+  const checkoutHref = localePath(locale, '/checkout');
 
   async function restore(event: FormEvent) {
     event.preventDefault();
@@ -40,8 +28,9 @@ export function Paywall({
     try {
       const unlocked = await PaymentClient.restore({ email, orderId });
       onUnlocked(unlocked.token, unlocked.orderId);
-    } catch {
-      setError(m.restoreFailed);
+    } catch (caught) {
+      if (caught instanceof ApiError) setError(m.restoreFailed);
+      else setError(m.restoreFailed);
     } finally {
       setBusy(false);
     }
@@ -49,9 +38,17 @@ export function Paywall({
 
   return (
     <section className="no-print mt-10 border border-line p-6" data-testid="paywall">
-      <p className="kicker">{m.payKicker}</p>
-      <h2 className="serif mt-3 text-3xl">{m.payTitle}</h2>
-      <p className="mt-4 max-w-2xl">{m.payBody}</p>
+      <p className="kicker">{pending(locale, 'lockedKicker')}</p>
+      <h2 className="serif mt-3 text-3xl">{pending(locale, 'lockedTitle')}</h2>
+      <p className="mt-4 max-w-2xl">{pending(locale, 'lockedLead')}</p>
+      <ul className="mt-4 max-w-2xl list-disc pl-5" data-testid="locked-section">
+        <li>{pending(locale, 'lockedItemAxes')}</li>
+        <li>{pending(locale, 'lockedItemTensions')}</li>
+        <li>{pending(locale, 'lockedItemPhilosophers')}</li>
+        <li>{pending(locale, 'lockedItemWorldview')}</li>
+        <li>{pending(locale, 'lockedItemReadings')}</li>
+      </ul>
+      <p className="mt-6 max-w-2xl">{m.payBody}</p>
       <p className="mt-3">{m.payPrice}</p>
       {notice && (
         <p className="mt-4 border border-line p-4" role="status">
@@ -63,9 +60,9 @@ export function Paywall({
           {error}
         </p>
       )}
-      <button type="button" className="btn mt-6" data-testid="paypal-checkout" disabled={busy} onClick={() => void checkout()}>
+      <a className="btn mt-6" data-testid="paypal-checkout" href={checkoutHref}>
         {m.payAction}
-      </button>
+      </a>
       <p className="mt-4 max-w-2xl text-sm text-muted">{m.payReturn}</p>
       <form className="mt-8 grid gap-3" data-testid="restore-form" onSubmit={(event) => void restore(event)}>
         <p className="font-medium">{m.restoreTitle}</p>
