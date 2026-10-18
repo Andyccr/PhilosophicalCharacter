@@ -6,10 +6,13 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const dist = path.join(root, 'dist');
 
-// Local installs can reuse an existing dist. CI (including Workers Builds
-// preview, which runs `npx wrangler preview` with an empty build command)
-// must produce dist before wrangler looks at assets.directory.
-if (existsSync(dist) && !process.env.CI) process.exit(0);
+// GitHub Actions (including Pages) already runs `npm run build` after `npm ci`.
+if (process.env.GITHUB_ACTIONS) process.exit(0);
+
+// Local installs can reuse an existing dist. Workers Builds preview runs
+// `npx wrangler preview` with an empty dashboard build command, so produce
+// dist here when it is missing.
+if (existsSync(dist)) process.exit(0);
 
 const result = spawnSync('npm', ['run', 'build'], {
   cwd: root,
