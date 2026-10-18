@@ -56,13 +56,15 @@ describe('persistence, sharing, and payment', () => {
       assignment: result.assignment,
     };
     const url = shareUrl('https://noema.example', localePath('zh', '/results'), profile);
-    expect(url).toContain('/zh/results#');
+    expect(url).toContain('/results#');
     expect(url).not.toContain('ont-01');
     expect(url).not.toContain('age-04');
     const parsed = parseShareHash(url.split('#')[1] ?? '');
     expect(parsed?.assignment).toMatchObject({ status: 'definitive', code: 'IRDLCC' });
-    expect(localePath('en', '/types/mecdfl')).toBe('/types/mecdfl');
-    expect(localePath('zh', '/')).toBe('/zh');
+    expect(localePath('zh', '/types/mecdfl')).toBe('/types/mecdfl');
+    expect(localePath('en', '/types/mecdfl')).toBe('/en/types/mecdfl');
+    expect(localePath('zh', '/')).toBe('/');
+    expect(localePath('en', '/')).toBe('/en');
   });
 
   it('renders a share card without private answers', () => {

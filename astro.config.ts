@@ -11,11 +11,14 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'never',
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh'],
+    defaultLocale: 'zh',
+    locales: ['zh', 'en'],
     routing: {
       prefixDefaultLocale: false,
     },
+  },
+  redirects: {
+    '/zh': '/',
   },
   integrations: [
     react(),
