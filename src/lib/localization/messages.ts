@@ -1,3 +1,5 @@
+import type { Locale, TensionKind } from '@/types/model';
+
 const en = {
   skip: 'Skip to content',
   menu: 'Menu',
@@ -121,6 +123,31 @@ const en = {
   checkoutContinue: 'Continue to payment',
   payReturn: 'In the PayPal payment link settings, set the return URL to this site’s /results page. This page opens the profile only when that return includes a completed transaction id. Clicking the button is not treated as payment. A pending payment leaves the profile sealed.',
   payPending: 'PayPal has not marked this payment as completed, so the profile stays sealed.',
+  restoreTitle: 'Already paid?',
+  restoreBody: 'Enter the PayPal payer email and the order id from the receipt. Nothing is sent by email. Both values have to match a recorded purchase.',
+  restoreEmail: 'Payer email',
+  restoreOrder: 'PayPal order id',
+  restoreAction: 'Restore unlock',
+  restoreFailed: 'That email and order id did not match a recorded purchase.',
+  printReport: 'Print or save as PDF',
+  printHint: 'Use the browser print dialog to save this reading as a PDF. The Worker does not generate a PDF file.',
+  printSavePdf: 'Print / Save as PDF',
+  reportTitle: 'Philosophical profile report',
+  generatedOn: 'Generated on',
+  languageName: 'English',
+  languageLabel: 'Language',
+  answeredLabel: 'Questions answered',
+  uncertainLabel: '“I cannot determine”',
+  reportIdLabel: 'Report id',
+  philosophersNote:
+    'They are listed because their traditions intersect those of this code. The link is thematic, not a similarity score.',
+  versionLabel: 'Model / question-bank version',
+  philosophersRelated: 'Philosophers from nearby traditions',
+  tensionKindLogicalInconsistency: 'TODO(Maker): English label for logical-inconsistency',
+  tensionKindPhilosophicalDisagreement: 'TODO(Maker): English label for philosophical-disagreement',
+  tensionKindApparentTension: 'TODO(Maker): English label for apparent-tension',
+  tensionKindContextDependent: 'TODO(Maker): English label for context-dependent',
+  tensionKindUnresolvedUncertainty: 'TODO(Maker): English label for unresolved-uncertainty',
   notConfigured: 'Checkout is not active. No charge was attempted, and nothing was unlocked.',
   unavailable: 'A payment flag is set, but this static build has no verified provider. No charge was attempted.',
   premiumEmpty: 'You can read the report structure without a profile. A profile on this device fills the sections from your indices.',
@@ -260,6 +287,30 @@ const zh: typeof en = {
   checkoutContinue: '继续付款',
   payReturn: '请在 PayPal 收款链接的设置里，把返回网址设为本站的 /results 页面。只有当这次返回带有已完成的交易号时，本页才会打开剖面。点击按钮本身不算付款。付款仍处于待处理时，剖面继续封着。',
   payPending: 'PayPal 尚未把这笔付款标为完成，因此剖面仍然封着。',
+  restoreTitle: '已经付过？',
+  restoreBody: '输入 PayPal 付款邮箱和收据上的订单号。不会发邮件。两项都必须与已记录的购买相符。',
+  restoreEmail: '付款邮箱',
+  restoreOrder: 'PayPal 订单号',
+  restoreAction: '恢复解锁',
+  restoreFailed: '该邮箱与订单号没有匹配到已记录的购买。',
+  printReport: '打印或另存为 PDF',
+  printHint: '用浏览器的打印对话框把这份解读存成 PDF。Worker 不生成 PDF 文件。',
+  printSavePdf: '打印 / 存为 PDF',
+  reportTitle: '哲学剖面报告',
+  generatedOn: '生成日期',
+  languageName: '中文',
+  languageLabel: '语言',
+  answeredLabel: '已答题目',
+  uncertainLabel: '“我无法判断”',
+  reportIdLabel: '报告编号',
+  philosophersNote: '列出的原因是其传统与这一代码的传统有交集。这种联系是主题性的，不是相似度分数。',
+  versionLabel: '模型 / 题库版本',
+  philosophersRelated: '思想传统相近的哲学家',
+  tensionKindLogicalInconsistency: 'TODO(Maker): logical-inconsistency 的中文名称',
+  tensionKindPhilosophicalDisagreement: 'TODO(Maker): philosophical-disagreement 的中文名称',
+  tensionKindApparentTension: 'TODO(Maker): apparent-tension 的中文名称',
+  tensionKindContextDependent: 'TODO(Maker): context-dependent 的中文名称',
+  tensionKindUnresolvedUncertainty: 'TODO(Maker): unresolved-uncertainty 的中文名称',
   notConfigured: '结账没有启用。没有尝试扣款，也没有解锁任何内容。',
   unavailable: '设置了支付标志，但这个静态构建没有经过验证的支付服务。没有尝试扣款。',
   premiumEmpty: '没有剖面也可以阅读报告的结构。这台设备上的剖面会用你的指数填入各节。',
@@ -281,4 +332,16 @@ export const messages = { en, zh } as const;
 
 export function fill(template: string, values: Record<string, string | number>): string {
   return template.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key] ?? ''));
+}
+
+const TENSION_KIND_KEYS = {
+  'logical-inconsistency': 'tensionKindLogicalInconsistency',
+  'philosophical-disagreement': 'tensionKindPhilosophicalDisagreement',
+  'apparent-tension': 'tensionKindApparentTension',
+  'context-dependent': 'tensionKindContextDependent',
+  'unresolved-uncertainty': 'tensionKindUnresolvedUncertainty',
+} as const satisfies Record<TensionKind, keyof typeof en>;
+
+export function tensionKindLabel(locale: Locale, kind: TensionKind): string {
+  return messages[locale][TENSION_KIND_KEYS[kind]];
 }

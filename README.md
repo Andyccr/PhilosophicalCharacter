@@ -24,11 +24,21 @@ npm run test:e2e
 
 Playwright needs a browser once: `npx playwright install chromium`.
 
+### Fonts
+
+Latin faces (Source Serif 4, Source Sans 3, IBM Plex Mono) ship from the npm build. Chinese text uses fonts already on the device.
+
+Maker’s CJK subsetting script is `scripts/build-fonts.py` with extra glyphs in `scripts/extra-cjk.txt`. Re-run it whenever Chinese data or UI copy changes:
+
+```bash
+npm run fonts
+```
+
+That expands to `python3 scripts/build-fonts.py . ./node_modules ./public/report-assets/fonts ./vendor/cjk-fonts`. It needs Python `fonttools` and Noto Serif/Sans CJK SC `.ttc` files in `vendor/cjk-fonts/` (not in git). The command is **optional**. `npm run build` does not call Python. Workers Builds and GitHub Actions images do not include `fonttools` or those source fonts, so the default deploy must not depend on subsetting. Generated woff2 files are not committed: Maker’s README treats them as a local/report-asset kit, they are several hundred KB to ~1.5 MB, and PR #4 owns serving them from static assets. Without the TTC files, `npm run fonts` exits 2 with instructions.
+
 ## Deploy
 
-The production origin is the Cloudflare Worker `philosophicalcharacter`:
-
-`https://philosophicalcharacter.andyycrccrhjuswcax.workers.dev`
+The production origin is the Cloudflare Worker `philosophicalcharacter`. The only place to change it is `CLOUDFLARE_ORIGIN` in `src/lib/site.ts` (imported by `astro.config.ts` and URL helpers). Update that constant when a custom domain is bound. `philosophicalcharacter.andyccr.workers.dev` does not resolve.
 
 Workers Builds deploys static assets from `dist/`. GitHub Pages also builds `dist/` via `.github/workflows/deploy.yml` (do not change that workflow here). Canonical URLs, the sitemap, hreflang, and Open Graph URLs use the Cloudflare origin by default.
 
@@ -50,7 +60,7 @@ GitHub Pages builds, local `npm run build`, and `npm run dev` emit no beacon if 
 To enable it on production:
 
 1. In the Cloudflare dashboard, open **Analytics & Logs** → **Web Analytics**.
-2. Add a site for `philosophicalcharacter.andyycrccrhjuswcax.workers.dev` (or open the existing site).
+2. Add a site for the origin in `src/lib/site.ts` (or open the existing site).
 3. Copy the site token from the JS snippet (`data-cf-beacon='{"token":"…"}'`).
 4. On the `philosophicalcharacter` Worker, open **Settings** → **Builds** → **Variables and secrets** (build variables, not runtime Worker vars) and set `PUBLIC_CF_ANALYTICS_TOKEN` to that token.
 5. Rebuild / redeploy. If the token is unset, the pages contain no analytics script.

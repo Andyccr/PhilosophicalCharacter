@@ -7,10 +7,8 @@ import { includeInSitemap } from './src/lib/seo/sitemap';
 import { CLOUDFLARE_ORIGIN } from './src/lib/site';
 
 export default defineConfig({
-  // Default canonical origin is the Cloudflare Worker. GitHub Pages and other
-  // hosts can override with SITE / BASE_PATH without changing this file.
-  // The Pages workflow does not set these today, so that build keeps base `/`
-  // and inherits the Cloudflare canonical (the production origin).
+  // Canonical origin comes from src/lib/site.ts. Override with SITE / BASE_PATH
+  // for GitHub Pages or another host without editing the production constant.
   site: process.env.SITE ?? CLOUDFLARE_ORIGIN,
   base: process.env.BASE_PATH ?? '/',
   output: 'static',

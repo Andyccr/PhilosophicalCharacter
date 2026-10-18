@@ -12,7 +12,8 @@
     "prepare": "node scripts/ensure-dist.mjs",
     "check": "astro check",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "fonts": "python3 scripts/build-fonts.py . ./node_modules ./public/report-assets/fonts ./vendor/cjk-fonts"
   },
   "engines": {
     "node": ">=22"
