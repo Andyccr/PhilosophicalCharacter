@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>NOEMA — {{#archetype}}{{name}} ({{code}}){{/archetype}}{{^archetype}}{{assignment.statusLabel}}{{/archetype}} — {{labels.reportTitle}}</title>
-<!-- Self-hosted fonts (OFL-1.1). assetBaseUrl must point at the folder that contains fonts/. -->
+<!-- Optional self-hosted kit at public/fonts/fonts.css. System CJK/serif/sans stacks cover the page if that file is not deployed yet. -->
 <link rel="stylesheet" href="{{assetBaseUrl}}fonts/fonts.css">
 <style>
 /* ===== NOEMA report — tokens taken from src/styles/global.css ===== */
@@ -13,9 +13,9 @@
   --ink:#111318; --muted:#3e4148; --line:rgba(17,19,24,.16); --soft:#e7e2d6; --paper:#f3f0e8;
   --accent:#3f3a78;               /* --iris: the single accent colour */
   --accent-tint:rgba(63,58,120,.10);
-  --serif:"Source Serif 4","Noto Serif SC","Songti SC",serif;
-  --sans:"Source Sans 3","Noto Sans SC","PingFang SC",sans-serif;
-  --mono:"IBM Plex Mono","Noto Sans SC",ui-monospace,monospace;
+  --serif:"Source Serif 4","Noto Serif SC","Songti SC","PMingLiU","SimSun",serif;
+  --sans:"Source Sans 3","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  --mono:"IBM Plex Mono","Noto Sans SC","PingFang SC",ui-monospace,monospace;
 }
 @page{
   size:A4; margin:24mm 22mm 22mm 22mm;

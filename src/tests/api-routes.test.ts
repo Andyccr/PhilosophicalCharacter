@@ -67,7 +67,9 @@ describe('Worker API routes', () => {
     const html = await response.text();
     expect(html).toContain('宪制的观念论者');
     expect(html).toContain('思想传统相近的哲学家');
-    expect(html).toContain('https://example.com/report-assets/fonts/fonts.css');
+    expect(html).toContain('https://example.com/fonts/fonts.css');
+    expect(html).toContain('NOEMA · example.com');
+    expect(html).not.toContain('andyccr.workers.dev');
     expect(html).toContain('5O190127TN364715T');
     expect(html).not.toContain('ont-01');
     expect(html).not.toContain('age-04');

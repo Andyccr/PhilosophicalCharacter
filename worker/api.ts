@@ -78,7 +78,7 @@ async function reportHtml(request: Request, env: Env): Promise<Response> {
   const html = renderReportFromRequest(parsed, {
     reportId: claims.o,
     siteUrl: origin,
-    assetBaseUrl: `${origin}/report-assets/`,
+    assetBaseUrl: `${origin}/`,
   });
   return new Response(html, {
     status: 200,

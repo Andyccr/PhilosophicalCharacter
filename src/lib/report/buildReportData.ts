@@ -95,10 +95,31 @@ export interface BuildOptions {
   locale: Locale;
   generatedAt?: Date;
   reportId?: string;
+  /** Canonical site origin. Worker passes the request origin; otherwise `import.meta.env.SITE`. Never a hostname literal. */
   siteUrl?: string;
+  /** Directory that contains `fonts/fonts.css` (served from `public/fonts/`). */
   assetBaseUrl?: string;
   radarSize?: number;
   philosopherLimit?: number;
+}
+
+function trimTrailingSlash(url: string): string {
+  return url.replace(/\/+$/, '');
+}
+
+function envSite(): string {
+  const value = import.meta.env.SITE;
+  return typeof value === 'string' && value.length > 0 ? trimTrailingSlash(value) : '';
+}
+
+function resolveSiteUrl(explicit?: string): string {
+  if (explicit && explicit.length > 0) return trimTrailingSlash(explicit);
+  return envSite();
+}
+
+function resolveAssetBaseUrl(explicit: string | undefined, siteUrl: string): string {
+  if (explicit && explicit.length > 0) return explicit.endsWith('/') ? explicit : `${explicit}/`;
+  return siteUrl ? `${siteUrl}/` : '/';
 }
 
 function radarAnchor(x: number, cx: number): 'start' | 'middle' | 'end' {
@@ -110,7 +131,7 @@ export function buildReportData(result: AssessmentResult, options: BuildOptions)
   const { locale } = options;
   const m = messages[locale];
   const generatedAt = options.generatedAt ?? new Date();
-  const siteUrl = options.siteUrl ?? 'https://noema.andyccr.workers.dev';
+  const siteUrl = resolveSiteUrl(options.siteUrl);
   const size = options.radarSize ?? 320;
 
   const { assignment } = result;
@@ -289,7 +310,7 @@ export function buildReportData(result: AssessmentResult, options: BuildOptions)
     reportId: options.reportId ?? null,
     modelVersion: result.modelVersion,
     questionVersion: result.questionVersion,
-    assetBaseUrl: options.assetBaseUrl ?? './',
+    assetBaseUrl: resolveAssetBaseUrl(options.assetBaseUrl, siteUrl),
     site: { name: 'NOEMA', url: siteUrl, host: siteUrl.replace(/^https?:\/\//, '') },
     assignment: {
       status: assignment.status,

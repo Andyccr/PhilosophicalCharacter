@@ -19,8 +19,8 @@ const sampleOptions = {
   locale: 'zh' as const,
   generatedAt: new Date('2026-10-18T16:00:00.000Z'),
   reportId: 'SAMPLE-0001',
-  siteUrl: 'https://noema.andyccr.workers.dev',
-  assetBaseUrl: '../',
+  siteUrl: 'https://example.com',
+  assetBaseUrl: 'https://example.com/',
 };
 
 describe('buildReportData', () => {
@@ -57,8 +57,11 @@ describe('buildReportData', () => {
     expect(data.labels.philosophers).toBe('思想传统相近的哲学家');
     expect(data.labels.philosophersNote).toContain('不是相似度分数');
     expect(data.labels.atlasLead).toContain('不是相似分数');
+    expect(data.site.url).toBe('https://example.com');
     expect(JSON.stringify(data)).not.toContain('ont-01');
     expect(JSON.stringify(data)).not.toContain('age-04');
+    expect(JSON.stringify(data)).not.toContain('andyccr.workers.dev');
+    expect(JSON.stringify(data)).not.toContain('andyycrccrhjuswcax');
   });
 
   it('keeps the English philosophers heading thematic, never a similarity ranking', () => {
@@ -67,6 +70,13 @@ describe('buildReportData', () => {
     expect(data.labels.philosophers.toLowerCase()).not.toContain('similar');
     expect(data.labels.philosophersNote.toLowerCase()).toContain('thematic');
     expect(data.labels.philosophersNote.toLowerCase()).toContain('not a similarity score');
+  });
+
+  it('does not default site.url to a workers.dev host', () => {
+    const data = buildReportData(sampleResult, { locale: 'zh', generatedAt: sampleOptions.generatedAt });
+    expect(data.site.url).not.toContain('workers.dev');
+    expect(data.assetBaseUrl).toMatch(/\/$/);
+    expect(`${data.assetBaseUrl}fonts/fonts.css`).toContain('/fonts/fonts.css');
   });
 
   it('lists the messages.ts keys a later PR should add', () => {
@@ -123,13 +133,15 @@ describe('Mustache HTML render', () => {
         generatedAt: sampleOptions.generatedAt,
         reportId: '5O190127TN364715T',
         siteUrl: 'https://example.com',
-        assetBaseUrl: 'https://example.com/report-assets/',
+        assetBaseUrl: 'https://example.com/',
       });
     }
     const elapsedMs = (performance.now() - started) / rounds;
     expect(html).toContain('宪制的观念论者');
     expect(html).toContain('思想传统相近的哲学家');
-    expect(html).toContain('/report-assets/fonts/fonts.css');
+    expect(html).toContain('https://example.com/fonts/fonts.css');
+    expect(html).toContain('PingFang SC');
+    expect(html).toContain('Microsoft YaHei');
     expect(html).toContain('打印 / 存为 PDF');
     expect(html).not.toContain('ont-01');
     expect(html).not.toContain('{{{');
