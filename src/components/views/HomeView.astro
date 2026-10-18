@@ -4,7 +4,7 @@ import { getArchetype } from '@/data/archetypes';
 import { dimensionList } from '@/data/dimensions';
 import { philosophers } from '@/data/philosophers/profiles';
 import { messages } from '@/lib/localization/messages';
-import { absoluteUrl, localePath } from '@/lib/localization/path';
+import { absoluteUrl, htmlLang, localePath } from '@/lib/localization/path';
 import type { Locale } from '@/types/model';
 
 interface Props {
@@ -38,7 +38,7 @@ const jsonLd = [
     name: 'NOEMA',
     url: absoluteUrl(localePath(locale, '/')),
     description: m.heroQuestion,
-    inLanguage: locale === 'zh' ? 'zh-Hans' : 'en',
+    inLanguage: htmlLang(locale),
   },
   {
     '@context': 'https://schema.org',

@@ -1,0 +1,11 @@
+---
+import PhilosopherView from '@/components/views/PhilosopherView.astro';
+import { philosophers } from '@/data/philosophers/profiles';
+
+export function getStaticPaths() {
+  return philosophers.map((philosopher) => ({ params: { slug: philosopher.slug }, props: { philosopher } }));
+}
+
+const { philosopher } = Astro.props;
+---
+<PhilosopherView locale="en" philosopher={philosopher} />

@@ -8,7 +8,7 @@ import { standingIssues } from '@/data/tensions/standing';
 import { dimensions } from '@/data/dimensions';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
 import { messages } from '@/lib/localization/messages';
-import { localePath } from '@/lib/localization/path';
+import { htmlLang, localePath } from '@/lib/localization/path';
 import type { Archetype, Locale } from '@/types/model';
 
 interface Props { locale: Locale; archetype: Archetype }
@@ -20,7 +20,7 @@ const jsonLd = {
   '@type': 'Article',
   headline: archetype.seoTitle[locale],
   description: archetype.seoDescription[locale],
-  inLanguage: locale === 'zh' ? 'zh-Hans' : 'en',
+  inLanguage: htmlLang(locale),
 };
 ---
 <BaseLayout locale={locale} path={`/types/${archetype.code.toLowerCase()}`} title={archetype.seoTitle[locale]} description={archetype.seoDescription[locale]} jsonLd={[jsonLd]}>

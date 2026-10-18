@@ -33,7 +33,7 @@ const items = [
       ))}
     </nav>
     <div class="flex items-center gap-3">
-      <a class="text-sm" href={localePath(otherLocale(locale), path)}>{m.language}</a>
+      <a class="text-sm" data-locale-switch data-locale={otherLocale(locale)} href={localePath(otherLocale(locale), path)}>{m.language}</a>
       <button type="button" class="btn secondary min-h-10 px-3 text-sm" data-theme-toggle data-dark={m.themeToDark} data-light={m.themeToLight}>
         {m.themeToDark}
       </button>

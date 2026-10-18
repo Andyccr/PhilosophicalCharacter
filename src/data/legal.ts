@@ -26,8 +26,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: { en: 'What stays on the device', zh: '什么留在设备上' },
         body: {
-          en: 'Answers are stored in localStorage under the key noema.assessment.v1. A completed PayPal return is stored under noema.access.v1, and it records the transaction id PayPal sent back, not a card number. The theme choice is stored under noema.theme. This release does not set cookies and does not load a third-party analytics script.',
-          zh: '回答保存在 localStorage 的 noema.assessment.v1 键下。PayPal 的一次已完成返回保存在 noema.access.v1 键下，其中记录的是 PayPal 送回的交易号，不是卡号。主题选择保存在 noema.theme 键下。这个版本不设置 cookie，也不加载第三方分析脚本。',
+          en: 'Answers are stored in localStorage under the key noema.assessment.v1. A completed PayPal return is stored under noema.access.v1, and it records the transaction id PayPal sent back, not a card number. The theme choice is stored under noema.theme. The language choice is stored under noema.locale. This release does not set cookies and does not load a third-party analytics script.',
+          zh: '回答保存在 localStorage 的 noema.assessment.v1 键下。PayPal 的一次已完成返回保存在 noema.access.v1 键下，其中记录的是 PayPal 送回的交易号，不是卡号。主题选择保存在 noema.theme 键下。语言选择保存在 noema.locale 键下。这个版本不设置 cookie，也不加载第三方分析脚本。',
         },
       },
       {

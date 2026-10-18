@@ -10,8 +10,8 @@ function write(relativePath, contents) {
 }
 
 function pair(relativePath, contentsFor) {
-  write(`src/pages/${relativePath}`, contentsFor('en'));
-  write(`src/pages/zh/${relativePath}`, contentsFor('zh'));
+  write(`src/pages/${relativePath}`, contentsFor('zh'));
+  write(`src/pages/en/${relativePath}`, contentsFor('en'));
 }
 
 pair('index.astro', (locale) => `---
@@ -203,10 +203,10 @@ const { experiment } = Astro.props;
 write('src/pages/404.astro', `---
 import BaseLayout from '@/components/layout/BaseLayout.astro';
 ---
-<BaseLayout locale="en" path="/404" title="Not found — NOEMA" description="This page is not part of the atlas." noindex={true}>
+<BaseLayout locale="zh" path="/404" title="未找到 — NOEMA" description="图谱中没有这一页。" noindex={true}>
   <div class="mx-auto max-w-3xl px-4 py-20">
-    <h1 class="serif text-5xl">This page is not in the atlas.</h1>
-    <p class="mt-4"><a href="/">Return home</a> · <a href="/zh">中文</a></p>
+    <h1 class="serif text-5xl">图谱中没有这一页。</h1>
+    <p class="mt-4"><a href="/">返回首页</a> · <a href="/en">English</a></p>
   </div>
 </BaseLayout>
 `);
