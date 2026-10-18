@@ -9,6 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "deploy": "wrangler deploy",
+    "prepare": "node scripts/ensure-dist.mjs",
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test"
