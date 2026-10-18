@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { families } from '@/data/archetypes/families';
 import { getPublicType } from '@/data/archetypes/public';
@@ -97,15 +98,30 @@ describe('share card input', () => {
 });
 
 describe('share card host', () => {
-  it('prefers the runtime host and never hardcodes the stale sample', () => {
-    expect(shareCardHost('philosophicalcharacter.andyycrccrhjuswcax.workers.dev')).toBe(
-      'philosophicalcharacter.andyycrccrhjuswcax.workers.dev',
-    );
-    expect(shareCardHost(undefined, 'https://philosophicalcharacter.andyycrccrhjuswcax.workers.dev/')).toBe(
-      'philosophicalcharacter.andyycrccrhjuswcax.workers.dev',
-    );
-    expect(shareCardHost('localhost:4321', 'https://noema.andyccr.workers.dev')).toBe('localhost:4321');
-    expect(shareCardHost()).not.toBe('noema.andyccr.workers.dev');
+  const canonical = 'https://canonical.example';
+  const canonicalHost = 'canonical.example';
+
+  it('prefers a configured SITE over a github.io or other runtime host', () => {
+    expect(shareCardHost('andyccr.github.io', canonical)).toBe(canonicalHost);
+    expect(shareCardHost('andyccr.github.io/PhilosophicalCharacter', `${canonical}/`)).toBe(canonicalHost);
+    expect(shareCardHost('localhost:4321', canonical)).toBe(canonicalHost);
+    expect(shareCardHost(undefined, canonical)).toBe(canonicalHost);
+  });
+
+  it('falls back to the runtime host when SITE is empty or loopback', () => {
+    expect(shareCardHost('andyccr.github.io', '')).toBe('andyccr.github.io');
+    expect(shareCardHost('andyccr.github.io')).toBe('andyccr.github.io');
+    expect(shareCardHost('pages.example', 'http://localhost:4321')).toBe('pages.example');
+    expect(shareCardHost('pages.example', 'http://127.0.0.1:4321/')).toBe('pages.example');
+    expect(shareCardHost('localhost:4321', 'http://127.0.0.1')).toBe('localhost:4321');
+    expect(shareCardHost()).toBe('');
+  });
+
+  it('does not hardcode a host string', () => {
+    const source = readFileSync('src/lib/share-card/host.ts', 'utf8');
+    expect(source).not.toMatch(/workers\.dev/);
+    expect(source).not.toMatch(/github\.io/);
+    expect(source).not.toMatch(/andyycrccrhjuswcax/);
   });
 });
 
