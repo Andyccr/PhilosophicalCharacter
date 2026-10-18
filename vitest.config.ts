@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { defineConfig } from 'vitest/config';
 
@@ -11,4 +12,14 @@ export default defineConfig({
       '@': path.resolve('./src'),
     },
   },
+  plugins: [
+    {
+      name: 'html-as-string',
+      load(id) {
+        if (id.endsWith('.html')) {
+          return `export default ${JSON.stringify(readFileSync(id, 'utf8'))};`;
+        }
+      },
+    },
+  ],
 });

@@ -33,6 +33,16 @@ export class PaymentClient {
     return (await response.json()) as PaidProfile;
   }
 
+  static async fetchReportHtml(token: string, body: ProfileRequest): Promise<string> {
+    const response = await fetch(API.report, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authorizationHeader(token) },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) throw new ApiError(response.status, await readError(response));
+    return response.text();
+  }
+
   static async reportPdfStatus(token: string, lang: 'en' | 'zh'): Promise<number> {
     const response = await fetch(`${API.reportPdf}?lang=${lang}`, {
       headers: authorizationHeader(token),

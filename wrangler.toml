@@ -13,6 +13,12 @@ binding = "ASSETS"
 not_found_handling = "404-page"
 run_worker_first = ["/api/*"]
 
+# Print-report Mustache template is imported as text. Fonts stay in static assets.
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
+
 [observability]
 enabled = true
 

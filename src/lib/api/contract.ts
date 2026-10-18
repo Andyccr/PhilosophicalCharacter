@@ -7,6 +7,7 @@
  *
  * Calendar of callers:
  * - Results / premium islands own the fetch wiring in this repository.
+ * - Print/save uses `POST /api/report` (HTML). `GET /api/report.pdf` stays 501.
  * - A later `/checkout` page should call `POST /api/checkout` with the same
  *   body; do not add a second payment entrypoint.
  * - Visual restyle of the results islands is owned by a UI contributor; do
@@ -67,15 +68,24 @@ export interface ProfileAxisInput {
   applicableCount: number;
 }
 
+/** Cover counts only. Not answers. Optional on shared-score views. */
+export interface ProfileStats {
+  answeredCount: number;
+  skippedCount: number;
+  uncertainCount: number;
+  totalQuestions: number;
+}
+
 /**
- * Body for `POST /api/profile`. Answers stay on the device; send scores and
- * already-detected tension ids only.
+ * Body for `POST /api/profile` and `POST /api/report`. Answers stay on the
+ * device; send scores and already-detected tension ids only.
  */
 export interface ProfileRequest {
   locale: Locale;
   assignment: Assignment;
   dimensions: Record<DimensionId, ProfileAxisInput>;
   tensionIds: string[];
+  stats?: ProfileStats;
 }
 
 export interface PaidAxis {
@@ -170,6 +180,7 @@ export const API = {
   capture: '/api/capture',
   profile: '/api/profile',
   restore: '/api/restore',
+  report: '/api/report',
   reportPdf: '/api/report.pdf',
 } as const;
 

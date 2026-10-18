@@ -8,7 +8,7 @@ import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
 import { readAccess, writeAccess } from '@/lib/payment/access';
 import { PaymentClient } from '@/lib/payment/client';
-import { DIMENSION_IDS } from '@/lib/scoring/config';
+import { profileRequestFromResult } from '@/lib/report/profileRequest';
 import { scoreAssessment } from '@/lib/scoring/score';
 import { browserStorage, readSession } from '@/lib/storage/session';
 import type { AssessmentResult, Locale } from '@/types/model';
@@ -33,23 +33,7 @@ export function PremiumPreview({ locale }: { locale: Locale }) {
       setPaid(null);
       return;
     }
-    const body: ProfileRequest = {
-      locale,
-      assignment: result.assignment,
-      dimensions: Object.fromEntries(
-        DIMENSION_IDS.map((id) => [
-          id,
-          {
-            score: result.dimensions[id].score,
-            inclination: result.dimensions[id].inclination,
-            inconsistency: result.dimensions[id].inconsistency,
-            directionalCount: result.dimensions[id].directionalCount,
-            applicableCount: result.dimensions[id].applicableCount,
-          },
-        ]),
-      ) as ProfileRequest['dimensions'],
-      tensionIds: result.tensions.map((tension) => tension.id),
-    };
+    const body: ProfileRequest = profileRequestFromResult(locale, result);
     let cancelled = false;
     void PaymentClient.fetchProfile(access.token, body).then((profile) => {
       if (!cancelled) setPaid(profile);
@@ -87,7 +71,9 @@ export function PremiumPreview({ locale }: { locale: Locale }) {
     <article className="mx-auto max-w-3xl px-4 py-12">
       <p className="kicker">{m.premiumTitle}</p>
       <FreePreview locale={locale} preview={preview} />
-      {paid && <LockedReport locale={locale} profile={paid} />}
+      {paid && access && (
+        <LockedReport locale={locale} profile={paid} token={access.token} request={profileRequestFromResult(locale, result)} />
+      )}
     </article>
   );
 }

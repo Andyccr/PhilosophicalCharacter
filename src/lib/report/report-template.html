@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="{{htmlLang}}" data-locale="{{locale}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>NOEMA — {{#archetype}}{{name}} ({{code}}){{/archetype}}{{^archetype}}{{assignment.statusLabel}}{{/archetype}} — {{labels.reportTitle}}</title>
+<!-- Self-hosted fonts (OFL-1.1). assetBaseUrl must point at the folder that contains fonts/. -->
+<link rel="stylesheet" href="{{assetBaseUrl}}fonts/fonts.css">
+<style>
+/* ===== NOEMA report — tokens taken from src/styles/global.css ===== */
+:root{
+  --ink:#111318; --muted:#3e4148; --line:rgba(17,19,24,.16); --soft:#e7e2d6; --paper:#f3f0e8;
+  --accent:#3f3a78;               /* --iris: the single accent colour */
+  --accent-tint:rgba(63,58,120,.10);
+  --serif:"Source Serif 4","Noto Serif SC","Songti SC",serif;
+  --sans:"Source Sans 3","Noto Sans SC","PingFang SC",sans-serif;
+  --mono:"IBM Plex Mono","Noto Sans SC",ui-monospace,monospace;
+}
+@page{
+  size:A4; margin:24mm 22mm 22mm 22mm;
+  @bottom-left{content:"NOEMA · {{site.host}}";font:7.5pt var(--mono);color:#6b6e75;letter-spacing:.08em}
+  @bottom-right{content:counter(page) " / " counter(pages);font:7.5pt var(--mono);color:#6b6e75}
+}
+@page cover{ margin:0; @bottom-left{content:none} @bottom-right{content:none} }
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;color:var(--ink);background:#fff;font:10pt/1.62 var(--sans);font-kerning:normal;
+  text-rendering:optimizeLegibility;hyphens:manual;overflow-wrap:break-word}
+html[data-locale="zh"] body{font-size:9.8pt;line-height:1.85;letter-spacing:.01em}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink)}
+html[data-locale="zh"] h1,html[data-locale="zh"] h2,html[data-locale="zh"] h3{letter-spacing:0}
+p{margin:0}
+p+p{margin-top:.7em}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono)}
+.kicker{font:7.5pt/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+html[data-locale="zh"] .kicker{letter-spacing:.08em}
+.muted{color:var(--muted)}
+.small{font-size:8.5pt;line-height:1.55}
+.rule{border:0;border-top:.5pt solid var(--line);margin:0}
+
+/* ---------- page flow ---------- */
+.sheet{break-before:page}
+.section-head{margin-bottom:9mm}
+.section-head h2{font-size:22pt;line-height:1.15;margin-top:2.5mm}
+.section-head .lead{margin-top:3mm;max-width:130mm;color:var(--muted)}
+h3{font-size:13pt;line-height:1.3}
+html[data-locale="zh"] h3{font-size:12.5pt}
+.block{break-inside:avoid}
+h2,h3,.kicker{break-after:avoid}
+.gap-s{margin-top:3mm}.gap-m{margin-top:6mm}.gap-l{margin-top:10mm}
+
+/* ---------- cover ---------- */
+.cover{page:cover;height:297mm;padding:30mm 24mm 22mm;display:flex;flex-direction:column;position:relative;break-after:page}
+.cover .brand{display:flex;justify-content:space-between;align-items:baseline}
+.cover .brand .word{font:600 11pt var(--serif);letter-spacing:.32em}
+.cover .main{margin-top:auto;margin-bottom:auto;padding-top:20mm}
+.cover .status{display:inline-block}
+.cover h1{font-size:40pt;line-height:1.08;margin-top:6mm;max-width:150mm}
+html[data-locale="zh"] .cover h1{font-size:36pt;line-height:1.2}
+.cover .code{font:400 17pt var(--mono);color:var(--accent);margin-top:6mm;letter-spacing:.06em}
+.cover .family{margin-top:3mm;color:var(--muted)}
+.cover .thesis{margin-top:10mm;max-width:132mm;font:400 13pt/1.55 var(--serif)}
+html[data-locale="zh"] .cover .thesis{font-size:12pt;line-height:1.85}
+.cover .status-body{margin-top:5mm;max-width:132mm;font-size:9pt;color:var(--muted)}
+.cover .accent-bar{width:18mm;height:1.2mm;background:var(--accent);margin-top:12mm}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm 6mm;border-top:.5pt solid var(--line);padding-top:5mm}
+.meta dt{font:7pt var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#6b6e75}
+.meta dd{margin:1mm 0 0;font-size:9pt}
+.cover .fine{margin-top:6mm;font-size:8pt;color:var(--muted);max-width:150mm}
+
+/* ---------- profile ---------- */
+.profile{display:flex;gap:8mm;align-items:center}
+.profile .radar{flex:0 0 84mm}
+.profile .bars{flex:1 1 auto}
+.radar text{font-family:var(--sans);font-size:17px;fill:var(--ink)}
+.radar .score{font-family:var(--mono);font-size:15px;fill:var(--accent)}
+.bars .row{display:grid;grid-template-columns:1fr;margin-bottom:4.2mm}
+.bars .row-head{display:flex;justify-content:space-between;align-items:baseline}
+.bars .name{font:600 9.5pt var(--serif)}
+.bars .val{font:9pt var(--mono);color:var(--accent)}
+.bars .poles{display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);margin-top:.6mm}
+.track{position:relative;height:5mm;margin-top:1mm}
+.track::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:.6pt solid #b9bac0}
+.track .band{position:absolute;left:40%;width:20%;top:1.2mm;bottom:1.2mm;background:var(--accent-tint)}
+.track .mid{position:absolute;left:50%;top:.8mm;bottom:.8mm;border-left:.6pt solid #b9bac0}
+.track .dot{position:absolute;top:50%;width:3.2mm;height:3.2mm;margin:-1.6mm 0 0 -1.6mm;border-radius:50%;background:var(--accent)}
+.track .dot.hollow{background:#fff;border:.8pt solid var(--accent)}
+table.scores{width:100%;border-collapse:collapse;margin-top:9mm;font-size:8.6pt}
+table.scores th{font:7pt var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#6b6e75;text-align:left;font-weight:400;padding:0 2mm 2mm 0;border-bottom:.5pt solid var(--line)}
+table.scores td{padding:2.2mm 2mm 2.2mm 0;border-bottom:.5pt solid var(--line);vertical-align:top}
+table.scores th:nth-child(2),table.scores th:nth-child(3){width:24mm}
+table.scores td.num{font-family:var(--mono);white-space:nowrap}
+table.scores tr{break-inside:avoid}
+
+/* ---------- axes ---------- */
+.axis{display:flow-root;page-break-inside:avoid;padding:6mm 0;border-top:.5pt solid var(--line);break-inside:avoid}
+.axis:first-of-type{border-top:0;padding-top:0}
+.axis .side{float:left;width:26mm}
+.axis .body{margin-left:32mm}
+.axis .side .letter{font:400 26pt/1 var(--mono);color:var(--accent)}
+.axis .side .tech{margin-top:2mm}
+.axis .describe{font-size:8.6pt;color:var(--muted);margin-top:1.5mm}
+.axis .narr{margin-top:2.5mm}
+.axis .dis{margin-top:2mm;font-size:8.3pt;color:var(--muted)}
+
+/* ---------- archetype ---------- */
+.prose{max-width:150mm}
+ul.clean,ol.clean{margin:2.5mm 0 0;padding-left:5mm}
+ul.clean li,ol.clean li{margin-top:1.6mm;padding-left:1mm}
+ul.clean li::marker{color:var(--accent)}
+ol.clean li::marker{font-family:var(--mono);font-size:8pt;color:var(--accent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8mm}
+.aside{border-left:1.2pt solid var(--accent);padding:1mm 0 1mm 5mm}
+
+/* ---------- tensions ---------- */
+.tension{page-break-inside:avoid;padding:6mm 0;border-top:.5pt solid var(--line);break-inside:avoid}
+.tension:first-of-type{border-top:0;padding-top:0}
+.tension .because{font-size:8.6pt;color:var(--muted);margin-top:2mm}
+.tension .label{font:7pt var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#6b6e75;margin-top:3mm}
+.sources{font-size:7.8pt;color:var(--muted);margin-top:2mm;overflow-wrap:anywhere}
+
+/* ---------- traditions / philosophers / readings ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6mm 9mm}
+.card{break-inside:avoid;padding-top:3mm;border-top:.5pt solid var(--line)}
+.card h4{font-size:11pt;margin-top:1.2mm}
+.card p{font-size:8.8pt;margin-top:1.5mm}
+.reading{display:grid;grid-template-columns:8mm 1fr;padding:3.2mm 0;border-top:.5pt solid var(--line);break-inside:avoid}
+.reading .n{font:8pt var(--mono);color:var(--accent);padding-top:.6mm}
+.reading .cit{font:400 10.5pt/1.45 var(--serif)}
+.reading .topic{font-size:8.6pt;color:var(--muted);margin-top:.8mm}
+
+/* ---------- method ---------- */
+.method h3{font-size:10.5pt;margin-top:5mm}
+.method p{font-size:8.7pt;margin-top:1.3mm;color:#26282e}
+html[data-locale="zh"] .method p{line-height:1.72}
+html[data-locale="zh"] .method h3{margin-top:4mm}
+.colophon{break-inside:auto;margin-top:10mm;padding-top:4mm;border-top:.5pt solid var(--line);font-size:8pt;color:var(--muted)}
+
+/* ---------- screen fallback (user prints from browser) ---------- */
+.toolbar{display:none}
+@media screen{
+  body{background:var(--soft)}
+  .doc{width:210mm;margin:12mm auto;background:#fff;box-shadow:0 1px 6px rgba(17,19,24,.12)}
+  .cover{height:297mm}
+  .sheet{padding:24mm 22mm 22mm;border-top:1px dashed var(--line)}
+  .toolbar{display:flex;gap:8px;justify-content:center;padding:14px;position:sticky;top:0;background:var(--soft);z-index:2}
+  .toolbar button{font:14px var(--sans);padding:8px 16px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+  .toolbar span{font:13px var(--sans);color:var(--muted);align-self:center}
+}
+@media screen and (max-width:820px){ .doc{width:auto;margin:0} .profile,.two,.grid2{grid-template-columns:1fr} .cover{height:auto;min-height:100vh} }
+@media print{ .toolbar{display:none!important} .doc{width:auto;margin:0;box-shadow:none} }
+</style>
+</head>
+<body>
+<div class="toolbar no-print"><button type="button" onclick="window.print()">{{#isZh}}打印 / 存为 PDF{{/isZh}}{{^isZh}}Print / Save as PDF{{/isZh}}</button><span>A4 · {{labels.languageName}}</span></div>
+<main class="doc">
+
+<!-- ================= 1. COVER ================= -->
+<section class="cover">
+  <div class="brand"><span class="word">NOEMA</span><span class="kicker">{{labels.reportTitle}}</span></div>
+  <div class="main">
+    <p class="kicker status">{{assignment.statusLabel}}</p>
+    {{#archetype}}
+    <h1>{{name}}</h1>
+    <p class="code" aria-label="{{labels.codeLabel}}">{{assignment.codeSpaced}}</p>
+    {{/archetype}}
+    {{^archetype}}<h1>{{assignment.statusLabel}}</h1>{{/archetype}}
+    {{#family}}<p class="family">{{labels.familyLabel}} · {{name}}</p>{{/family}}
+    {{#archetype}}<p class="thesis">{{thesis}}</p>{{/archetype}}
+    {{#assignment.statusBody}}<p class="status-body">{{assignment.statusBody}}</p>{{/assignment.statusBody}}
+    {{#assignment.reasons}}<p class="status-body">{{.}}</p>{{/assignment.reasons}}
+    <div class="accent-bar"></div>
+  </div>
+  <dl class="meta">
+    <div><dt>{{labels.generatedOn}}</dt><dd>{{generatedDateLabel}}</dd></div>
+    <div><dt>{{labels.languageLabel}}</dt><dd>{{labels.languageName}}</dd></div>
+    <div><dt>{{labels.answeredLabel}}</dt><dd class="mono">{{stats.answeredCount}} / {{stats.totalQuestions}}</dd></div>
+    <div><dt>{{labels.reportIdLabel}}</dt><dd class="mono">{{#reportId}}{{reportId}}{{/reportId}}{{^reportId}}—{{/reportId}}</dd></div>
+  </dl>
+  <p class="fine">{{labels.notDiagnosis}}</p>
+</section>
+
+<!-- ================= 2. PROFILE: RADAR + BARS ================= -->
+<section class="sheet">
+  <header class="section-head"><p class="kicker">01 · {{labels.premiumTitle}}</p><h2>{{labels.dimensions}}</h2></header>
+  <div class="profile">
+    <svg class="radar" viewBox="-70 -6 460 332" width="84mm" role="img" aria-label="{{labels.dimensions}}">
+      {{#radar.rings}}<polygon points="{{.}}" fill="none" stroke="rgba(17,19,24,.18)" stroke-width="0.8"/>{{/radar.rings}}
+      {{#radar.axes}}<line x1="{{radar.center}}" y1="{{radar.center}}" x2="{{x}}" y2="{{y}}" stroke="rgba(17,19,24,.18)" stroke-width="0.8"/>{{/radar.axes}}
+      {{#radar.hasPolygon}}<polygon points="{{radar.polygon}}" fill="rgba(63,58,120,.14)" stroke="#3f3a78" stroke-width="1.6" stroke-linejoin="round"/>{{/radar.hasPolygon}}
+      {{#radar.axes}}<text x="{{labelX}}" y="{{labelY}}" text-anchor="{{anchor}}" dominant-baseline="middle">{{label}}<tspan class="score" dx="4">{{scoreDisplay}}</tspan></text>{{/radar.axes}}
+    </svg>
+    <div class="bars">
+      {{#dimensions}}
+      <div class="row">
+        <div class="row-head"><span class="name">{{plainName}}</span><span class="val">{{scoreDisplay}}</span></div>
+        <div class="track">
+          <span class="band"></span><span class="mid"></span>
+          {{#hasScore}}<span class="dot{{#isMixed}} hollow{{/isMixed}}" style="left:{{score}}%"></span>{{/hasScore}}
+        </div>
+        <div class="poles"><span>{{leftLetter}} · {{leftPole}}</span><span>{{rightPole}} · {{rightLetter}}</span></div>
+      </div>
+      {{/dimensions}}
+    </div>
+  </div>
+  <table class="scores">
+    <thead><tr><th>{{labels.dimensions}}</th><th>{{labels.indexLabel}}</th><th>{{labels.coverageLabel}}</th><th>{{labels.disagreement}}</th></tr></thead>
+    <tbody>
+      {{#dimensions}}<tr><td>{{plainName}}{{#showTechnical}} <span class="muted">· {{technicalName}}</span>{{/showTechnical}}</td><td class="num">{{scoreDisplay}}</td><td class="num">{{coverageDisplay}}</td><td>{{disagreement}}</td></tr>{{/dimensions}}
+    </tbody>
+  </table>
+  <p class="small muted gap-m">{{labels.methodLead}}</p>
+</section>
+
+<!-- ================= 3. AXES INTERPRETATION ================= -->
+<section class="sheet">
+  <header class="section-head"><p class="kicker">02 · {{labels.dimensions}}</p><h2>{{#archetype}}{{labels.relatedAxes}}{{/archetype}}{{^archetype}}{{labels.dimensions}}{{/archetype}}</h2></header>
+  {{#dimensions}}
+  <article class="axis">
+    <div class="side"><div class="letter">{{#letter}}{{letter}}{{/letter}}{{^letter}}—{{/letter}}</div><p class="kicker tech">{{technicalName}}</p></div>
+    <div class="body">
+      <h3>{{plainName}}{{#codePole}} — {{codePole}}{{/codePole}}</h3>
+      <p class="describe">{{describe}}</p>
+      <p class="narr">{{narrative}}</p>
+      <p class="dis">{{labels.disagreement}}: {{disagreement}}</p>
+    </div>
+  </article>
+  {{/dimensions}}
+</section>
+
+<!-- ================= 4. ARCHETYPE & FAMILY ================= -->
+{{#archetype}}
+<section class="sheet">
+  <header class="section-head"><p class="kicker">03 · {{code}}</p><h2>{{name}}</h2><p class="lead">{{thesis}}</p></header>
+  {{#family}}
+  <div class="block aside">
+    <p class="kicker">{{labels.familyLabel}}</p>
+    <h3 style="margin-top:1.5mm">{{name}}</h3>
+    <p class="small muted gap-s">{{rule}}</p>
+    <p class="gap-s">{{essay}}</p>
+  </div>
+  {{/family}}
+  <h3 class="gap-l">{{labels.worldview}}</h3>
+  <div class="prose gap-s">{{#worldview}}<p>{{.}}</p>{{/worldview}}</div>
+  <div class="two gap-l">
+    <div class="block"><h3>{{labels.strengths}}</h3><ul class="clean">{{#strengths}}<li>{{.}}</li>{{/strengths}}</ul></div>
+    <div class="block"><h3>{{labels.blindSpots}}</h3><ul class="clean">{{#blindSpots}}<li>{{.}}</li>{{/blindSpots}}</ul></div>
+  </div>
+  <div class="block gap-l"><h3>{{labels.pressure}}</h3><p class="gap-s prose">{{pairingPressure}}</p></div>
+  <div class="block gap-l"><h3>{{labels.reflection}}</h3><ol class="clean prose">{{#reflection}}<li>{{.}}</li>{{/reflection}}</ol></div>
+</section>
+{{/archetype}}
+
+<!-- ================= 5. TENSIONS ================= -->
+<section class="sheet">
+  <header class="section-head"><p class="kicker">04</p><h2>{{labels.tensions}}</h2></header>
+  {{#tensions}}
+  <article class="tension">
+    <p class="kicker">{{kind}} · {{dimensionNames}}</p>
+    <h3 style="margin-top:1.5mm">{{problem}}</h3>
+    <p class="because">{{because}}</p>
+    <p class="gap-s">{{explanation}}</p>
+    <p class="gap-s">{{alternatives}}</p>
+    <p class="gap-s"><em>{{followUp}}</em></p>
+    {{#sources.length}}<p class="sources">{{#sources}}{{label}}; {{/sources}}</p>{{/sources.length}}
+  </article>
+  {{/tensions}}
+  {{^hasTensions}}<p class="prose">{{labels.noTensions}}</p>{{/hasTensions}}
+  {{#standingIssues.length}}
+  <div class="gap-l">
+    <p class="kicker">{{assignment.code}}</p>
+    <h2 style="font-size:16pt;margin-top:2mm">{{labels.standing}}</h2>
+    {{#standingIssues}}
+    <article class="tension" style="padding-top:5mm">
+      <h3>{{title}}</h3>
+      <p class="gap-s">{{explanation}}</p>
+      <p class="gap-s muted small">{{alternatives}}</p>
+    </article>
+    {{/standingIssues}}
+  </div>
+  {{/standingIssues.length}}
+</section>
+
+<!-- ================= 6. TRADITIONS & PHILOSOPHERS ================= -->
+{{#traditions.length}}
+<section class="sheet">
+  <header class="section-head"><p class="kicker">05 · {{labels.atlas}}</p><h2>{{labels.traditionsTitle}}</h2><p class="lead small">{{labels.atlasLead}}</p></header>
+  <div class="grid2">
+    {{#traditions}}<div class="card"><p class="kicker">{{viaDimensionName}}</p><h4>{{name}}</h4><p>{{summary}}</p></div>{{/traditions}}
+  </div>
+  {{#philosophers.length}}
+  <div class="gap-l">
+    <h2 style="font-size:16pt">{{labels.philosophers}}</h2>
+    <p class="small muted gap-s prose">{{labels.philosophersNote}}</p>
+    <div class="grid2 gap-m">
+      {{#philosophers}}<div class="card"><p class="kicker">{{dates}}</p><h4>{{name}}</h4><p class="muted">{{themes}}</p><p>{{readingNote}}</p><p class="small muted">{{labels.traditionsTitle}}: {{sharedTraditions}}</p></div>{{/philosophers}}
+    </div>
+  </div>
+  {{/philosophers.length}}
+</section>
+{{/traditions.length}}
+
+<!-- ================= 7. READINGS ================= -->
+{{#readings.length}}
+<section class="sheet">
+  <header class="section-head"><p class="kicker">06</p><h2>{{labels.readingsTitle}}</h2></header>
+  {{#readings}}<div class="reading"><span class="n">{{n}}</span><div><p class="cit">{{citation}}</p><p class="topic">{{topic}}</p></div></div>{{/readings}}
+</section>
+{{/readings.length}}
+
+<!-- ================= 8. METHOD & DISCLAIMER ================= -->
+<section class="sheet method">
+  <header class="section-head"><p class="kicker">07 · {{labels.method}}</p><h2>{{labels.methodTitle}}</h2><p class="lead">{{labels.methodLead}}</p></header>
+  {{#methodology}}<div class="block"><h3>{{heading}}</h3><p>{{body}}</p></div>{{/methodology}}
+  <div class="colophon">
+    <p><strong>{{labels.notDiagnosis}}</strong></p>
+    <p>{{labels.cardDisclaimer}}</p>
+    <p class="mono" style="margin-top:3mm">{{labels.versionLabel}}: {{modelVersion}} / {{questionVersion}} · {{generatedAt}} · {{site.url}}</p>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

@@ -8,6 +8,7 @@ import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
 import { clearPaypalQuery, parsePaypalReturn, readAccess, writeAccess } from '@/lib/payment/access';
 import { PaymentClient } from '@/lib/payment/client';
+import { profileRequestFromResult } from '@/lib/report/profileRequest';
 import { shareCardSvg, type ShareCardInput } from '@/lib/sharing/card';
 import { parseShareHash, shareUrl, type SharedProfile } from '@/lib/sharing/link';
 import { DIMENSION_IDS, classifyInclination, scoringConfig } from '@/lib/scoring/config';
@@ -29,28 +30,6 @@ function sameScores(a: SharedProfile, b: SharedProfile): boolean {
   return DIMENSION_IDS.every((id) => a.scores[id] === b.scores[id] && a.disagreement[id] === b.disagreement[id]);
 }
 
-function requestFromLocal(locale: Locale, result: AssessmentResult): ProfileRequest {
-  return {
-    locale,
-    assignment: result.assignment,
-    dimensions: Object.fromEntries(
-      DIMENSION_IDS.map((id) => {
-        const row = result.dimensions[id];
-        return [
-          id,
-          {
-            score: row.score,
-            inclination: row.inclination,
-            inconsistency: row.inconsistency,
-            directionalCount: row.directionalCount,
-            applicableCount: row.applicableCount,
-          },
-        ];
-      }),
-    ) as ProfileRequest['dimensions'],
-    tensionIds: result.tensions.map((tension) => tension.id),
-  };
-}
 
 function requestFromShared(locale: Locale, profile: SharedProfile): ProfileRequest {
   return {
@@ -142,7 +121,7 @@ export function ResultsApp({ locale }: { locale: Locale }) {
       setPaid(null);
       return;
     }
-    const body = view.kind === 'local' ? requestFromLocal(locale, view.result) : requestFromShared(locale, view.profile);
+    const body = view.kind === 'local' ? profileRequestFromResult(locale, view.result) : requestFromShared(locale, view.profile);
     let cancelled = false;
     setPaidError('');
     void PaymentClient.fetchProfile(access.token, body)
@@ -289,7 +268,14 @@ export function ResultsApp({ locale }: { locale: Locale }) {
         </p>
       )}
       {access && !paid && !paidError && <p className="mt-8">{m.loading}</p>}
-      {paid && <LockedReport locale={locale} profile={paid} />}
+      {paid && access && (
+        <LockedReport
+          locale={locale}
+          profile={paid}
+          token={access.token}
+          request={view.kind === 'local' ? profileRequestFromResult(locale, view.result) : requestFromShared(locale, view.profile)}
+        />
+      )}
 
       <div className="no-print mt-10 flex flex-wrap gap-3" data-share-url={shareField}>
         {paid && (

@@ -1,4 +1,5 @@
 import { API, PREMIUM_PRODUCT, type ProfileRequest } from '@/lib/api/contract';
+import { renderReportFromRequest } from '@/lib/report/render';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
 import { PaidContent } from './content/profile';
 import { paymentsAreLive, secretsReady, type Env } from './env';
@@ -18,6 +19,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     if (path === API.capture && request.method === 'POST') return await capture(request, env);
     if (path === API.profile && request.method === 'POST') return await profile(request, env);
     if (path === API.restore && request.method === 'POST') return await restore(request, env);
+    if (path === API.report && request.method === 'POST') return await reportHtml(request, env);
     if (path === API.reportPdf && request.method === 'GET') return await reportPdf(request, env, url);
     return json({ error: 'not_found' }, 404);
   } catch (error) {
@@ -67,6 +69,28 @@ async function restore(request: Request, env: Env): Promise<Response> {
   return json({ token: unlocked.token, orderId: unlocked.record.orderId, expiresAt: unlocked.expiresAt });
 }
 
+async function reportHtml(request: Request, env: Env): Promise<Response> {
+  const claims = await requireToken(request, env);
+  if (!claims) return json({ error: 'unauthorized' }, 401);
+  const parsed = parseProfileRequest(await readJson(request));
+  if (!parsed) return json({ error: 'invalid_profile' }, 400);
+  const origin = requestOrigin(request);
+  const html = renderReportFromRequest(parsed, {
+    reportId: claims.o,
+    siteUrl: origin,
+    assetBaseUrl: `${origin}/report-assets/`,
+  });
+  return new Response(html, {
+    status: 200,
+    headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'private, no-store',
+      'x-robots-tag': 'noindex, nofollow',
+      ...cors(),
+    },
+  });
+}
+
 async function reportPdf(request: Request, env: Env, url: URL): Promise<Response> {
   const claims = await requireToken(request, env);
   if (!claims) return json({ error: 'unauthorized' }, 401);
@@ -78,7 +102,7 @@ async function reportPdf(request: Request, env: Env, url: URL): Promise<Response
       lang,
       product: PREMIUM_PRODUCT.id,
       live: paymentsAreLive(env),
-      message: 'The paid report is JSON plus a print stylesheet. The Worker does not generate PDF.',
+      message: 'The paid report is print-ready HTML from POST /api/report. The Worker does not generate PDF.',
     },
     501,
   );
@@ -132,7 +156,8 @@ function parseProfileRequest(body: Record<string, unknown>): ProfileRequest | nu
   const tensionIds = Array.isArray(body.tensionIds)
     ? body.tensionIds.filter((id): id is string => typeof id === 'string' && id.length < 80).slice(0, 16)
     : [];
-  return { locale, assignment, dimensions, tensionIds };
+  const stats = parseStats(body.stats);
+  return { locale, assignment, dimensions, tensionIds, ...(stats ? { stats } : {}) };
 }
 
 function parseAssignment(value: unknown): Assignment | null {
@@ -172,6 +197,24 @@ function safePath(path: string, fallback: string): string {
 
 function asString(value: unknown): string {
   return typeof value === 'string' ? value : '';
+}
+
+function parseStats(value: unknown): ProfileRequest['stats'] | undefined {
+  if (!isRecord(value)) return undefined;
+  const totalQuestions = numberOrZero(value.totalQuestions);
+  if (totalQuestions < 1 || totalQuestions > 64) return undefined;
+  return {
+    answeredCount: clampCount(value.answeredCount, totalQuestions),
+    skippedCount: clampCount(value.skippedCount, totalQuestions),
+    uncertainCount: clampCount(value.uncertainCount, totalQuestions),
+    totalQuestions,
+  };
+}
+
+function clampCount(value: unknown, max: number): number {
+  const n = numberOrZero(value);
+  if (n < 0) return 0;
+  return Math.min(Math.floor(n), max);
 }
 
 function numberOrZero(value: unknown): number {

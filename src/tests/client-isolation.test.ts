@@ -21,6 +21,9 @@ describe('paid copy stays off the results islands', () => {
     expect(sources).not.toContain("from '@/data/tensions/rules'");
     expect(sources).not.toContain("from '@/data/tensions/standing'");
     expect(sources).not.toContain("from '@/lib/interpretation/describe'");
+    expect(sources).not.toContain("from '@/lib/report/buildReportData'");
+    expect(sources).not.toContain("from '@/lib/report/fromRequest'");
+    expect(sources).not.toContain("from '@/lib/report/render'");
     expect(sources).not.toContain('paypal.com/ncp/payment');
   });
 

@@ -1,12 +1,42 @@
 import { BipolarBars, RadarChart } from '@/components/charts/Charts';
-import type { PaidProfile } from '@/lib/api/contract';
+import type { PaidProfile, ProfileRequest } from '@/lib/api/contract';
 import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
+import { PaymentClient } from '@/lib/payment/client';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
 import type { Locale } from '@/types/model';
 
-export function LockedReport({ locale, profile }: { locale: Locale; profile: PaidProfile }) {
+export function LockedReport({
+  locale,
+  profile,
+  token,
+  request,
+}: {
+  locale: Locale;
+  profile: PaidProfile;
+  token: string;
+  request: ProfileRequest;
+}) {
   const m = messages[locale];
+  async function openPrintReport() {
+    const popup = window.open('about:blank', '_blank');
+    try {
+      const html = await PaymentClient.fetchReportHtml(token, request);
+      if (popup) {
+        popup.document.open();
+        popup.document.write(html);
+        popup.document.close();
+        return;
+      }
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      window.location.assign(url);
+    } catch {
+      popup?.close();
+      window.print();
+    }
+  }
+
   const rows = profile.axes.map((axis) => ({
     id: axis.id,
     left: axis.leftPole,
@@ -139,7 +169,7 @@ export function LockedReport({ locale, profile }: { locale: Locale; profile: Pai
 
       <p className="no-print mt-8 text-sm text-muted">{m.printHint}</p>
       <div className="no-print mt-3">
-        <button type="button" className="btn secondary" onClick={() => window.print()}>
+        <button type="button" className="btn secondary" data-testid="print-report" onClick={() => void openPrintReport()}>
           {m.printReport}
         </button>
         <a className="btn secondary mt-3 ml-3 inline-flex" href={localePath(locale, '/premium')}>

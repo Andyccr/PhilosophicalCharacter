@@ -95,7 +95,7 @@ A real study could preregister the item bank; recruit beyond self-selected visit
 
 ## Payment
 
-The questionnaire is free to complete. The results page shows the six-letter code, editorial family, and a shareable summary. Indices, the full reading, and tension notes are returned only from `POST /api/profile` after the Worker verifies a PayPal Orders v2 capture.
+The questionnaire is free to complete. The results page shows the six-letter code, editorial family, and a shareable summary. Indices, the full reading, and tension notes are returned only from `POST /api/profile` after the Worker verifies a PayPal Orders v2 capture. The paid deliverable is a print-ready HTML report from `POST /api/report` (same body: indices and tension ids, not answers). The browser’s “Save as PDF” writes the file.
 
 Live charges stay **off** until you flip them. `PAYMENTS_LIVE` defaults to `false` and `PAYPAL_ENV` defaults to `sandbox`. The live PayPal API is used only when **both** `PAYMENTS_LIVE=true` and `PAYPAL_ENV=live`.
 
@@ -140,10 +140,21 @@ The Worker does not send email. KV stores a SHA-256 of the normalized payer emai
 
 ### PDF
 
-`GET /api/report.pdf` checks the unlock token, then returns **501**. There is no server-side PDF (Workers Free CPU is too tight, and a CJK font must not be bundled into the Worker). Use the results page print stylesheet and the browser’s “Save as PDF”.
+`GET /api/report.pdf` checks the unlock token, then returns **501**. There is no server-side PDF. `POST /api/report` returns Mustache-rendered HTML (A4 print CSS, “Print / Save as PDF” on the page). Fonts are static assets under `/report-assets/fonts/`, never bundled into `worker/`.
+
+A later real PDF would need Cloudflare Browser Rendering (Workers Paid is the practical plan; Free is 10 minutes of browser time per day). That is not implemented.
 
 ## Fonts and privacy
 
-Source Serif 4, Source Sans 3, and IBM Plex Mono are served from the site build under the SIL Open Font License. Chinese text falls back to fonts already on the device, so the page does not download a full CJK webfont.
+Source Serif 4, Source Sans 3, and IBM Plex Mono are served from the site build under the SIL Open Font License. The print report also ships subsetted Noto Serif SC / Noto Sans SC (OFL-1.1) in `public/report-assets/fonts/`. The rest of the site still falls back to fonts already on the device.
+
+The CJK subset is corpus-based: every Han character currently used in `src/`. Re-run it when Chinese copy in `src/` changes. It is **not** part of `npm run build` (the full Noto CJK TTCs are not in the repo):
+
+```bash
+# fonttools + brotli, and the official Noto CJK TTCs in <cjk_font_dir>
+python3 scripts/build-fonts.py . node_modules public/report-assets/fonts <cjk_font_dir>
+```
+
+`scripts/extra-cjk.txt` holds extra glyphs that appear only in the report chrome (for example 打印).
 
 The default experience stores answers and the theme choice in `localStorage`. It does not set cookies or load third-party analytics. See `/privacy`. Hosting on Cloudflare Pages may still create ordinary connection logs under Cloudflare’s own policy.
