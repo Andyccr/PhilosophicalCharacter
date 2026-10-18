@@ -140,7 +140,7 @@ The Worker does not send email. KV stores a SHA-256 of the normalized payer emai
 
 ### PDF
 
-`GET /api/report.pdf` checks the unlock token, then returns **501**. There is no server-side PDF. `POST /api/report` returns Mustache-rendered HTML (A4 print CSS, “Print / Save as PDF” on the page). The HTML links `/fonts/fonts.css` (from `public/fonts/`) and keeps a system serif/sans/CJK fallback stack, so the page still sets type if that stylesheet is not on this branch. Font files are not bundled into `worker/`.
+`GET /api/report.pdf` checks the unlock token, then returns **501**. There is no server-side PDF. `POST /api/report` returns Mustache-rendered HTML (A4 print CSS, “Print / Save as PDF” on the page). The HTML links `/fonts/share-card/fonts.css` (from `public/fonts/share-card/`, owned by a stacked PR) and keeps a system serif/sans/CJK fallback stack in every `font-family`, so glyphs missing from that subset still render. Font files are not bundled into `worker/`.
 
 A later real PDF would need Cloudflare Browser Rendering (Workers Paid is the practical plan; Free is 10 minutes of browser time per day). That is not implemented.
 

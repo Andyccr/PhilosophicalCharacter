@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>NOEMA — {{#archetype}}{{name}} ({{code}}){{/archetype}}{{^archetype}}{{assignment.statusLabel}}{{/archetype}} — {{labels.reportTitle}}</title>
-<!-- Optional self-hosted kit at public/fonts/fonts.css. System CJK/serif/sans stacks cover the page if that file is not deployed yet. -->
-<link rel="stylesheet" href="{{assetBaseUrl}}fonts/fonts.css">
+<!-- PR #6 kit at public/fonts/share-card/fonts.css. CJK webfonts there are a share-card subset; system CJK fonts remain in every stack so missing glyphs still draw. -->
+<link rel="stylesheet" href="{{assetBaseUrl}}fonts/share-card/fonts.css">
 <style>
 /* ===== NOEMA report — tokens taken from src/styles/global.css ===== */
 :root{
   --ink:#111318; --muted:#3e4148; --line:rgba(17,19,24,.16); --soft:#e7e2d6; --paper:#f3f0e8;
   --accent:#3f3a78;               /* --iris: the single accent colour */
   --accent-tint:rgba(63,58,120,.10);
-  --serif:"Source Serif 4","Noto Serif SC","Songti SC","PMingLiU","SimSun",serif;
+  --serif:"Source Serif 4","Noto Serif SC","Songti SC","PMingLiU","SimSun","PingFang SC","Hiragino Sans GB","Microsoft YaHei",serif;
   --sans:"Source Sans 3","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
-  --mono:"IBM Plex Mono","Noto Sans SC","PingFang SC",ui-monospace,monospace;
+  --mono:"IBM Plex Mono","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",ui-monospace,monospace;
 }
 @page{
   size:A4; margin:24mm 22mm 22mm 22mm;

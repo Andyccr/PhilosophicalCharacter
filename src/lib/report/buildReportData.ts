@@ -97,7 +97,7 @@ export interface BuildOptions {
   reportId?: string;
   /** Canonical site origin. Worker passes the request origin; otherwise `import.meta.env.SITE`. Never a hostname literal. */
   siteUrl?: string;
-  /** Directory that contains `fonts/fonts.css` (served from `public/fonts/`). */
+  /** Origin prefix so `fonts/share-card/fonts.css` resolves under `public/fonts/share-card/`. */
   assetBaseUrl?: string;
   radarSize?: number;
   philosopherLimit?: number;

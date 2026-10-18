@@ -76,7 +76,7 @@ describe('buildReportData', () => {
     const data = buildReportData(sampleResult, { locale: 'zh', generatedAt: sampleOptions.generatedAt });
     expect(data.site.url).not.toContain('workers.dev');
     expect(data.assetBaseUrl).toMatch(/\/$/);
-    expect(`${data.assetBaseUrl}fonts/fonts.css`).toContain('/fonts/fonts.css');
+    expect(`${data.assetBaseUrl}fonts/share-card/fonts.css`).toContain('/fonts/share-card/fonts.css');
   });
 
   it('lists the messages.ts keys a later PR should add', () => {
@@ -139,8 +139,11 @@ describe('Mustache HTML render', () => {
     const elapsedMs = (performance.now() - started) / rounds;
     expect(html).toContain('宪制的观念论者');
     expect(html).toContain('思想传统相近的哲学家');
-    expect(html).toContain('https://example.com/fonts/fonts.css');
-    expect(html).toContain('PingFang SC');
+    expect(html).toContain('https://example.com/fonts/share-card/fonts.css');
+    expect(html).not.toContain('/fonts/fonts.css');
+    expect(html).toMatch(/--serif:[^;]*PingFang SC/);
+    expect(html).toMatch(/--sans:[^;]*PingFang SC/);
+    expect(html).toMatch(/--mono:[^;]*PingFang SC/);
     expect(html).toContain('Microsoft YaHei');
     expect(html).toContain('打印 / 存为 PDF');
     expect(html).not.toContain('ont-01');
