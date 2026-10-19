@@ -1,0 +1,6 @@
+# Copy to `.dev.vars` for `wrangler dev`. Do not put live credentials here.
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+UNLOCK_HMAC_KEY=
+PAYPAL_ENV=sandbox
+PAYMENTS_LIVE=false

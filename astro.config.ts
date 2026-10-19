@@ -3,10 +3,13 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+import { includeInSitemap } from './src/lib/seo/sitemap';
+import { CLOUDFLARE_ORIGIN } from './src/lib/site';
 
 export default defineConfig({
-  // Cloudflare Workers serve at site root. Override via SITE / BASE_PATH if needed.
-  site: process.env.SITE ?? 'https://noema.andyccr.workers.dev',
+  // Canonical origin comes from src/lib/site.ts. Override with SITE / BASE_PATH
+  // for GitHub Pages or another host without editing the production constant.
+  site: process.env.SITE ?? CLOUDFLARE_ORIGIN,
   base: process.env.BASE_PATH ?? '/',
   output: 'static',
   trailingSlash: 'never',
@@ -23,7 +26,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !/\/results\/?$/.test(page) && !page.includes('/404'),
+      filter: includeInSitemap,
     }),
   ],
   vite: {

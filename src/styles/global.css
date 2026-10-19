@@ -127,8 +127,13 @@ details.faq { border-top: 1px solid var(--line); padding: 0.9rem 0; }
 details.faq summary { cursor: pointer; font-family: var(--font-serif); font-size: 1.25rem; }
 
 @media print {
-  header, footer, .no-print { display: none !important; }
+  header, footer, .no-print, [data-testid="paywall"], [data-testid="share-card"] { display: none !important; }
   .preview-banner { border: 1px solid #111318; }
+  body { background: #fff; color: #111; }
+  a { color: inherit; text-decoration: none; }
+  .paid-report { break-inside: auto; }
+  .paid-report section, .paid-report article, .paid-report table { break-inside: avoid; }
+  [data-testid="free-preview"] { break-after: avoid; }
 }
 
 .nav-details > summary { list-style: none; }

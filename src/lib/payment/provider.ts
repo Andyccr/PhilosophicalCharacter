@@ -1,22 +1,16 @@
-import type { CheckoutResult, PaymentProvider } from '@/types/model';
+import { PREMIUM_PRODUCT } from '@/lib/api/contract';
+import { PaymentClient } from '@/lib/payment/client';
+import type { CheckoutResult } from '@/types/model';
 
-export const PREMIUM_PRODUCT = {
-  id: 'noema-report',
-  priceEur: 4.99,
-  currency: 'EUR' as const,
-};
+export { PREMIUM_PRODUCT };
 
-/** Public PayPal hosted checkout. This is not an API secret. */
-export const PAYPAL_CHECKOUT_URL = 'https://www.paypal.com/ncp/payment/RXABC8JDX86YQ';
-
-const redirect: CheckoutResult = { status: 'redirect', url: PAYPAL_CHECKOUT_URL };
-
-export const paypalProvider: PaymentProvider = {
-  id: 'paypal-ncp',
-  isConfigured: () => true,
-  beginCheckout: () => redirect,
-};
-
-export function getPaymentProvider(): PaymentProvider {
-  return paypalProvider;
+export async function beginCheckout(returnPath: string, cancelPath = returnPath): Promise<CheckoutResult> {
+  try {
+    const created = await PaymentClient.createCheckout({ returnPath, cancelPath });
+    return { status: 'redirect', url: created.approvalUrl };
+  } catch (error) {
+    const status = error instanceof Error && 'status' in error ? Number(error.status) : 0;
+    if (status === 503) return { status: 'not_configured', messageKey: 'notConfigured' };
+    return { status: 'unavailable', messageKey: 'unavailable' };
+  }
 }

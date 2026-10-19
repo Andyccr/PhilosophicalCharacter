@@ -1,86 +1,94 @@
 import { useEffect, useState } from 'react';
-import { getArchetype } from '@/data/archetypes';
-import { dimensions } from '@/data/dimensions';
-import { getTensionRule } from '@/data/tensions/rules';
-import { readings } from '@/data/readings';
+import { FreePreview } from '@/components/results/FreePreview';
+import { LockedReport } from '@/components/results/LockedReport';
 import { Paywall } from '@/components/results/Paywall';
-import { narrativeFor } from '@/lib/interpretation/describe';
+import type { PaidProfile, ProfileRequest, UnlockRecord } from '@/lib/api/contract';
+import { freePreview } from '@/lib/interpretation/preview';
 import { messages } from '@/lib/localization/messages';
 import { localePath } from '@/lib/localization/path';
-import { readAccess } from '@/lib/payment/access';
-import { DIMENSION_IDS } from '@/lib/scoring/config';
+import { readAccess, writeAccess } from '@/lib/payment/access';
+import { PaymentClient } from '@/lib/payment/client';
+import { profileRequestFromResult } from '@/lib/report/profileRequest';
+import { buildShareCardInput } from '@/lib/share-card/input';
+import { runtimeShareCardHost } from '@/lib/share-card/host';
+import { DIMENSION_IDS, scoringConfig } from '@/lib/scoring/config';
 import { scoreAssessment } from '@/lib/scoring/score';
 import { browserStorage, readSession } from '@/lib/storage/session';
+import type { SharedProfile } from '@/lib/sharing/link';
 import type { AssessmentResult, Locale } from '@/types/model';
+
+function profileFromResult(result: AssessmentResult): SharedProfile {
+  return {
+    scores: Object.fromEntries(DIMENSION_IDS.map((id) => [id, result.dimensions[id].score])) as SharedProfile['scores'],
+    disagreement: Object.fromEntries(
+      DIMENSION_IDS.map((id) => [id, (result.dimensions[id].inconsistency ?? 0) >= scoringConfig.inconsistencyMixed]),
+    ) as SharedProfile['disagreement'],
+    assignment: result.assignment,
+  };
+}
 
 export function PremiumPreview({ locale }: { locale: Locale }) {
   const m = messages[locale];
   const [ready, setReady] = useState(false);
-  const [paid, setPaid] = useState(false);
+  const [access, setAccess] = useState<UnlockRecord | null>(null);
   const [result, setResult] = useState<AssessmentResult | null>(null);
+  const [paid, setPaid] = useState<PaidProfile | null>(null);
 
   useEffect(() => {
     const storage = browserStorage();
-    setPaid(readAccess(storage) !== null);
+    setAccess(readAccess(storage));
     const stored = readSession(storage);
     if (stored.ok) setResult(scoreAssessment(stored.session.answers));
     setReady(true);
   }, []);
 
+  useEffect(() => {
+    if (!access || !result) {
+      setPaid(null);
+      return;
+    }
+    const body: ProfileRequest = profileRequestFromResult(locale, result);
+    let cancelled = false;
+    void PaymentClient.fetchProfile(access.token, body).then((profile) => {
+      if (!cancelled) setPaid(profile);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [access, locale, result]);
+
   if (!ready) return <p className="mx-auto max-w-3xl px-4 py-16">{m.loading}</p>;
-  if (!paid) return <Paywall locale={locale} />;
+  if (!access) {
+    return (
+      <article className="mx-auto max-w-3xl px-4 py-12">
+        <Paywall
+          locale={locale}
+          onUnlocked={(token, orderId) => setAccess(writeAccess(browserStorage(), token, orderId))}
+        />
+      </article>
+    );
+  }
   if (!result) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-16">
         <h1 className="serif text-4xl">{m.noResultTitle}</h1>
         <p className="mt-4">{m.noResultBody}</p>
-        <a className="btn mt-6" href={localePath(locale, '/test')}>{m.start}</a>
+        <a className="btn mt-6" href={localePath(locale, '/test')}>
+          {m.start}
+        </a>
       </section>
     );
   }
 
-  const archetype = result.assignment.code ? getArchetype(result.assignment.code) : undefined;
+  const preview = freePreview(locale, result.assignment, m.withheldBody);
+  const card = buildShareCardInput(profileFromResult(result), locale, runtimeShareCardHost());
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12" data-testid="results">
+    <article className="mx-auto max-w-3xl px-4 py-12">
       <p className="kicker">{m.premiumTitle}</p>
-      {archetype && (
-        <section className="mt-6">
-          <h1 className="serif text-4xl">{archetype.name[locale]}</h1>
-          <p className="mt-3">{archetype.thesis[locale]}</p>
-        </section>
+      <FreePreview locale={locale} preview={preview} card={card} />
+      {paid && access && (
+        <LockedReport locale={locale} profile={paid} token={access.token} request={profileRequestFromResult(locale, result)} />
       )}
-      <div className="mt-8 grid gap-8">
-        {DIMENSION_IDS.map((id) => (
-          <section key={id}>
-            <h2 className="serif text-2xl">{dimensions[id].technicalName[locale]}</h2>
-            <p className="mt-3">{narrativeFor(result.dimensions[id], locale)}</p>
-          </section>
-        ))}
-        {result.tensions.map((tension) => {
-          const rule = getTensionRule(tension.id);
-          if (!rule) return null;
-          return (
-            <section key={tension.id}>
-              <h2 className="serif text-2xl">{rule.problem[locale]}</h2>
-              <p className="mt-3">{rule.explanation[locale]}</p>
-              <p className="mt-3">{rule.alternatives[locale]}</p>
-              <p className="mt-3">{rule.followUp[locale]}</p>
-            </section>
-          );
-        })}
-        {archetype && (
-          <section>
-            <h2 className="serif text-2xl">{m.readingsTitle}</h2>
-            <ol className="mt-3 list-decimal pl-5">
-              {archetype.readingIds.map((id) => {
-                const work = readings.find((item) => item.id === id);
-                return work ? <li key={id}>{work.citation[locale]}</li> : null;
-              })}
-            </ol>
-          </section>
-        )}
-      </div>
-      <p className="mt-8 text-sm">{m.notDiagnosis}</p>
     </article>
   );
 }

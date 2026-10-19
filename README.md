@@ -13,7 +13,7 @@ npm install
 npm run dev
 ```
 
-The app is a static Astro site. Scoring runs in the browser. There is no database, account system, or AI API.
+Scoring still runs in the browser. Paid copy is assembled by the Cloudflare Worker after a verified PayPal capture. There is no account system and no AI API.
 
 ```bash
 npm test
@@ -22,17 +22,48 @@ npm run preview
 npm run test:e2e
 ```
 
+`npm run dev` is the Astro UI only (`/api/*` is not served). For checkout and unlock locally:
+
+```bash
+cp .dev.vars.example .dev.vars
+# fill sandbox PayPal credentials and UNLOCK_HMAC_KEY
+npx wrangler kv namespace create PURCHASES
+# put the returned id in wrangler.toml, then:
+npm run build && npx wrangler dev
+```
+
 Playwright needs a browser once: `npx playwright install chromium`.
 
 ## Deploy
 
-The production build is the `dist/` directory. Cloudflare Pages can serve it directly.
+The production origin is the Cloudflare Worker `philosophicalcharacter`. The Worker serves `/api/*` and static assets from `dist/`. The only place to change the origin is `CLOUDFLARE_ORIGIN` in `src/lib/site.ts` (imported by `astro.config.ts` and URL helpers). Update that constant when a custom domain is bound.
+
+Workers Builds deploys static assets from `dist/`. GitHub Pages also builds `dist/` via `.github/workflows/deploy.yml`. Canonical URLs, the sitemap, hreflang, and Open Graph URLs use the Cloudflare origin by default.
 
 - Build command: `npm run build`
+- Deploy command: `npm run deploy` (`wrangler deploy`)
 - Output directory: `dist`
-- `wrangler.toml` sets `pages_build_output_dir`
 
-Set `site` in `astro.config.ts` to the real origin before launch so canonical URLs, the sitemap, and Open Graph URLs are correct. No API keys belong in client code. `PUBLIC_PAYMENT_PROVIDER` is documented in `.env.example`; leaving it empty keeps checkout unavailable.
+- Override the canonical origin with `SITE` and the asset base with `BASE_PATH` if another host needs different values. The GitHub Pages workflow does not set them, so that build keeps `base: /` and inherits the Cloudflare canonical.
+
+Do not put PayPal secrets in client code or in `wrangler.toml`. No API keys belong in client code. `PUBLIC_PAYMENT_PROVIDER` is documented in `.env.example`; leaving it empty keeps checkout unavailable.
+
+### Cloudflare Web Analytics
+
+The site can load Cloudflare Web Analytics, a cookieless beacon (no cookies, not an advertising pixel). It is injected only when both of these are true at **build** time:
+
+1. `PUBLIC_CF_ANALYTICS_TOKEN` is set
+2. `WORKERS_CI=1` (Workers Builds sets this automatically)
+
+GitHub Pages builds, local `npm run build`, and `npm run dev` emit no beacon if either condition is missing.
+
+To enable it on production:
+
+1. In the Cloudflare dashboard, open **Analytics & Logs** → **Web Analytics**.
+2. Add a site for the origin in `src/lib/site.ts` (or open the existing site).
+3. Copy the site token from the JS snippet (`data-cf-beacon='{"token":"…"}'`).
+4. On the `philosophicalcharacter` Worker, open **Settings** → **Builds** → **Variables and secrets** (build variables, not runtime Worker vars) and set `PUBLIC_CF_ANALYTICS_TOKEN` to that token.
+5. Rebuild / redeploy. If the token is unset, the pages contain no analytics script.
 
 ## Scoring
 
@@ -85,18 +116,57 @@ A real study could preregister the item bank; recruit beyond self-selected visit
 
 ## Payment
 
-The questionnaire is free to complete. The profile, indices, and tension notes stay hidden until PayPal marks the payment completed.
+The questionnaire is free to complete. The results page shows the six-letter code, editorial family, and a shareable summary. Indices, the full reading, and tension notes are returned only from `POST /api/profile` after the Worker verifies a PayPal Orders v2 capture. The paid deliverable is a print-ready HTML report from `POST /api/report` (same body: indices and tension ids, not answers). The browser’s “Save as PDF” writes the file.
 
-Checkout uses this hosted PayPal page:
+Live charges stay **off** until you flip them. `PAYMENTS_LIVE` defaults to `false` and `PAYPAL_ENV` defaults to `sandbox`. The live PayPal API is used only when **both** `PAYMENTS_LIVE=true` and `PAYPAL_ENV=live`.
 
-`https://www.paypal.com/ncp/payment/RXABC8JDX86YQ`
+### Owner setup (PayPal + Cloudflare)
 
-The listed price is EUR 4.99. The PayPal page is where the charge happens. Clicking the button does not unlock the profile, and a pending status does not either.
+1. In the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/), create an app.
+2. Copy the **sandbox** Client ID and Secret. Do not start with live credentials.
+3. Enable Checkout / Orders v2 for that app. Do not use a no-code hosted payment link.
+4. In Cloudflare, create KV:
 
-In the PayPal payment-link settings, set the return URL to the live site’s `/results` path (for example `https://your-domain/results`). PayPal should send the browser back with `tx` (or `txn_id`) and `st=Completed`. This static site stores that transaction id in `localStorage` and then opens the profile already saved on the device. It does not receive card numbers, and it does not get a server-signed confirmation from PayPal. Clearing site data on this browser removes the unlock.
+```bash
+npx wrangler kv namespace create PURCHASES
+```
+
+Put the returned id in `wrangler.toml` under `[[kv_namespaces]]` (`binding = "PURCHASES"`).
+
+5. Put Worker secrets (never commit the values):
+
+```bash
+npx wrangler secret put PAYPAL_CLIENT_ID
+npx wrangler secret put PAYPAL_CLIENT_SECRET
+npx wrangler secret put UNLOCK_HMAC_KEY
+```
+
+`UNLOCK_HMAC_KEY` should be a long random string (at least 32 characters). Example: `openssl rand -base64 48`.
+
+6. Leave the `[vars]` block as shipped:
+
+```toml
+PAYMENTS_LIVE = "false"
+PAYPAL_ENV = "sandbox"
+```
+
+7. Only when sandbox checkout, capture, restore, and unlock are verified, switch to live:
+   - Create a **live** PayPal app and put those credentials with the same `wrangler secret put` commands.
+   - Set `PAYPAL_ENV = "live"` **and** `PAYMENTS_LIVE = "true"` in `wrangler.toml` (or the Cloudflare dashboard vars) and redeploy.
+   - If either flag is not live, the Worker keeps calling `https://api-m.sandbox.paypal.com`.
+
+### Restore
+
+The Worker does not send email. KV stores a SHA-256 of the normalized payer email plus the PayPal order id. Restore is: user enters **email + order id**. Both must match. The Worker then issues a new HMAC unlock token. Tokens are stored in `localStorage` (`noema.access.v1`) and sent as `Authorization: Bearer`, never as cookies.
+
+### PDF
+
+`GET /api/report.pdf` checks the unlock token, then returns **501**. There is no server-side PDF. `POST /api/report` returns Mustache-rendered HTML (A4 print CSS, “Print / Save as PDF” on the page). The HTML links `/fonts/share-card/fonts.css` (from `public/fonts/share-card/`, owned by a stacked PR) and keeps a system serif/sans/CJK fallback stack in every `font-family`, so glyphs missing from that subset still render. Font files are not bundled into `worker/`.
+
+A later real PDF would need Cloudflare Browser Rendering (Workers Paid is the practical plan; Free is 10 minutes of browser time per day). That is not implemented.
 
 ## Fonts and privacy
 
 Source Serif 4, Source Sans 3, and IBM Plex Mono are served from the site build under the SIL Open Font License. Chinese text falls back to fonts already on the device, so the page does not download a full CJK webfont.
 
-The default experience stores answers and the theme choice in `localStorage`. It does not set cookies or load third-party analytics. See `/privacy`. Hosting on Cloudflare Pages may still create ordinary connection logs under Cloudflare’s own policy.
+The default experience stores answers and the theme choice in `localStorage`. It does not set cookies. See `/privacy`. Hosting on Cloudflare may still create ordinary connection logs under Cloudflare’s own policy. When `PUBLIC_CF_ANALYTICS_TOKEN` is set on a Workers Builds production build, pages also include Cloudflare Web Analytics (a cookieless beacon). GitHub Pages builds do not include it.

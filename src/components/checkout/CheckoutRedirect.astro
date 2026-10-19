@@ -1,0 +1,91 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { checkoutCancelPath, checkoutReturnPath } from '@/lib/checkout/target';
+import { messages } from '@/lib/localization/messages';
+import type { Locale } from '@/types/model';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const m = messages[locale];
+const returnPath = checkoutReturnPath(locale);
+const cancelPath = checkoutCancelPath(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  path="/checkout"
+  title={`${m.checkoutTitle} — NOEMA`}
+  description={m.checkoutBody}
+  noindex={true}
+>
+  <section class="mx-auto max-w-3xl px-4 py-16">
+    <p class="kicker">{m.payKicker}</p>
+    <h1 class="serif mt-4 text-4xl">{m.checkoutTitle}</h1>
+    <p class="mt-6">{m.checkoutBody}</p>
+    <p class="mt-8 hidden" role="status" data-testid="checkout-status" data-checkout-status></p>
+    <button
+      type="button"
+      class="btn mt-8"
+      data-testid="checkout-fallback"
+      data-checkout-start
+      data-return-path={returnPath}
+      data-cancel-path={cancelPath}
+      data-not-configured={m.notConfigured}
+      data-unavailable={m.unavailable}
+    >
+      {m.checkoutContinue}
+    </button>
+  </section>
+  <script>
+    const button = document.querySelector('[data-checkout-start]');
+    const status = document.querySelector('[data-checkout-status]');
+
+    async function startCheckout() {
+      if (!(button instanceof HTMLButtonElement)) return;
+      const returnPath = button.dataset.returnPath || '/results';
+      const cancelPath = button.dataset.cancelPath || returnPath;
+      button.disabled = true;
+      try {
+        const response = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ returnPath, cancelPath }),
+        });
+        if (response.status === 503) {
+          show(button.dataset.notConfigured || '');
+          return;
+        }
+        if (!response.ok) {
+          show(button.dataset.unavailable || '');
+          return;
+        }
+        const body = (await response.json()) as { approvalUrl?: string };
+        if (!body.approvalUrl) {
+          show(button.dataset.unavailable || '');
+          return;
+        }
+        window.location.replace(body.approvalUrl);
+      } catch {
+        show(button.dataset.unavailable || '');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function show(message: string) {
+      if (!(status instanceof HTMLElement)) return;
+      status.textContent = message;
+      status.classList.remove('hidden');
+    }
+
+    if (button instanceof HTMLButtonElement) {
+      button.addEventListener('click', () => {
+        void startCheckout();
+      });
+      void startCheckout();
+    }
+  </script>
+</BaseLayout>

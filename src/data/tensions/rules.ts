@@ -1,4 +1,5 @@
-import type { AssessmentResult, TensionRule } from '@/types/model';
+import { detectorById } from '@/data/tensions/detect';
+import type { TensionRule } from '@/types/model';
 
 const sep = (path: string, label: string) => ({ label, href: `https://plato.stanford.edu/entries/${path}/` });
 
@@ -37,10 +38,7 @@ export const tensionRules: TensionRule[] = [
         href: 'https://plato.stanford.edu/entries/strawson/',
       },
     ],
-    activates: (result) =>
-      result.dimensions.agency.inclination === 'left' &&
-      (result.dimensions.agency.alternativeTags.compatibilism ?? 0) === 0 &&
-      result.dimensions.ethics.directionalCount >= 3,
+    activates: detectorById('determinism-responsibility'),
   },
   {
     id: 'consequentialism-rights',
@@ -76,8 +74,7 @@ export const tensionRules: TensionRule[] = [
         href: 'https://plato.stanford.edu/entries/nozick-political/',
       },
     ],
-    activates: (result) =>
-      result.dimensions.ethics.inclination === 'left' && result.dimensions.society.inclination === 'left',
+    activates: detectorById('consequentialism-rights'),
   },
   {
     id: 'rationalism-uncertainty',
@@ -109,9 +106,7 @@ export const tensionRules: TensionRule[] = [
       sep('rationalism-empiricism', 'Stanford Encyclopedia of Philosophy, “Rationalism vs. Empiricism”'),
       sep('skepticism', 'Stanford Encyclopedia of Philosophy, “Skepticism”'),
     ],
-    activates: (result) =>
-      result.dimensions.epistemology.inclination === 'right' &&
-      result.dimensions.epistemology.uncertainCount >= 2,
+    activates: detectorById('rationalism-uncertainty'),
   },
   {
     id: 'created-meaning-objective-duty',
@@ -144,8 +139,7 @@ export const tensionRules: TensionRule[] = [
       sep('existentialism', 'Stanford Encyclopedia of Philosophy, “Existentialism”'),
       sep('ethics-deontological', 'Stanford Encyclopedia of Philosophy, “Deontological Ethics”'),
     ],
-    activates: (result) =>
-      result.dimensions.meaning.inclination === 'right' && result.dimensions.ethics.inclination === 'right',
+    activates: detectorById('created-meaning-objective-duty'),
   },
   {
     id: 'autonomy-communion',
@@ -177,13 +171,7 @@ export const tensionRules: TensionRule[] = [
       sep('communitarianism', 'Stanford Encyclopedia of Philosophy, “Communitarianism”'),
       sep('confucius', 'Stanford Encyclopedia of Philosophy, “Confucius”'),
     ],
-    activates: (result) => {
-      const social = result.dimensions.society;
-      return (
-        social.inclination === 'mixed' ||
-        (social.inconsistency !== null && social.inconsistency >= 0.45 && social.directionalCount >= 3)
-      );
-    },
+    activates: detectorById('autonomy-communion'),
   },
   {
     id: 'physicalism-consciousness',
@@ -219,10 +207,7 @@ export const tensionRules: TensionRule[] = [
         href: 'https://plato.stanford.edu/entries/nagel/',
       },
     ],
-    activates: (result) =>
-      result.dimensions.ontology.inclination === 'left' &&
-      result.dimensions.ontology.inconsistency !== null &&
-      result.dimensions.ontology.inconsistency >= 0.35,
+    activates: detectorById('physicalism-consciousness'),
   },
   {
     id: 'compatibilist-responsibility',
@@ -257,7 +242,7 @@ export const tensionRules: TensionRule[] = [
         href: 'https://plato.stanford.edu/entries/frankfurt/',
       },
     ],
-    activates: (result) => (result.dimensions.agency.alternativeTags.compatibilism ?? 0) >= 1,
+    activates: detectorById('compatibilist-responsibility'),
   },
   {
     id: 'nihilist-meaning',
@@ -289,20 +274,9 @@ export const tensionRules: TensionRule[] = [
       sep('life-meaning', 'Stanford Encyclopedia of Philosophy, “The Meaning of Life”'),
       sep('camus', 'Stanford Encyclopedia of Philosophy, “Albert Camus”'),
     ],
-    activates: (result) => (result.dimensions.meaning.alternativeTags.nihilism ?? 0) >= 1,
+    activates: detectorById('nihilist-meaning'),
   },
 ];
-
-export function activateTensions(result: AssessmentResult) {
-  return tensionRules
-    .filter((rule) => rule.activates(result))
-    .map((rule) => ({
-      id: rule.id,
-      kind: rule.kind,
-      dimensions: rule.dimensions,
-      because: rule.because,
-    }));
-}
 
 export function getTensionRule(id: string): TensionRule | undefined {
   return tensionRules.find((rule) => rule.id === id);

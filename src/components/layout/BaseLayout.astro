@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import { CLOUDFLARE_ANALYTICS_SCRIPT, cloudflareAnalyticsToken } from '@/lib/analytics/cloudflare';
 import { absoluteUrl, htmlLang, localePath } from '@/lib/localization/path';
 import type { Locale } from '@/types/model';
 
@@ -19,6 +20,10 @@ const canonicalPath = localePath(locale, path);
 const canonical = absoluteUrl(canonicalPath);
 const enUrl = absoluteUrl(localePath('en', path));
 const zhUrl = absoluteUrl(localePath('zh', path));
+const analyticsToken = cloudflareAnalyticsToken(
+  import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN,
+  process.env.WORKERS_CI,
+);
 ---
 
 <!doctype html>
@@ -40,11 +45,20 @@ const zhUrl = absoluteUrl(localePath('zh', path));
     <meta property="og:locale:alternate" content={locale === 'zh' ? 'en_US' : 'zh_CN'} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <slot name="head" />
     <script is:inline src="/locale-init.js"></script>
     <script is:inline src="/theme-init.js"></script>
     {jsonLd.map((entry) => (
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
     ))}
+    {analyticsToken && (
+      <script
+        is:inline
+        type="module"
+        src={CLOUDFLARE_ANALYTICS_SCRIPT}
+        data-cf-beacon={JSON.stringify({ token: analyticsToken })}
+      />
+    )}
   </head>
   <body>
     <a class="skip" href="#main">{locale === 'zh' ? '跳到正文' : 'Skip to content'}</a>
