@@ -1,32 +1,26 @@
-export const ACCESS_KEY = 'noema.access.v1';
+import { ACCESS_KEY, type UnlockRecord } from '@/lib/api/contract';
 
-export interface PaymentAccess {
-  transactionId: string;
-  status: 'Completed';
-  unlockedAt: string;
-}
+export type { UnlockRecord };
 
 export type PaypalReturn =
-  | { ok: true; transactionId: string }
-  | { ok: false; reason: 'absent' | 'incomplete' | 'not_completed' };
+  | { kind: 'capture'; orderId: string }
+  | { kind: 'none' };
 
-const TX_ID = /^[A-Za-z0-9]{10,30}$/;
+const ORDER_ID = /^[A-Za-z0-9-]{8,36}$/;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** PayPal Orders returns `token=<orderId>`. The old `st=Completed&tx=` query is ignored. */
 export function parsePaypalReturn(search: string): PaypalReturn {
   const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
-  const status = (params.get('st') ?? params.get('payment_status') ?? '').trim();
-  const transactionId = (params.get('tx') ?? params.get('txn_id') ?? '').trim();
-  if (!status && !transactionId) return { ok: false, reason: 'absent' };
-  if (status.toLowerCase() !== 'completed') return { ok: false, reason: 'not_completed' };
-  if (!TX_ID.test(transactionId)) return { ok: false, reason: 'incomplete' };
-  return { ok: true, transactionId };
+  const orderId = (params.get('token') ?? params.get('orderId') ?? '').trim();
+  if (ORDER_ID.test(orderId)) return { kind: 'capture', orderId };
+  return { kind: 'none' };
 }
 
-export function readAccess(storage: Pick<Storage, 'getItem'> | undefined): PaymentAccess | null {
+export function readAccess(storage: Pick<Storage, 'getItem'> | undefined): UnlockRecord | null {
   if (!storage) return null;
   let raw: string | null;
   try {
@@ -41,23 +35,28 @@ export function readAccess(storage: Pick<Storage, 'getItem'> | undefined): Payme
   } catch {
     return null;
   }
-  if (!isRecord(parsed) || parsed.status !== 'Completed' || typeof parsed.transactionId !== 'string') return null;
-  if (!TX_ID.test(parsed.transactionId)) return null;
+  if (!isRecord(parsed) || parsed.version !== 1 || typeof parsed.token !== 'string' || typeof parsed.orderId !== 'string') {
+    return null;
+  }
+  if (!parsed.token.includes('.') || !ORDER_ID.test(parsed.orderId)) return null;
   return {
-    transactionId: parsed.transactionId,
-    status: 'Completed',
+    version: 1,
+    token: parsed.token,
+    orderId: parsed.orderId,
     unlockedAt: typeof parsed.unlockedAt === 'string' ? parsed.unlockedAt : '',
   };
 }
 
 export function writeAccess(
   storage: Pick<Storage, 'setItem'> | undefined,
-  transactionId: string,
-): PaymentAccess | null {
-  if (!storage || !TX_ID.test(transactionId)) return null;
-  const access: PaymentAccess = {
-    transactionId,
-    status: 'Completed',
+  token: string,
+  orderId: string,
+): UnlockRecord | null {
+  if (!storage || !token.includes('.') || !ORDER_ID.test(orderId)) return null;
+  const access: UnlockRecord = {
+    version: 1,
+    token,
+    orderId,
     unlockedAt: new Date().toISOString(),
   };
   try {
@@ -70,7 +69,20 @@ export function writeAccess(
 
 export function clearPaypalQuery(href: string): string {
   const url = new URL(href);
-  for (const key of ['tx', 'txn_id', 'st', 'payment_status', 'amt', 'cc', 'cm', 'sig', 'item_number']) {
+  for (const key of [
+    'tx',
+    'txn_id',
+    'st',
+    'payment_status',
+    'amt',
+    'cc',
+    'cm',
+    'sig',
+    'item_number',
+    'token',
+    'PayerID',
+    'orderId',
+  ]) {
     url.searchParams.delete(key);
   }
   const search = url.searchParams.toString();

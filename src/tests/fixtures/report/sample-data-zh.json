@@ -1,0 +1,677 @@
+{
+  "schemaVersion": "1.0.0",
+  "locale": "zh",
+  "htmlLang": "zh-CN",
+  "isZh": true,
+  "generatedAt": "2026-10-18T16:00:00.000Z",
+  "generatedDateLabel": "2026年10月18日",
+  "reportId": "SAMPLE-0001",
+  "modelVersion": "1.0.0",
+  "questionVersion": "1.0.0",
+  "assetBaseUrl": "../",
+  "site": {
+    "name": "NOEMA",
+    "url": "https://noema.andyccr.workers.dev",
+    "host": "noema.andyccr.workers.dev"
+  },
+  "assignment": {
+    "status": "definitive",
+    "isDefinitive": true,
+    "isProvisional": false,
+    "isWithheld": false,
+    "statusLabel": "确定的剖面",
+    "statusBody": null,
+    "code": "IRDDCC",
+    "codeSpaced": "I · R · D · D · C · C",
+    "reasons": []
+  },
+  "archetype": {
+    "code": "IRDDCC",
+    "name": "宪制的观念论者",
+    "thesis": "一个共同体凭理性撰写它的制度，却并不因此撰写那些制度必须尊重的义务。",
+    "worldview": [
+      "实在被视为具有一种并不等同于物理过程的理性深度，而论证被信任为能够接近这一深度。经验激发探究。它不是终审。",
+      "有些行为即使结果更好也仍然是错的，而行动者并没有被描绘成站在因果秩序之外。未决的问题是：义务能够向一个本来就会如此行动的意志要求什么。",
+      "意义是人们共同确立的东西。一个共同计划可以真正有分量，而不必曾经是宇宙已经具有的目的，也不必把每个成员还原为工具。"
+    ],
+    "strengths": [
+      "你拒绝把意识当成一种应当被定义掉的尴尬。",
+      "你寻找巧合与理由之间的差别。",
+      "你会注意到，一个受欢迎的结果是否将由一个不正当的行为买来。",
+      "你严肃对待品格的原因，包括那些无人选择的原因。",
+      "你认为一种持续的承诺能够给予一种生活以分量。",
+      "你看到一种生活是与他人一起形成的，并且可以亏欠他们某种东西。"
+    ],
+    "blindSpots": [
+      "你也许低估了不依赖于心灵的世界纠正一幅珍视图景的方式。",
+      "在世界已经说出反对之后，你也许仍然信任一个优美的论证。",
+      "你也许把一条规则握得太紧，以至于遵守它所造成的伤害离开了画面。",
+      "你也许过快地断定，一个有原因的行为就没有什么还可以称为责任。",
+      "你也许没有充分说明一个计划所要回应的、并非其作者所创造的标准。这一极不是虚无主义。",
+      "你也许让“共同体”发言，而不问其中谁没有被听见。"
+    ],
+    "pairingPressure": "这一配对中的压力：一条在更好的结果面前仍然成立的义务，必须向一个已经处在因果叙述中的意志提出。相容论是一种解读。分数并不会自动提供它。",
+    "reflection": [
+      "如果实在并不独立于心灵，什么算作世界对你的纠正？",
+      "如果你从未有过相关的观察，你关于世界的哪些信念仍然成立，为什么？",
+      "一条义务能否约束一个本来不可能另作行动的人？你所说的“不可能”是什么意思？",
+      "一个群体应当如何辨认：一个它共同创造的目的，仍然是成员可以拒绝的？"
+    ],
+    "url": "https://noema.andyccr.workers.dev/types/irddcc"
+  },
+  "family": {
+    "id": "architects",
+    "name": "建筑师",
+    "rule": "观念论、被创造的意义，以及共同体优先。",
+    "essay": "建筑师认为，意义的共享世界是被建造的，而且所建造的东西不能还原为运动中的物质。这种建造是共同的。在这一剖面上，成员并不是生活要旨的唯一作者。这一剖面也并不说这种建造可以免除义务、证据或因果上的过去。正是这些分歧把一位建筑师与另一位分开。"
+  },
+  "dimensions": [
+    {
+      "id": "ontology",
+      "plainName": "实在",
+      "technicalName": "本体论",
+      "showTechnical": true,
+      "leftLetter": "M",
+      "rightLetter": "I",
+      "leftPole": "物理主义",
+      "rightPole": "观念论",
+      "question": "一份关于世界的描述要算完成，世界必须是什么样的？",
+      "score": 87,
+      "scoreDisplay": "87",
+      "hasScore": true,
+      "inclination": "right",
+      "isLeft": false,
+      "isRight": true,
+      "isMixed": false,
+      "isInsufficient": false,
+      "split": false,
+      "describe": "实在：方向指数 87，朝向右极（观念论）。",
+      "narrative": "这里所计的观念论，是这样一种倾向：否认物理清单就是根本之物的全部。贝克莱的非物质论是一种历史形态。它不是唯一的形态，而这一极也不是宗教信仰的度量。",
+      "disagreement": "这一轴上的回答大体同向。",
+      "inconsistency": 0.2222222222222222,
+      "coverage": 1,
+      "coverageDisplay": "11/11",
+      "directionalCount": 11,
+      "applicableCount": 11,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "letter": "I",
+      "codePole": "观念论"
+    },
+    {
+      "id": "epistemology",
+      "plainName": "知识",
+      "technicalName": "知识论",
+      "showTechnical": true,
+      "leftLetter": "E",
+      "rightLetter": "R",
+      "leftPole": "经验论",
+      "rightPole": "理性论",
+      "question": "当观察与推理拉开时，你让哪一个领头？",
+      "score": 83,
+      "scoreDisplay": "83",
+      "hasScore": true,
+      "inclination": "right",
+      "isLeft": false,
+      "isRight": true,
+      "isMixed": false,
+      "isInsufficient": false,
+      "split": false,
+      "describe": "知识：方向指数 83，朝向右极（理性论）。",
+      "narrative": "理性论倾向给予推理一种力量，去触及特定观察并未首先交付的真理。笛卡尔是一个核心参照。康德既相关，也是一个警告：他限制了理论理性能够认识世界的范围。",
+      "disagreement": "有一些回答拉向另一边。",
+      "inconsistency": 0.25,
+      "coverage": 1,
+      "coverageDisplay": "10/10",
+      "directionalCount": 10,
+      "applicableCount": 10,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "letter": "R",
+      "codePole": "理性论"
+    },
+    {
+      "id": "ethics",
+      "plainName": "道德",
+      "technicalName": "伦理学",
+      "showTechnical": true,
+      "leftLetter": "C",
+      "rightLetter": "D",
+      "leftPole": "后果论",
+      "rightPole": "义务论",
+      "question": "当一条约束与一个更好的结果冲突时，哪一个退让？",
+      "score": 78,
+      "scoreDisplay": "78",
+      "hasScore": true,
+      "inclination": "right",
+      "isLeft": false,
+      "isRight": true,
+      "isMixed": false,
+      "isInsufficient": false,
+      "split": false,
+      "describe": "道德：方向指数 78，朝向右极（义务论）。",
+      "narrative": "义务论倾向认为，有些行为即使结果更好也是错的。康德的义务是通常的参照，而且它比“有些事就是错的”这种感觉更严格、更成体系。",
+      "disagreement": "有一些回答拉向另一边。",
+      "inconsistency": 0.38095238095238093,
+      "coverage": 1,
+      "coverageDisplay": "12/12",
+      "directionalCount": 12,
+      "applicableCount": 12,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "letter": "D",
+      "codePole": "义务论"
+    },
+    {
+      "id": "agency",
+      "plainName": "自由与因果",
+      "technicalName": "能动性",
+      "showTechnical": true,
+      "leftLetter": "D",
+      "rightLetter": "L",
+      "leftPole": "决定论",
+      "rightPole": "自由意志论",
+      "question": "在选择的时刻，是否有一种开放的替代可能，还是只有替代可能的表象？",
+      "score": 13,
+      "scoreDisplay": "13",
+      "hasScore": true,
+      "inclination": "left",
+      "isLeft": true,
+      "isRight": false,
+      "isMixed": false,
+      "isInsufficient": false,
+      "split": false,
+      "describe": "自由与因果：方向指数 13，朝向左极（决定论）。",
+      "narrative": "这里的决定论是关于选择的主张，不是一种宿命的情绪。一个人可以认为选择被先前的原因固定，同时仍然追问制度、教育与理由能够改变什么。除非某个回答如此说，问卷并不把这一主张换成“没有人负有责任”。",
+      "disagreement": "这一轴上的回答大体同向。",
+      "inconsistency": 0.15384615384615385,
+      "coverage": 0.8888888888888888,
+      "coverageDisplay": "8/9",
+      "directionalCount": 8,
+      "applicableCount": 9,
+      "uncertainCount": 0,
+      "alternativeCount": 1,
+      "skippedCount": 0,
+      "letter": "D",
+      "codePole": "决定论"
+    },
+    {
+      "id": "meaning",
+      "plainName": "意义",
+      "technicalName": "意义问题",
+      "showTechnical": true,
+      "leftLetter": "F",
+      "rightLetter": "C",
+      "leftPole": "发现",
+      "rightPole": "创造",
+      "question": "一种生活的要旨是被发现的，还是由承诺所确立的？",
+      "score": 82,
+      "scoreDisplay": "82",
+      "hasScore": true,
+      "inclination": "right",
+      "isLeft": false,
+      "isRight": true,
+      "isMixed": false,
+      "isInsufficient": false,
+      "split": false,
+      "describe": "意义：方向指数 82，朝向右极（创造）。",
+      "narrative": "创造是说：即使宇宙自身没有目的，承诺也可以给予一种生活以分量。萨特 1946 年的讲演是一种相关看法的著名而简化的陈述。加缪在附近，但不应被压成同一句话：对他而言，荒诞并不是一条“发明一种私人意义然后停止”的指令。",
+      "disagreement": "有一些回答拉向另一边。",
+      "inconsistency": 0.2666666666666667,
+      "coverage": 1,
+      "coverageDisplay": "9/9",
+      "directionalCount": 9,
+      "applicableCount": 9,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "letter": "C",
+      "codePole": "创造"
+    },
+    {
+      "id": "society",
+      "plainName": "共同生活",
+      "technicalName": "社会哲学",
+      "showTechnical": true,
+      "leftLetter": "I",
+      "rightLetter": "C",
+      "leftPole": "个人优先",
+      "rightPole": "共同体优先",
+      "question": "当一个人的拒绝与一个共同体的需要冲突时，哪一个限制另一个？",
+      "score": 78,
+      "scoreDisplay": "78",
+      "hasScore": true,
+      "inclination": "right",
+      "isLeft": false,
+      "isRight": true,
+      "isMixed": false,
+      "isInsufficient": false,
+      "split": false,
+      "describe": "共同生活：方向指数 78，朝向右极（共同体优先）。",
+      "narrative": "共同体优先是这样一个主张：归属可以产生并非个人单独设计的义务。儒家传统是这一想法被详细展开的一个地方。它们不是伪装的西方共同体主义理论，而这一极也不是从众的度量。",
+      "disagreement": "有一些回答拉向另一边。",
+      "inconsistency": 0.375,
+      "coverage": 1,
+      "coverageDisplay": "9/9",
+      "directionalCount": 9,
+      "applicableCount": 9,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "letter": "C",
+      "codePole": "共同体优先"
+    }
+  ],
+  "radar": {
+    "size": 320,
+    "center": 160,
+    "rings": [
+      "160,119.68 194.91814428058856,139.84 194.91814428058856,180.16 160,200.32 125.08185571941144,180.16000000000003 125.08185571941144,139.84",
+      "160,79.36000000000001 229.83628856117713,119.68 229.83628856117713,200.32 160,240.64 90.16371143882289,200.32000000000002 90.16371143882289,119.68",
+      "160,44.80000000000001 259.7661265159673,102.4 259.76612651596736,217.59999999999997 160,275.2 60.2338734840327,217.60000000000002 60.233873484032685,102.39999999999999"
+    ],
+    "polygon": "160,59.77600000000001 242.80588500825286,112.19200000000001 237.81757868245452,204.928 160,174.976 78.19177625690682,207.23200000000003 82.18242131754549,115.072",
+    "hasPolygon": true,
+    "axes": [
+      {
+        "dimension": "ontology",
+        "label": "实在",
+        "scoreDisplay": "87",
+        "x": 160,
+        "y": 44.8,
+        "labelX": 160,
+        "labelY": 16.8,
+        "anchor": "middle"
+      },
+      {
+        "dimension": "epistemology",
+        "label": "知识",
+        "scoreDisplay": "83",
+        "x": 259.77,
+        "y": 102.4,
+        "labelX": 284.01,
+        "labelY": 88.4,
+        "anchor": "start"
+      },
+      {
+        "dimension": "ethics",
+        "label": "道德",
+        "scoreDisplay": "78",
+        "x": 259.77,
+        "y": 217.6,
+        "labelX": 284.01,
+        "labelY": 231.6,
+        "anchor": "start"
+      },
+      {
+        "dimension": "agency",
+        "label": "自由与因果",
+        "scoreDisplay": "13",
+        "x": 160,
+        "y": 275.2,
+        "labelX": 160,
+        "labelY": 303.2,
+        "anchor": "middle"
+      },
+      {
+        "dimension": "meaning",
+        "label": "意义",
+        "scoreDisplay": "82",
+        "x": 60.23,
+        "y": 217.6,
+        "labelX": 35.99,
+        "labelY": 231.6,
+        "anchor": "end"
+      },
+      {
+        "dimension": "society",
+        "label": "共同生活",
+        "scoreDisplay": "78",
+        "x": 60.23,
+        "y": 102.4,
+        "labelX": 35.99,
+        "labelY": 88.4,
+        "anchor": "end"
+      }
+    ]
+  },
+  "tensions": [
+    {
+      "id": "created-meaning-objective-duty",
+      "kind": "apparent-tension",
+      "dimensions": [
+        "meaning",
+        "ethics"
+      ],
+      "dimensionNames": "意义 · 道德",
+      "problem": "被创造的意义与道德约束",
+      "explanation": "一个人可以把生活的要旨当作自己确立的东西，同时仍把某些道德约束当作不能由自己取消的东西。目的与义务回答的是不同的问题。把这一组合称为矛盾，会抹掉这个差别。创造意义也不是“没有什么重要”这同一个主张。",
+      "because": "你的意义指数偏向创造，而你的道德指数偏向义务与约束。",
+      "alternatives": "康德把道德法则与个人计划分开。萨特在《存在主义是一种人道主义》（1946）中主张我们发明价值并且仍然负责——许多读者，有时也包括萨特后来的说明，认为这篇讲演比《存在与虚无》更简化。波伏瓦的暧昧伦理学则把自由放进已经涉及他人的处境之中。",
+      "followUp": "如果一项并非由你制定的义务禁止某个计划，你会放下哪些计划？",
+      "tradition": "存在主义伦理与义务论",
+      "experimentSlug": "purposeless-universe",
+      "sources": [
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “The Meaning of Life”",
+          "href": "https://plato.stanford.edu/entries/life-meaning/"
+        },
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Existentialism”",
+          "href": "https://plato.stanford.edu/entries/existentialism/"
+        },
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Deontological Ethics”",
+          "href": "https://plato.stanford.edu/entries/ethics-deontological/"
+        }
+      ]
+    },
+    {
+      "id": "compatibilist-responsibility",
+      "kind": "philosophical-disagreement",
+      "dimensions": [
+        "agency"
+      ],
+      "dimensionNames": "自由与因果",
+      "problem": "没有无因意志的责任",
+      "explanation": "你接受了这样一种描述：一个人可以因为出于自己的理由而行动、因而负有责任，即便那些理由有原因。这是相容论的想法。这一轴不能把它放在决定论与自由意志论的半途。不予计分，是比“假装中点就是相容论”更诚实的做法。",
+      "because": "你至少选择了一次相容论式的描述。这一回答被记下，并且没有被换算成能动性指数上的一个点。",
+      "alternatives": "自由意志论者可以回应：本身已被固定的理由，还不是行动者的创作者身份。强硬决定论者可以回应：相容论转移了话题，从“本来可以另作选择”转到了一种更薄的赞扬与责备的社会实践。",
+      "followUp": "当你说这个人出于自己的理由而行动时，什么样的原因会让这些理由不再是他们自己的？",
+      "tradition": "相容论",
+      "experimentSlug": "predicting-a-choice",
+      "sources": [
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Compatibilism”",
+          "href": "https://plato.stanford.edu/entries/compatibilism/"
+        },
+        {
+          "label": "Harry Frankfurt, “Alternate Possibilities and Moral Responsibility” (1969)",
+          "href": "https://plato.stanford.edu/entries/frankfurt/"
+        }
+      ]
+    }
+  ],
+  "hasTensions": true,
+  "standingIssues": [
+    {
+      "id": "mind-and-correction",
+      "kind": "philosophical-disagreement",
+      "title": "心灵与纠正",
+      "explanation": "如果实在并不独立于心灵，一个人仍然必须可能是错的。否则“实在”就只是命名一个人已经想到的东西。观念论者对这种可能性给出过不同说明，从贝克莱的上帝，到后来对显现与公共意义世界的区分。",
+      "alternatives": "现象学者可以说世界被给予意识，而不说意识发明了世界的抗拒。这一立场并不等同于本轴的右极。",
+      "sources": [
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Idealism”",
+          "href": "https://plato.stanford.edu/entries/idealism/"
+        }
+      ]
+    },
+    {
+      "id": "duty-without-an-open-will",
+      "kind": "apparent-tension",
+      "title": "向被引起的意志提出的义务",
+      "explanation": "一条不被结果取消的约束，仍然必须向某个人提出。如果意志本来就会如此行动，“应当拒绝”的意义就需要一种解读。相容论是一种解读。它不是能动性之轴的中点。",
+      "alternatives": "强硬的不相容论使义务不再附着于应得。自由意志论的解读则通过否定决定论一极来保留义务。",
+      "sources": [
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Compatibilism”",
+          "href": "https://plato.stanford.edu/entries/compatibilism/"
+        }
+      ]
+    },
+    {
+      "id": "created-purpose-and-duty",
+      "kind": "apparent-tension",
+      "title": "被做成的目的与未被做成的义务",
+      "explanation": "确立一个目的，本身并不废除一条约束。这两个主张回答的是不同的问题。把这一对当作矛盾，还会冒进一步的错误：把被创造的意义等同于“没有什么重要”。",
+      "alternatives": "康德把道德法则与幸福分开。波伏瓦把自由留在一种已经充满他人计划的处境之中。",
+      "sources": [
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “The Meaning of Life”",
+          "href": "https://plato.stanford.edu/entries/life-meaning/"
+        },
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Deontological Ethics”",
+          "href": "https://plato.stanford.edu/entries/ethics-deontological/"
+        }
+      ]
+    },
+    {
+      "id": "the-unheard-member",
+      "kind": "context-dependent",
+      "title": "谁以共同体的名义说话",
+      "explanation": "对共同生活的优先必须说明谁可以代表整体说话，以及一个成员可以拒绝什么。没有这个问题，“共同体”就只是最大的那个声音。",
+      "alternatives": "阿伦特关于复数性的说明，与儒家的谏诤实践，是在共享世界之内保留异议的不同方式。",
+      "sources": [
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Hannah Arendt”",
+          "href": "https://plato.stanford.edu/entries/arendt/"
+        },
+        {
+          "label": "Stanford Encyclopedia of Philosophy, “Communitarianism”",
+          "href": "https://plato.stanford.edu/entries/communitarianism/"
+        }
+      ]
+    }
+  ],
+  "traditions": [
+    {
+      "slug": "idealism",
+      "name": "观念论",
+      "summary": "这样一族看法：心灵、经验或一种理想秩序对实在是根本的。",
+      "viaDimension": "ontology",
+      "viaDimensionName": "实在",
+      "url": "https://noema.andyccr.workers.dev/traditions/idealism"
+    },
+    {
+      "slug": "rationalism",
+      "name": "理性论",
+      "summary": "把推理看作能够触及特定观察并未首先交付的、关于实在的真理的倾向。",
+      "viaDimension": "epistemology",
+      "viaDimensionName": "知识",
+      "url": "https://noema.andyccr.workers.dev/traditions/rationalism"
+    },
+    {
+      "slug": "deontology",
+      "name": "义务论",
+      "summary": "这样一族看法：有些行为即使结果更好也是错的。",
+      "viaDimension": "ethics",
+      "viaDimensionName": "道德",
+      "url": "https://noema.andyccr.workers.dev/traditions/deontology"
+    },
+    {
+      "slug": "determinism",
+      "name": "决定论",
+      "summary": "这样的主张：给定过去与法则，选择本来不可能是另一个样子。",
+      "viaDimension": "agency",
+      "viaDimensionName": "自由与因果",
+      "url": "https://noema.andyccr.workers.dev/traditions/determinism"
+    },
+    {
+      "slug": "existentialism",
+      "name": "存在主义",
+      "summary": "关于自由、处境以及被给予的人性本质之缺席的一个现代哲学家族。",
+      "viaDimension": "meaning",
+      "viaDimensionName": "意义",
+      "url": "https://noema.andyccr.workers.dev/traditions/existentialism"
+    },
+    {
+      "slug": "communal-thought",
+      "name": "共同体优先",
+      "summary": "把成员身份当作义务来源的传统，这些义务可以压过希望被放开的偏好。",
+      "viaDimension": "society",
+      "viaDimensionName": "共同生活",
+      "url": "https://noema.andyccr.workers.dev/traditions/communal-thought"
+    }
+  ],
+  "philosophers": [
+    {
+      "slug": "plato",
+      "name": "柏拉图",
+      "dates": "约公元前 428/427–前 348/347 年",
+      "themes": "相、知识与探究、经过省察的生活",
+      "readingNote": "把柏拉图当作实在之轴右极的参照时必须带一个警告：相并不是现代教科书意义上的“观念论”，而且各篇对话彼此并不一致。",
+      "sharedTraditions": "观念论、理性论",
+      "overlapCount": 2
+    },
+    {
+      "slug": "kant",
+      "name": "伊曼努尔·康德",
+      "dates": "1724–1804 年",
+      "themes": "理论知识的限度、绝对命令、自律",
+      "readingNote": "康德是义务论一极的主要参照。他的批判哲学比任何单一的 NOEMA 轴都更细致，轴因此显得更粗。",
+      "sharedTraditions": "义务论、理性论",
+      "overlapCount": 2
+    },
+    {
+      "slug": "aristotle",
+      "name": "亚里士多德",
+      "dates": "公元前 384–前 322 年",
+      "themes": "实体与解释、德性与繁荣、政治生活",
+      "readingNote": "亚里士多德是图谱中德性伦理的主要条目，而道德之轴并不给德性伦理计分。他与经验论的关系是主题上的，并不是与洛克或休谟的同一。",
+      "sharedTraditions": "共同体优先",
+      "overlapCount": 1
+    },
+    {
+      "slug": "descartes",
+      "name": "勒内·笛卡尔",
+      "dates": "1596–1650 年",
+      "themes": "方法性怀疑、心灵与身体、清楚明白的观念",
+      "readingNote": "用笛卡尔来理解理性论一极，不要把他的二元论压成观念论，或压成一个自由意志分数。",
+      "sharedTraditions": "理性论",
+      "overlapCount": 1
+    },
+    {
+      "slug": "nietzsche",
+      "name": "弗里德里希·尼采",
+      "dates": "1844–1900 年",
+      "themes": "道德价值的谱系、价值的重估、肯定",
+      "readingNote": "把尼采放在意义之轴旁边来读，而不是当作一种诊断，也不是当作创造一极的所有者。",
+      "sharedTraditions": "存在主义",
+      "overlapCount": 1
+    },
+    {
+      "slug": "kierkegaard",
+      "name": "索伦·克尔凯郭尔",
+      "dates": "1813–1855 年",
+      "themes": "单一的个体、信仰与冒犯、假名写作",
+      "readingNote": "克尔凯郭尔推挤社会生活中的个人一极，并且同时抵抗一种纯粹被发明的意义和一种只属于人群的意义。",
+      "sharedTraditions": "存在主义",
+      "overlapCount": 1
+    }
+  ],
+  "readings": [
+    {
+      "id": "descartes-1641",
+      "citation": "勒内·笛卡尔，《第一哲学沉思集》（1641）",
+      "topic": "理性、怀疑，以及心灵的区分",
+      "n": "01"
+    },
+    {
+      "id": "kant-1785",
+      "citation": "伊曼努尔·康德，《道德形而上学奠基》（1785）",
+      "topic": "义务、绝对命令与自律",
+      "n": "02"
+    },
+    {
+      "id": "analects",
+      "citation": "《论语》，儒家教导的后期辑录",
+      "topic": "共同生活中的礼、角色与道德修养",
+      "n": "03"
+    },
+    {
+      "id": "aristotle-ethics",
+      "citation": "亚里士多德，《尼各马可伦理学》",
+      "topic": "德性、活动，以及一种可以过得好的生活",
+      "n": "04"
+    },
+    {
+      "id": "beauvoir-1947",
+      "citation": "西蒙娜·德·波伏瓦，《暧昧伦理学》（1947）",
+      "topic": "处在他人之中的自由",
+      "n": "05"
+    },
+    {
+      "id": "berkeley-1710",
+      "citation": "乔治·贝克莱，《人类知识原理》（1710）",
+      "topic": "观念论的一个古典论证",
+      "n": "06"
+    }
+  ],
+  "stats": {
+    "answeredCount": 48,
+    "skippedCount": 0,
+    "uncertainCount": 0,
+    "totalQuestions": 48
+  },
+  "methodology": [
+    {
+      "heading": "这个指数是什么",
+      "body": "每一轴都用 0 到 100 的方向指数来呈现。0 表示模型所记录的、朝向左极的最强倾向；100 表示朝向右极的最强倾向。50 是已作答的方向性回答的中点，并不表示中立、成熟或不确定。"
+    },
+    {
+      "heading": "什么不进入这个数字",
+      "body": "跳过的题目算作未答。“我无法判断”会被记下，并单独计数，但它不推动指数。二者都不会被记成 50。有些回答被标为替代立场，例如相容论，或对意义的虚无主义理解。这些回答也不进入指数，因为把它们硬塞进某一极会歪曲它们。"
+    },
+    {
+      "heading": "一个回答如何推动一轴",
+      "body": "方向性选项在一个或多个轴上带有整数权重。正权重拉向该轴的右极，负权重拉向左极。指数只在你作出方向性回答的题目上，把所选权重之和，重新标度到这些题目最左与最右选项之间。未答和非方向性回答不会被放进分母、假装它们是中点。显示的指数是这一标度值四舍五入后的整数。"
+    },
+    {
+      "heading": "覆盖、分歧与归类",
+      "body": "覆盖率是适用题目中得到方向性回答的比例。分歧是一个描述性比值：一减去“有符号权重的绝对值”除以“权重绝对值之和”。它不是概率，也不是置信百分比。暂定的阈值只是设计上的假定：低于 40 为左极，40 至 60 为混合，高于 60 为右极。若分歧至少为 0.5，且指数严格落在 25 与 75 之间，则即使指数本会落在 40 至 60 之外，该轴仍视为混合。若没有方向性分数、方向性回答少于三则，或覆盖率低于一半，该轴视为证据不足。"
+    },
+    {
+      "heading": "从六个指数到一个代码",
+      "body": "六字母代码与数值剖面是分开的一步。只有每一轴都有足够覆盖、可以计分时，才讨论代码。若每一轴随后都明确落在左极或右极，代码是确定的。若有一轴或多轴混合，但每轴仍有较近的一极，代码是暂定的，并会附上不确定说明。若任一轴没有分数，或正好落在 50、因而没有较近的一极，NOEMA 不会给出六十四型分类。八个家族是依据本体论、意义与社会优先所作的编辑分组，不是被发现的人格聚类。"
+    },
+    {
+      "heading": "这个模型以后可以怎样被检验",
+      "body": "当前版本不估计信度、效度或人群常模。以后的研究可以预先登记题库，招募不只是网站自选访客的样本，并报告项目难度与区分度、重测稳定性、翻译等值性，以及所提出的六轴能否作为维度被恢复。认知访谈可以检验受访者是否按编者的意图理解题目。项目功能差异分析可以比较中英文表述。40 与 60 的阈值，只有在那种证据支持下才应被替换。在这样的数据存在之前，NOEMA 不报告百分位，也不报告置信百分比。目前的工具是一份探索性的哲学问卷。"
+    }
+  ],
+  "labels": {
+    "cardKicker": "NOEMA · 哲学剖面",
+    "premiumTitle": "你的剖面",
+    "dimensions": "六个轴",
+    "indexLabel": "方向指数",
+    "coverageLabel": "方向性回答",
+    "disagreement": "分歧",
+    "codeLabel": "代码",
+    "familyLabel": "编辑家族",
+    "legend": "金色标出左极，鸢尾色标出右极。两种颜色都不是更好的结果。",
+    "worldview": "世界观",
+    "strengths": "这一立场能够看见的",
+    "blindSpots": "这一立场可能错过的",
+    "pressure": "这一配对中的压力",
+    "reflection": "供反省的问题",
+    "tensions": "值得坐下来看的张力",
+    "noTensions": "当前的张力规则都没有被触发。这不是一份一致性证书。",
+    "standing": "这一组合必须面对的问题",
+    "relatedAxes": "这个代码中的各轴",
+    "traditionsTitle": "邻近的传统",
+    "philosophers": "哲学家",
+    "readingsTitle": "阅读，不是一份有排名的书单",
+    "methodTitle": "方法，以及它的限度",
+    "methodLead": "计分规则是公开的。阈值是设计上的假定。这里没有百分位。",
+    "notDiagnosis": "这不是对人格、心理健康、智力或品格的测量。",
+    "cardDisclaimer": "一份探索性的哲学剖面，不是诊断。",
+    "atlasLead": "哲学家与传统在这里是问题的近邻。链接是主题上的。它不是相似分数。",
+    "families": "家族",
+    "atlas": "图谱",
+    "method": "方法",
+    "reportTitle": "哲学剖面报告",
+    "generatedOn": "生成日期",
+    "languageName": "中文",
+    "languageLabel": "语言",
+    "answeredLabel": "已答题目",
+    "uncertainLabel": "“我无法判断”",
+    "reportIdLabel": "报告编号",
+    "philosophersNote": "列出的原因是其传统与这一代码的传统有交集。这种联系是主题性的，不是相似度分数。",
+    "versionLabel": "模型 / 题库版本"
+  }
+}

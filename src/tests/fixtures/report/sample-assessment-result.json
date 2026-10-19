@@ -1,0 +1,151 @@
+{
+  "modelVersion": "1.0.0",
+  "questionVersion": "1.0.0",
+  "dimensions": {
+    "ontology": {
+      "dimension": "ontology",
+      "score": 87,
+      "inclination": "right",
+      "coverage": 1,
+      "applicableCount": 11,
+      "directionalCount": 11,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "inconsistency": 0.2222222222222222,
+      "signedSum": 14,
+      "minSum": -20,
+      "maxSum": 19,
+      "leftCount": 1,
+      "rightCount": 10,
+      "alternativeTags": {}
+    },
+    "epistemology": {
+      "dimension": "epistemology",
+      "score": 83,
+      "inclination": "right",
+      "coverage": 1,
+      "applicableCount": 10,
+      "directionalCount": 10,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "inconsistency": 0.25,
+      "signedSum": 12,
+      "minSum": -17,
+      "maxSum": 18,
+      "leftCount": 1,
+      "rightCount": 9,
+      "alternativeTags": {}
+    },
+    "ethics": {
+      "dimension": "ethics",
+      "score": 78,
+      "inclination": "right",
+      "coverage": 1,
+      "applicableCount": 12,
+      "directionalCount": 12,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "inconsistency": 0.38095238095238093,
+      "signedSum": 13,
+      "minSum": -22,
+      "maxSum": 23,
+      "leftCount": 3,
+      "rightCount": 9,
+      "alternativeTags": {}
+    },
+    "agency": {
+      "dimension": "agency",
+      "score": 13,
+      "inclination": "left",
+      "coverage": 0.8888888888888888,
+      "applicableCount": 9,
+      "directionalCount": 8,
+      "uncertainCount": 0,
+      "alternativeCount": 1,
+      "skippedCount": 0,
+      "inconsistency": 0.15384615384615385,
+      "signedSum": -11,
+      "minSum": -15,
+      "maxSum": 15,
+      "leftCount": 7,
+      "rightCount": 1,
+      "alternativeTags": {
+        "compatibilism": 1
+      }
+    },
+    "meaning": {
+      "dimension": "meaning",
+      "score": 82,
+      "inclination": "right",
+      "coverage": 1,
+      "applicableCount": 9,
+      "directionalCount": 9,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "inconsistency": 0.2666666666666667,
+      "signedSum": 11,
+      "minSum": -17,
+      "maxSum": 17,
+      "leftCount": 2,
+      "rightCount": 7,
+      "alternativeTags": {}
+    },
+    "society": {
+      "dimension": "society",
+      "score": 78,
+      "inclination": "right",
+      "coverage": 1,
+      "applicableCount": 9,
+      "directionalCount": 9,
+      "uncertainCount": 0,
+      "alternativeCount": 0,
+      "skippedCount": 0,
+      "inconsistency": 0.375,
+      "signedSum": 10,
+      "minSum": -18,
+      "maxSum": 18,
+      "leftCount": 2,
+      "rightCount": 7,
+      "alternativeTags": {}
+    }
+  },
+  "assignment": {
+    "status": "definitive",
+    "code": "IRDDCC",
+    "reasons": []
+  },
+  "tensions": [
+    {
+      "id": "created-meaning-objective-duty",
+      "kind": "apparent-tension",
+      "dimensions": [
+        "meaning",
+        "ethics"
+      ],
+      "because": {
+        "en": "Your meaning index leans toward creation, and your moral index leans toward duty and constraint.",
+        "zh": "你的意义指数偏向创造，而你的道德指数偏向义务与约束。"
+      }
+    },
+    {
+      "id": "compatibilist-responsibility",
+      "kind": "philosophical-disagreement",
+      "dimensions": [
+        "agency"
+      ],
+      "because": {
+        "en": "You chose at least one compatibilist description. That response is recorded, and it is not converted into a point on the agency index.",
+        "zh": "你至少选择了一次相容论式的描述。这一回答被记下，并且没有被换算成能动性指数上的一个点。"
+      }
+    }
+  ],
+  "answeredCount": 48,
+  "skippedCount": 0,
+  "uncertainCount": 0,
+  "totalQuestions": 48,
+  "invalidAnswerIds": []
+}

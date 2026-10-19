@@ -26,8 +26,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: { en: 'What stays on the device', zh: '什么留在设备上' },
         body: {
-          en: 'Answers are stored in localStorage under the key noema.assessment.v1. A completed PayPal return is stored under noema.access.v1, and it records the transaction id PayPal sent back, not a card number. The theme choice is stored under noema.theme. The language choice is stored under noema.locale. This release does not set cookies and does not load a third-party analytics script.',
-          zh: '回答保存在 localStorage 的 noema.assessment.v1 键下。PayPal 的一次已完成返回保存在 noema.access.v1 键下，其中记录的是 PayPal 送回的交易号，不是卡号。主题选择保存在 noema.theme 键下。语言选择保存在 noema.locale 键下。这个版本不设置 cookie，也不加载第三方分析脚本。',
+          en: 'Answers are stored in localStorage under the key noema.assessment.v1. A completed PayPal return is stored under noema.access.v1, and it records the transaction id PayPal sent back, not a card number. The theme choice is stored under noema.theme. The language choice is stored under noema.locale. This release does not set cookies.',
+          zh: '回答保存在 localStorage 的 noema.assessment.v1 键下。PayPal 的一次已完成返回保存在 noema.access.v1 键下，其中记录的是 PayPal 送回的交易号，不是卡号。主题选择保存在 noema.theme 键下。语言选择保存在 noema.locale 键下。这个版本不设置 cookie。',
         },
       },
       {
@@ -47,8 +47,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: { en: 'Hosting and payment', zh: '托管与支付' },
         body: {
-          en: 'If this site is served by Cloudflare Pages, the host may keep ordinary connection logs under its own policy. The application does not add an analytics product to those logs. Payment is handled on PayPal’s own page. This site does not receive card numbers. When PayPal returns the browser with a completed transaction id, that id is stored locally so the profile can open on this device. This page is not a claim of full GDPR compliance.',
-          zh: '如果本站由 Cloudflare Pages 提供，托管方可能按其自身政策保留普通的连接日志。应用程序并不在那些日志上再加一个分析产品。付款在 PayPal 自己的页面上处理。本站不接收卡号。当 PayPal 把浏览器送回并附上已完成的交易号时，这个交易号会保存在本地，以便在这台设备上打开剖面。本页并不是对完整 GDPR 合规的宣称。',
+          en: 'The production site is a Cloudflare Worker serving static assets. The host may keep ordinary connection logs under its own policy. When a Cloudflare Web Analytics token is set as a Workers Builds build variable, those pages include Cloudflare’s cookieless JavaScript beacon, which measures visits and performance. It does not set cookies and is not an advertising tracker. If the token is unset, or the site is built outside Workers Builds (including GitHub Pages), no analytics script is added. Payment is handled on PayPal’s own page. This site does not receive card numbers. When PayPal returns the browser with a completed transaction id, that id is stored locally so the profile can open on this device. This page is not a claim of full GDPR compliance.',
+          zh: '生产站点是一个提供静态资源的 Cloudflare Worker。托管方可能按其自身政策保留普通的连接日志。当 Workers Builds 的构建变量里设置了 Cloudflare Web Analytics 令牌时，这些页面会加入 Cloudflare 的无 cookie JavaScript 信标，用来衡量访问与性能。它不设置 cookie，也不是广告追踪。如果令牌未设置，或站点是在 Workers Builds 之外构建的（包括 GitHub Pages），则不会加入分析脚本。付款在 PayPal 自己的页面上处理。本站不接收卡号。当 PayPal 把浏览器送回并附上已完成的交易号时，这个交易号会保存在本地，以便在这台设备上打开剖面。本页并不是对完整 GDPR 合规的宣称。',
         },
       },
     ],

@@ -10,6 +10,6 @@
     "noUncheckedIndexedAccess": true,
     "strict": true
   },
-  "include": ["src", "e2e", "vitest.config.ts", "playwright.config.ts", ".astro/types.d.ts"],
+  "include": ["src", "worker", "e2e", "vitest.config.ts", "playwright.config.ts", ".astro/types.d.ts"],
   "exclude": ["dist"]
 }
