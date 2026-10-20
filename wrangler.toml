@@ -33,8 +33,9 @@ enabled = true
 PAYMENTS_LIVE = "false"
 PAYPAL_ENV = "sandbox"
 
-# Replace ids after: npx wrangler kv namespace create PURCHASES
+# PURCHASES KV: philosophicalcharacter-PURCHASES
+# preview_id matches id so wrangler preview / PR builds share production KV.
 [[kv_namespaces]]
 binding = "PURCHASES"
-id = "replace-with-wrangler-kv-namespace-create"
-preview_id = "replace-with-wrangler-kv-namespace-create"
+id = "0b9797a701d048dfb3d9fa5158e2f627"
+preview_id = "0b9797a701d048dfb3d9fa5158e2f627"
