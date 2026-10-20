@@ -27,8 +27,7 @@ npm run test:e2e
 ```bash
 cp .dev.vars.example .dev.vars
 # fill sandbox PayPal credentials and UNLOCK_HMAC_KEY
-npx wrangler kv namespace create PURCHASES
-# put the returned id in wrangler.toml, then:
+# PURCHASES KV id is already in wrangler.toml
 npm run build && npx wrangler dev
 ```
 
@@ -125,13 +124,7 @@ Live charges stay **off** until you flip them. `PAYMENTS_LIVE` defaults to `fals
 1. In the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/), create an app.
 2. Copy the **sandbox** Client ID and Secret. Do not start with live credentials.
 3. Enable Checkout / Orders v2 for that app. Do not use a no-code hosted payment link.
-4. In Cloudflare, create KV:
-
-```bash
-npx wrangler kv namespace create PURCHASES
-```
-
-Put the returned id in `wrangler.toml` under `[[kv_namespaces]]` (`binding = "PURCHASES"`).
+4. The `PURCHASES` KV namespace (`philosophicalcharacter-PURCHASES`) is already bound in `wrangler.toml`. Preview builds use the same id, so they share the production KV.
 
 5. Put Worker secrets (never commit the values):
 
