@@ -2,6 +2,7 @@ import { ShareCard } from '@/components/results/share-card/ShareCard';
 import type { FreePreview as FreePreviewData } from '@/lib/api/contract';
 import { publicFamily } from '@/lib/share-card/catalog';
 import { messages } from '@/lib/localization/messages';
+import { localePath } from '@/lib/localization/path';
 import type { ShareCardInput } from '@/lib/share-card/types';
 import type { Locale } from '@/types/model';
 
@@ -44,6 +45,19 @@ export function FreePreview({
         </p>
       )}
       {family && <p className="mt-2 max-w-3xl text-muted">{family.rule}</p>}
+      {preview.philosopherName && (
+        <p className="mt-4 max-w-3xl">
+          {m.featuredPhilosopher}
+          {'：'}
+          {preview.philosopherSlug ? (
+            <a href={localePath(locale, `/philosophers/${preview.philosopherSlug}`)}>{preview.philosopherName}</a>
+          ) : (
+            preview.philosopherName
+          )}
+          {preview.philosopherDates ? `（${preview.philosopherDates}）` : ''}
+        </p>
+      )}
+      {preview.summary && <p className="mt-4 max-w-3xl">{preview.summary}</p>}
       {preview.provisional && <p className="mt-3 text-sm">{m.provisionalBody}</p>}
       {preview.reasons.map((reason) => (
         <p key={reason} className="mt-2 text-sm text-muted">

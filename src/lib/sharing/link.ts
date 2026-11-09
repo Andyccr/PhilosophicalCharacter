@@ -1,4 +1,4 @@
-import { DIMENSION_IDS, POLE_LETTERS, classifyInclination, nearestSide, scoringConfig } from '@/lib/scoring/config';
+import { DIMENSION_IDS, POLE_LETTERS, classifyInclination, poleFromIndex, scoringConfig } from '@/lib/scoring/config';
 import type { Assignment, DimensionId, Localized } from '@/types/model';
 
 const CODE = /^[MI][ER][CD][DL][FC][IC]$/;
@@ -30,55 +30,29 @@ export function assignmentFromShared(
     }),
   ) as Record<DimensionId, { score: number | null; inclination: ReturnType<typeof classifyInclination> }>;
 
-  if (DIMENSION_IDS.some((id) => dimensions[id].score === null || dimensions[id].inclination === 'insufficient')) {
-    return {
-      status: 'withheld',
-      code: null,
-      reasons: [
-        reason(
-          'A shared view is missing a directional index, so no archetype is assigned from it.',
-          '分享视图缺少一个方向指数，因此不据此指派原型。',
-        ),
-      ],
-    };
-  }
-
-  const letters: string[] = [];
-  for (const id of DIMENSION_IDS) {
-    const score = dimensions[id].score;
-    if (score === null) {
-      return { status: 'withheld', code: null, reasons: [] };
-    }
-    const side = nearestSide(score);
-    if (side === null) {
-      return {
-        status: 'withheld',
-        code: null,
-        reasons: [
-          reason(
-            'An index sits at the midpoint, so the shared view has no nearest pole.',
-            '有一个指数落在中点，因此分享视图没有较近的一极。',
-          ),
-        ],
-      };
-    }
-    letters.push(POLE_LETTERS[id][side]);
-  }
-
+  const letters = DIMENSION_IDS.map((id) => POLE_LETTERS[id][poleFromIndex(dimensions[id].score)]);
   const code = letters.join('');
-  if (DIMENSION_IDS.some((id) => dimensions[id].inclination === 'mixed')) {
-    return {
-      status: 'provisional',
-      code,
-      reasons: [
-        reason(
-          'At least one shared index is mixed or marked as internally split. The code is only the nearest pole.',
-          '至少有一个分享指数是混合的，或被标为内部分裂。代码只是较近的一极。',
-        ),
-      ],
-    };
+  const missing = DIMENSION_IDS.some((id) => dimensions[id].score === null || dimensions[id].inclination === 'insufficient');
+  const mixed = DIMENSION_IDS.some((id) => dimensions[id].inclination === 'mixed');
+  const reasons: Localized[] = [];
+  if (missing) {
+    reasons.push(
+      reason(
+        'A shared view is missing a directional index. The code still names a pole on every axis, treating a missing index as the midpoint (the right pole).',
+        '分享视图缺少一个方向指数。代码仍会为每一轴标出一极：缺少指数时按中点处理，归入右极。',
+      ),
+    );
   }
-  return { status: 'definitive', code, reasons: [] };
+  if (mixed) {
+    reasons.push(
+      reason(
+        'At least one shared index is mixed or marked as internally split. The code is only the nearest pole.',
+        '至少有一个分享指数是混合的，或被标为内部分裂。代码只是较近的一极。',
+      ),
+    );
+  }
+  if (reasons.length === 0) return { status: 'definitive', code, reasons: [] };
+  return { status: 'provisional', code, reasons };
 }
 
 export function buildShareHash(profile: SharedProfile): string {

@@ -1,9 +1,11 @@
 import { FAMILY_NAMES, getPublicType } from '@/data/archetypes/public';
 import type { FreePreview } from '@/lib/api/contract';
+import { featuredPhilosopher } from '@/lib/interpretation/correspondence';
 import type { Assignment, Locale } from '@/types/model';
 
 export function freePreview(locale: Locale, assignment: Assignment, withheldBody: string): FreePreview {
   const published = getPublicType(assignment.code);
+  const figure = assignment.code ? featuredPhilosopher(assignment.code) : undefined;
   return {
     locale,
     code: assignment.code,
@@ -14,5 +16,8 @@ export function freePreview(locale: Locale, assignment: Assignment, withheldBody
     assignmentStatus: assignment.status,
     provisional: assignment.status === 'provisional',
     reasons: assignment.reasons.map((reason) => reason[locale]),
+    philosopherName: figure ? figure.name[locale] : null,
+    philosopherSlug: figure?.slug ?? null,
+    philosopherDates: figure ? figure.dates[locale] : null,
   };
 }

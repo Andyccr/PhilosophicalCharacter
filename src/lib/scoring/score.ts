@@ -5,7 +5,7 @@ import {
   MODEL_VERSION,
   POLE_LETTERS,
   classifyInclination,
-  nearestSide,
+  poleFromIndex,
   roundIndex,
 } from '@/lib/scoring/config';
 import type {
@@ -125,62 +125,31 @@ function reason(en: string, zh: string): Localized {
 }
 
 export function assignCode(dimensions: Record<DimensionId, DimensionScore>): Assignment {
-  const insufficient = DIMENSION_IDS.filter((id) => dimensions[id].inclination === 'insufficient');
-  if (insufficient.length > 0) {
-    return {
-      status: 'withheld',
-      code: null,
-      reasons: [
-        reason(
-          'At least one axis does not have enough directional answers for a 64-type classification.',
-          '至少有一轴没有足够的方向性回答，因此不作六十四型分类。',
-        ),
-      ],
-    };
-  }
-
-  const letters: string[] = [];
-  for (const id of DIMENSION_IDS) {
-    const score = dimensions[id].score;
-    if (score === null) {
-      return {
-        status: 'withheld',
-        code: null,
-        reasons: [reason('An axis has no directional index.', '有一轴没有方向指数。')],
-      };
-    }
-    const side = nearestSide(score);
-    if (side === null) {
-      return {
-        status: 'withheld',
-        code: null,
-        reasons: [
-          reason(
-            'An axis sits at the modeled midpoint, so there is no nearest pole to put in a code.',
-            '有一轴落在模型的中点上，因此没有可以写入代码的较近一极。',
-          ),
-        ],
-      };
-    }
-    letters.push(POLE_LETTERS[id][side]);
-  }
-
+  const letters = DIMENSION_IDS.map((id) => POLE_LETTERS[id][poleFromIndex(dimensions[id].score)]);
   const code = letters.join('');
-  const mixed = DIMENSION_IDS.filter((id) => dimensions[id].inclination === 'mixed');
-  if (mixed.length > 0) {
-    return {
-      status: 'provisional',
-      code,
-      reasons: [
-        reason(
-          'One or more axes are mixed or internally split. The code is the nearest pole on each axis, not a settled classification.',
-          '有一轴或多轴处于混合或内部分裂。代码只是每一轴较近的一极，不是确定的分类。',
-        ),
-      ],
-    };
+  const missing = DIMENSION_IDS.some(
+    (id) => dimensions[id].score === null || dimensions[id].inclination === 'insufficient',
+  );
+  const mixed = DIMENSION_IDS.some((id) => dimensions[id].inclination === 'mixed');
+  const reasons: Localized[] = [];
+  if (missing) {
+    reasons.push(
+      reason(
+        'At least one axis does not have enough directional answers. The code still names a pole on every axis, treating a missing index as the midpoint (the right pole). It is not a settled classification.',
+        '至少有一轴没有足够的方向性回答。代码仍会为每一轴标出一极：缺少指数时按中点处理，归入右极。这不是确定的分类。',
+      ),
+    );
   }
-
-  return { status: 'definitive', code, reasons: [] };
+  if (mixed) {
+    reasons.push(
+      reason(
+        'One or more axes are mixed or internally split. The code is the nearest pole on each axis, not a settled classification.',
+        '有一轴或多轴处于混合或内部分裂。代码只是每一轴较近的一极，不是确定的分类。',
+      ),
+    );
+  }
+  if (reasons.length === 0) return { status: 'definitive', code, reasons: [] };
+  return { status: 'provisional', code, reasons };
 }
 
 export function scoreAssessment(answers: Record<string, string>): AssessmentResult {

@@ -69,10 +69,13 @@ export function classifyInclination(input: {
   return 'mixed';
 }
 
-export function nearestSide(score: number): 'left' | 'right' | null {
-  if (score < scoringConfig.midpoint) return 'left';
-  if (score > scoringConfig.midpoint) return 'right';
-  return null;
+export function nearestSide(score: number): 'left' | 'right' {
+  return score < scoringConfig.midpoint ? 'left' : 'right';
+}
+
+/** Missing indices are treated as the midpoint so a six-letter code can always be named. */
+export function poleFromIndex(score: number | null): 'left' | 'right' {
+  return nearestSide(score === null ? scoringConfig.midpoint : score);
 }
 
 export const scoringDocumentation: Array<{ heading: Localized; body: Localized }> = [
@@ -107,8 +110,8 @@ export const scoringDocumentation: Array<{ heading: Localized; body: Localized }
   {
     heading: { en: 'From six indices to a code', zh: '从六个指数到一个代码' },
     body: {
-      en: 'The six-letter code is a separate step from the numerical profile. It is assigned only when every axis has enough coverage to score. If every axis then falls clearly left or right, the code is definitive. If one or more axes are mixed but each still has a nearer pole, the code is provisional and is shown with an uncertainty warning. If any axis lacks a score, or sits exactly at 50 so that there is no nearer pole, NOEMA withholds the 64-type classification. The eight families are an editorial map of ontology, meaning, and social priority. They are not discovered personality clusters.',
-      zh: '六字母代码与数值剖面是分开的一步。只有每一轴都有足够覆盖、可以计分时，才讨论代码。若每一轴随后都明确落在左极或右极，代码是确定的。若有一轴或多轴混合，但每轴仍有较近的一极，代码是暂定的，并会附上不确定说明。若任一轴没有分数，或正好落在 50、因而没有较近的一极，NOEMA 不会给出六十四型分类。八个家族是依据本体论、意义与社会优先所作的编辑分组，不是被发现的人格聚类。',
+      en: 'The six-letter code is a separate step from the numerical profile. On each axis the code names the nearer pole: an index below 50 is the left pole, and an index of 50 or above is the right pole. If every axis then falls clearly left or right, the code is definitive. If one or more axes are mixed, sit at 50, or lack a directional index, the code is still given and marked provisional. A missing index is treated as the midpoint for the code only; the numerical index itself still does not treat a skip or “I cannot determine” as 50. The eight families are an editorial map of ontology, meaning, and social priority. They are not discovered personality clusters.',
+      zh: '六字母代码与数值剖面是分开的一步。每一轴的代码标出较近的一极：指数低于 50 归入左极，等于或高于 50 归入右极。若每一轴都明确落在左极或右极，代码是确定的。若有一轴或多轴处于混合、正好是 50，或缺少方向指数，代码仍会给出，并标为暂定。缺少指数时，只在生成代码时按中点处理；数值指数本身仍不会把跳过或“我无法判断”记成 50。八个家族是依据本体论、意义与社会优先所作的编辑分组，不是被发现的人格聚类。',
     },
   },
   {

@@ -90,6 +90,32 @@ export function LockedReport({
         ))}
       </section>
 
+      {profile.featuredPhilosopher && (
+        <section className="mt-12">
+          <h2 className="serif text-3xl">{m.featuredPhilosopher}</h2>
+          <article className="frame mt-4 p-5">
+            <p className="kicker">{profile.featuredPhilosopher.dates}</p>
+            <h3 className="serif mt-2 text-2xl">
+              <a href={profile.featuredPhilosopher.path}>{profile.featuredPhilosopher.name}</a>
+            </h3>
+            <p className="mt-2 text-muted">{profile.featuredPhilosopher.themes}</p>
+            <p className="mt-3 max-w-3xl">{profile.featuredPhilosopher.readingNote}</p>
+          </article>
+        </section>
+      )}
+
+      {profile.personality.length > 0 && (
+        <section className="mt-12">
+          <h2 className="serif text-3xl">{m.personality}</h2>
+          <p className="mt-3 text-sm text-muted">{m.personalityLead}</p>
+          {profile.personality.map((paragraph) => (
+            <p key={paragraph} className="mt-4 max-w-3xl">
+              {paragraph}
+            </p>
+          ))}
+        </section>
+      )}
+
       {profile.worldview.length > 0 && (
         <section className="mt-12">
           <h2 className="serif text-3xl">{m.worldview}</h2>

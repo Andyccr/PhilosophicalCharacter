@@ -19,8 +19,8 @@ export const articles: Article[] = [
       {
         heading: { en: 'What it cannot say', zh: '它不能说什么' },
         body: {
-          en: 'It cannot say that you are intelligent, well, employable, or politically located. It cannot say how you compare with other people, because it has no reference population. A six-letter code is a compression of six binary leans. Where the leans are mixed or the answers are thin, the code is provisional or withheld.',
-          zh: '它不能说你聪明、健康、适于被雇用，或在政治上位于何处。它不能说你与其他人相比如何，因为它没有参照人群。一个六字母代码是六次二元倾向的压缩。在倾向混合或回答稀薄的地方，代码是暂定的，或被保留不给。',
+          en: 'It cannot say that you are intelligent, well, employable, or politically located. It cannot say how you compare with other people, because it has no reference population. A six-letter code is a compression of six binary leans. Where the leans are mixed or the answers are thin, the code is marked provisional.',
+          zh: '它不能说你聪明、健康、适于被雇用，或在政治上位于何处。它不能说你与其他人相比如何，因为它没有参照人群。一个六字母代码是六次二元倾向的压缩。在倾向混合或回答稀薄的地方，代码会标为暂定，但仍然会给出。',
         },
       },
     ],
