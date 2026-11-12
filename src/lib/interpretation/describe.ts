@@ -2,9 +2,9 @@ import { dimensions } from '@/data/dimensions';
 import type { DimensionScore, Inclination, Locale, Localized } from '@/types/model';
 
 const inclinationLabel: Record<Inclination, Localized> = {
-  left: { en: 'Toward the left pole', zh: '朝向左极' },
-  right: { en: 'Toward the right pole', zh: '朝向右极' },
-  mixed: { en: 'Mixed on this axis', zh: '这一轴上是混合的' },
+  left: { en: 'Toward the left pole', zh: '更靠近左侧' },
+  right: { en: 'Toward the right pole', zh: '更靠近右侧' },
+  mixed: { en: 'Mixed on this axis', zh: '这一轴上两边都有' },
   insufficient: { en: 'Not enough directional answers', zh: '方向性回答不足' },
 };
 
@@ -31,7 +31,7 @@ export function describeScore(score: DimensionScore, locale: Locale): string {
       : score.inclination === 'right'
         ? dimension.rightPole[locale]
         : locale === 'zh'
-          ? '未单侧落定'
+          ? '还没有明显偏向一边'
           : 'not settled on one side';
   return locale === 'zh'
     ? `${dimension.plainName[locale]}：方向指数 ${score.score}，${lean}（${pole}）。`

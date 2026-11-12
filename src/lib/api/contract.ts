@@ -58,6 +58,9 @@ export interface FreePreview {
   /** True when the six-letter code is the nearer pole, not a settled type. */
   provisional: boolean;
   reasons: string[];
+  philosopherName: string | null;
+  philosopherSlug: string | null;
+  philosopherDates: string | null;
 }
 
 export interface ProfileAxisInput {
@@ -122,6 +125,15 @@ export interface PaidReading {
   topic: string;
 }
 
+export interface PaidPhilosopher {
+  slug: string;
+  name: string;
+  dates: string;
+  themes: string;
+  readingNote: string;
+  path: string;
+}
+
 /** JSON returned by `POST /api/profile` for a valid unlock token. */
 export interface PaidProfile {
   locale: Locale;
@@ -133,10 +145,13 @@ export interface PaidProfile {
   summary: string | null;
   axes: PaidAxis[];
   worldview: string[];
+  personality: string[];
   strengths: string[];
   blindSpots: string[];
   pairingPressure: string | null;
   reflection: string[];
+  featuredPhilosopher: PaidPhilosopher | null;
+  philosophers: PaidPhilosopher[];
   tensions: PaidTension[];
   standing: PaidStanding[];
   readings: PaidReading[];

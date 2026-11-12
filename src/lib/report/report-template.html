@@ -242,8 +242,15 @@ html[data-locale="zh"] .method h3{margin-top:4mm}
     <p class="gap-s">{{essay}}</p>
   </div>
   {{/family}}
+  {{#personality.length}}
+  <h3 class="gap-l">{{labels.personality}}</h3>
+  <p class="small muted gap-s prose">{{labels.personalityLead}}</p>
+  <div class="prose gap-s">{{#personality}}<p>{{.}}</p>{{/personality}}</div>
+  {{/personality.length}}
+  {{^personality.length}}
   <h3 class="gap-l">{{labels.worldview}}</h3>
   <div class="prose gap-s">{{#worldview}}<p>{{.}}</p>{{/worldview}}</div>
+  {{/personality.length}}
   <div class="two gap-l">
     <div class="block"><h3>{{labels.strengths}}</h3><ul class="clean">{{#strengths}}<li>{{.}}</li>{{/strengths}}</ul></div>
     <div class="block"><h3>{{labels.blindSpots}}</h3><ul class="clean">{{#blindSpots}}<li>{{.}}</li>{{/blindSpots}}</ul></div>
@@ -290,6 +297,16 @@ html[data-locale="zh"] .method h3{margin-top:4mm}
   <div class="grid2">
     {{#traditions}}<div class="card"><p class="kicker">{{viaDimensionName}}</p><h4>{{name}}</h4><p>{{summary}}</p></div>{{/traditions}}
   </div>
+  {{#featuredPhilosopher}}
+  <div class="block aside gap-l">
+    <p class="kicker">{{labels.featuredPhilosopher}}</p>
+    <h3 style="margin-top:1.5mm">{{name}}</h3>
+    <p class="small muted">{{dates}}</p>
+    <p class="muted">{{themes}}</p>
+    <p class="gap-s">{{readingNote}}</p>
+    <p class="small muted">{{labels.traditionsTitle}}: {{sharedTraditions}}</p>
+  </div>
+  {{/featuredPhilosopher}}
   {{#philosophers.length}}
   <div class="gap-l">
     <h2 style="font-size:16pt">{{labels.philosophers}}</h2>

@@ -9,10 +9,10 @@ const uncertain: QuestionOption = {
 };
 
 const likertCopy = {
-  sd: { en: 'Strongly disagree', zh: '强烈不同意' },
+  sd: { en: 'Strongly disagree', zh: '非常不同意' },
   d: { en: 'Disagree', zh: '不同意' },
   a: { en: 'Agree', zh: '同意' },
-  sa: { en: 'Strongly agree', zh: '强烈同意' },
+  sa: { en: 'Strongly agree', zh: '非常同意' },
 } as const;
 
 function directional(
@@ -73,11 +73,11 @@ export const questions: Question[] = [
     theme: { en: 'Physical explanation', zh: '物理解释' },
     prompt: {
       en: 'Everything that exists, including thoughts and feelings, is ultimately a physical process.',
-      zh: '一切存在之物，包括思想和感受，归根结底都是物理过程。',
+      zh: '一切存在的东西，包括思想和感受，归根结底都是物理过程。',
     },
     rationale: {
       en: 'This statement concerns whether a physical description is enough for mental life. It belongs to the reality axis. Agreement and disagreement are both intelligible philosophical responses.',
-      zh: '这句话关乎物理解释是否足以说明精神生活。它属于实在之轴。同意与不同意都是可理解的哲学回应。',
+      zh: '这句话关乎物理解释是否足以说明精神生活。它属于实在之轴。同意与不同意都是可以理解的哲学回应。',
     },
     tags: ['reduction', 'consciousness'],
   }),
@@ -85,21 +85,21 @@ export const questions: Question[] = [
     id: 'ont-02',
     dimension: 'ontology',
     reverseKeyed: false,
-    theme: { en: 'Conscious experience', zh: '意识经验' },
+    theme: { en: 'Conscious experience', zh: '意识体验' },
     prompt: {
       en: 'Conscious experience cannot be fully explained as a physical process.',
-      zh: '意识经验无法被完全解释为一种物理过程。',
+      zh: '意识体验无法被完全解释为物理过程。',
     },
     rationale: {
       en: 'This statement asks whether experience remains after a physical account is finished. It belongs to the reality axis and does not ask about religion or spirituality.',
-      zh: '这句话问的是：物理解释完成之后，经验是否仍有剩余。它属于实在之轴，并不询问宗教或灵性。',
+      zh: '这句话问的是：物理解释做完之后，体验是否仍有剩下来的部分。它属于实在之轴，与宗教或灵性无关。',
     },
     tags: ['consciousness'],
   }),
   item({
     id: 'ont-03',
     type: 'scenario',
-    theme: { en: 'A finished physical account', zh: '完成了的物理说明' },
+    theme: { en: 'A finished physical account', zh: '一份完整的物理解释' },
     prompt: {
       en: 'A team produces a complete physical account of a person at the moment they see a red sunset: every measurement of the body and its surroundings that physics can give.',
       zh: '一个团队对一个人看见红色晚霞的那一刻，给出了物理学所能提供的、关于身体及其周围的完整物理说明。',
@@ -109,7 +109,7 @@ export const questions: Question[] = [
     tags: ['consciousness'],
     rationale: {
       en: 'The case asks what you think a finished physical description settles. It is related to discussions of conscious experience, including Thomas Nagel’s 1974 paper on what experience is like. It does not ask you to solve a puzzle.',
-      zh: '这个情境问的是：你认为一份完成了的物理描述解决了什么。它与关于意识经验的讨论有关，包括托马斯·内格尔 1974 年关于“经验是什么样子”的论文。它并不要求你解开一道谜题。',
+      zh: '这个情境问的是：你认为一份完成了的物理描述解决了什么。它与关于意识体验的讨论有关，包括托马斯·内格尔 1974 年关于“那种主观体验”的论文。它并不要求你解开一道谜题。',
     },
     references: [
       {
@@ -124,7 +124,7 @@ export const questions: Question[] = [
       }, { ontology: -2 }),
       directional('b', {
         en: 'That account can be complete as physics and still omit what the seeing is like.',
-        zh: '这份说明作为物理学可以是完整的，却仍然遗漏了看见是什么样子。',
+        zh: '这份说明作为物理学可以是完整的，却仍然遗漏了看见时的那种体验。',
       }, { ontology: 2 }),
       uncertain,
     ],
@@ -142,7 +142,7 @@ export const questions: Question[] = [
     tags: ['consciousness', 'machines'],
     rationale: {
       en: 'This case asks whether sameness of physical organization settles whether there is experience. It is an original wording in the neighborhood of debates about machine consciousness. Neither answer is treated as the intelligent one.',
-      zh: '这个情境问的是：物理组织的相同，是否决定了有没有经验。它是机器意识争论附近的一种原创表述。两个回答都不会被当成“更聪明”的那个。',
+      zh: '这个情境问的是：物理组织的相同，是否决定了有没有体验。它是围绕机器意识争论的一种原创表述。两个回答都不会被当成“更聪明”的那个。',
     },
     options: [
       directional('a', {
@@ -151,7 +151,7 @@ export const questions: Question[] = [
       }, { ontology: -2 }),
       directional('b', {
         en: 'The physical organization does not settle whether there is anything it is like for the machine.',
-        zh: '物理组织并不能决定：对这台机器而言，是否有某种“是什么样子”。',
+        zh: '物理组织并不能决定：对这台机器而言，是否存在任何主观体验。',
       }, { ontology: 2 }),
       uncertain,
     ],
@@ -178,7 +178,7 @@ export const questions: Question[] = [
       }, { ontology: -2 }),
       directional('b', {
         en: 'The person’s reasons, understood as something a physical story does not exhaust.',
-        zh: '这个人的理由，并且这些理由不被理解为物理叙述已经穷尽的东西。',
+        zh: '这个人的理由，而这些理由并不被物理叙述穷尽。',
       }, { ontology: 2 }),
       uncertain,
     ],
@@ -190,7 +190,7 @@ export const questions: Question[] = [
     theme: { en: 'A world without observers', zh: '没有观察者的世界' },
     prompt: {
       en: 'The world would still have the structure it has even if no mind had ever existed to perceive it.',
-      zh: '即便从来没有任何心灵知觉过它，世界仍会具有它现在的结构。',
+      zh: '即便从来没有任何心灵感知过它，世界仍会具有它现在的结构。',
     },
     rationale: {
       en: 'This statement concerns whether the world’s structure depends on mind. It belongs to the reality axis. It does not equate mind-dependence with spirituality.',
@@ -205,7 +205,7 @@ export const questions: Question[] = [
     theme: { en: 'Observation', zh: '观察' },
     prompt: {
       en: 'A claim about the world earns its credibility mainly by being checked against observation.',
-      zh: '一个关于世界的主张，其可信主要来自对照观察而得到检验。',
+      zh: '一个关于世界的主张之所以可信，主要是因为它经受了观察的检验。',
     },
     rationale: {
       en: 'This statement is about the weight you give to observation. It does not say that reasoning is dispensable.',
@@ -224,7 +224,7 @@ export const questions: Question[] = [
     },
     rationale: {
       en: 'This statement asks whether reasoning can be a source of knowledge about reality, not whether observation ever matters.',
-      zh: '这句话问的是推理能否成为关于实在的知识来源，而不是观察是否永远无关。',
+      zh: '这句话问的是推理能否成为关于实在的知识来源，而不是在问观察是否重要。',
     },
     tags: ['a-priori'],
   }),
@@ -234,14 +234,14 @@ export const questions: Question[] = [
     theme: { en: 'A messy record and a clean argument', zh: '凌乱的记录与干净的论证' },
     prompt: {
       en: 'Two investigators disagree about how some part of the world works. One has a careful observational record and a theory that is still untidy. The other has an elegant argument from general principles and very little observation.',
-      zh: '两位探究者对世界的某一部分如何运作意见不同。一位有仔细的观察记录，理论却仍然不整齐。另一位有一个从一般原则出发的优美论证，观察却很少。',
+      zh: '两位探究者对世界的某一部分如何运作意见不同。一位有仔细的观察记录，理论却仍然凌乱。另一位有一个从一般原则出发的优美论证，观察却很少。',
     },
     dimensions: ['epistemology'],
     primaryDimension: 'epistemology',
     tags: ['observation', 'principles'],
     rationale: {
       en: 'The case asks where you put more initial trust. It does not ask which investigator is more intelligent, and it allows that both observation and argument can matter.',
-      zh: '这个情境问的是你最初更信任哪里。它不问哪位探究者更聪明，也允许观察与论证都重要。',
+      zh: '这个情境问的是你最初更信任哪一边。它不问哪位探究者更聪明，也允许观察与论证都重要。',
     },
     options: [
       directional('a', {
@@ -261,14 +261,14 @@ export const questions: Question[] = [
     theme: { en: 'Reason without acquaintance', zh: '没有亲知的理性' },
     prompt: {
       en: 'Imagine someone who can reason flawlessly but has never observed the natural world, and someone else who has rich observation and a weak grasp of theory. You want to learn what the world is like.',
-      zh: '想象一个人可以毫无瑕疵地推理，却从未观察过自然世界；另一个人观察丰富，对理论的掌握却很弱。你想知道世界是什么样子。',
+      zh: '想象一个人能够完美地推理，却从未观察过自然世界；另一个人观察丰富，对理论的掌握却很弱。你想知道世界究竟是怎样的。',
     },
     dimensions: ['epistemology'],
     primaryDimension: 'epistemology',
     tags: ['a-priori', 'observation'],
     rationale: {
       en: 'This contrast asks what you think can teach you about the world. It is not a test of whether you can reason flawlessly yourself.',
-      zh: '这个对照问的是你认为什么能够告诉你世界的样子。它不是在测验你自己能否毫无瑕疵地推理。',
+      zh: '这个对照问的是，你认为什么能让你了解世界。它并不是在测验你自己能否完美地推理。',
     },
     options: [
       directional('a', {
@@ -313,14 +313,14 @@ export const questions: Question[] = [
     id: 'epi-06',
     dimension: 'epistemology',
     reverseKeyed: false,
-    theme: { en: 'Necessity as a model of knowledge', zh: '作为知识范型的必然性' },
+    theme: { en: 'Necessity as a model of knowledge', zh: '作为知识典范的必然性' },
     prompt: {
       en: 'Mathematical and logical necessity is a model for the strongest kind of knowledge we can have.',
-      zh: '数学与逻辑的必然性，是我们所能拥有的最强知识的范型。',
+      zh: '数学与逻辑的必然性，是我们所能拥有的最强知识的一种典范。',
     },
     rationale: {
       en: 'This statement asks how far you take necessity as a model of knowledge. It does not deny that observation can be knowledge.',
-      zh: '这句话问的是你在多大程度上把必然性当作知识的范型。它并不否认观察也可以是知识。',
+      zh: '这句话问的是你在多大程度上把必然性当作知识的典范。它并不否认观察也可以是知识。',
     },
     tags: ['necessity'],
   }),
@@ -367,7 +367,7 @@ export const questions: Question[] = [
     tags: ['trolley'],
     rationale: {
       en: 'The case asks how you weigh a smaller harm you would steer against a larger harm you would otherwise allow. The page does not report what Foot or Thomson concluded.',
-      zh: '这个情境问的是：你如何权衡一个由你转向而造成的较小伤害，与一个若你不转向就会发生的较大伤害。本页不报告福特或汤姆森的结论。',
+      zh: '这个情境问的是：你如何权衡一个因你转向而造成的较小伤害，与一个若你不转向就会发生的较大伤害。本页不报告福特或汤姆森的结论。',
     },
     references: [
       {
@@ -400,7 +400,7 @@ export const questions: Question[] = [
     tags: ['promise'],
     rationale: {
       en: 'The case puts a promise next to a harm that the promise helps to permit. It does not say which consideration is morally superior.',
-      zh: '这个情境把一个承诺放在它所容许的伤害旁边。它并不说哪一种考虑在道德上更高。',
+      zh: '这个情境把一个承诺与它间接容许的伤害放在一起对照。它并不说哪一种考虑在道德上更胜一筹。',
     },
     options: [
       directional('a', {
@@ -420,7 +420,7 @@ export const questions: Question[] = [
     theme: { en: 'A benefit and a right', zh: '利益与权利' },
     prompt: {
       en: 'A policy would greatly improve well-being for a large majority, and it would do so by violating one innocent person’s basic rights.',
-      zh: '一项政策会大大改善多数人的福祉，而它的方式是侵犯一个无辜者的基本权利。',
+      zh: '一项政策会大大改善大多数人的福祉，而它这样做的方式是侵犯一个无辜者的基本权利。',
     },
     dimensions: ['ethics'],
     primaryDimension: 'ethics',
@@ -432,11 +432,11 @@ export const questions: Question[] = [
     options: [
       directional('a', {
         en: 'The improvement can justify the violation.',
-        zh: '这种改善可以证成这一侵犯。',
+        zh: '这种改善可以为这一侵犯辩护。',
       }, { ethics: -2 }),
       directional('b', {
         en: 'The right stands even if the numbers favor violating it.',
-        zh: '即使数字偏向侵犯，这项权利仍然成立。',
+        zh: '即使数字支持侵犯它，这项权利仍然成立。',
       }, { ethics: 2 }),
       uncertain,
     ],
@@ -492,14 +492,14 @@ export const questions: Question[] = [
     theme: { en: 'A perfect prediction', zh: '完美的预测' },
     prompt: {
       en: 'A predictor that has never been wrong tells you what you will choose before you choose. The case is about whether a choice is fixed ahead of time. It is related to Laplace’s image of a complete prediction and is not Newcomb’s problem.',
-      zh: '一个从未错过的预测者，在你选择之前告诉你你将如何选择。这个情境关乎选择是否预先被固定。它与拉普拉斯关于完整预测的设想有关，并不是纽科姆难题。',
+      zh: '一个从未出错的预测者，在你做出选择之前就告诉你你会怎么选。这个情境关乎选择是否在事先就已经被决定。它与拉普拉斯关于完整预测的设想有关，但并不是纽科姆难题。',
     },
     dimensions: ['agency'],
     primaryDimension: 'agency',
     tags: ['prediction'],
     rationale: {
       en: 'The case asks what a perfect prediction would mean. It does not ask you to outsmart the predictor.',
-      zh: '这个情境问的是完美预测意味着什么。它并不要求你在智谋上胜过预测者。',
+      zh: '这个情境问的是完美预测意味着什么。它并不要求你比预测者更高明。',
     },
     references: [
       {
@@ -514,7 +514,7 @@ export const questions: Question[] = [
       }, { agency: -2 }),
       directional('b', {
         en: 'The prediction cannot already be settled, because the choice itself is not yet fixed.',
-        zh: '预测不可能已经确定，因为选择本身尚未被固定。',
+        zh: '预测不可能已经被确定，因为选择本身尚未被固定。',
       }, { agency: 2 }),
       uncertain,
     ],
@@ -537,7 +537,7 @@ export const questions: Question[] = [
     options: [
       directional('a', {
         en: 'They are not morally responsible, because the act was produced by causes they did not author.',
-        zh: '他们不负有道德责任，因为这个行为是由他们并未创作的原因产生的。',
+        zh: '他们不负有道德责任，因为这个行为是由并非他们自己造成的原因所导致的。',
       }, { agency: -2 }),
       directional('b', {
         en: 'They are responsible only if they could have done otherwise in a way not fixed by prior causes.',
@@ -553,17 +553,17 @@ export const questions: Question[] = [
   item({
     id: 'age-05',
     type: 'forced-choice',
-    theme: { en: 'The experience of choosing', zh: '选择的经验' },
+    theme: { en: 'The experience of choosing', zh: '选择的体验' },
     prompt: {
       en: 'What best accounts for the experience of choosing?',
-      zh: '什么最能说明选择的经验？',
+      zh: '什么最能说明选择的体验？',
     },
     dimensions: ['agency'],
     primaryDimension: 'agency',
     tags: ['experience-of-choice'],
     rationale: {
       en: 'The question asks how you understand the experience of choice. It does not treat that experience as proof.',
-      zh: '这个问题问的是你如何理解选择的经验。它并不把那种经验当作证明。',
+      zh: '这个问题问的是你如何理解选择的体验。它并不把那种体验当作证明。',
     },
     options: [
       directional('a', {
@@ -584,7 +584,7 @@ export const questions: Question[] = [
     theme: { en: 'New beginnings', zh: '新的开端' },
     prompt: {
       en: 'Human choices introduce beginnings into the course of events. They are not only continuations of what came before.',
-      zh: '人的选择把开端引入事件的进程。它们不只是先前之事的延续。',
+      zh: '人的选择为事件的进程带来新的开端。它们不只是先前之事的延续。',
     },
     rationale: {
       en: 'This statement asks whether a choice is a beginning or only a continuation. It is not a claim about political liberty.',
@@ -599,11 +599,11 @@ export const questions: Question[] = [
     theme: { en: 'A purpose to be found', zh: '有待发现的目的' },
     prompt: {
       en: 'A life goes well, in the deepest sense, by realizing purposes that are there to be found, not only invented.',
-      zh: '一种生活在最深的意义上过得好，是因为实现了有待发现的目的，而不只是被发明出来的目的。',
+      zh: '从最深的层面说，一种生活过得好，是因为它实现了那些有待发现的目的，而不只是自己发明出来的目的。',
     },
     rationale: {
       en: 'This statement asks whether the deepest purposes are found. Inventing a purpose is not described here as emptiness.',
-      zh: '这句话问最深的目的是否是被发现的。在这里，发明一个目的并没有被说成空洞。',
+      zh: '这句话问的是：最根本的目的是不是被发现的。它并没有说，自己发明一个目的就是空洞的。',
     },
     tags: ['discovery'],
   }),
@@ -614,11 +614,11 @@ export const questions: Question[] = [
     theme: { en: 'Commitments that confer weight', zh: '赋予分量的承诺' },
     prompt: {
       en: 'Meaning in a life comes from the commitments a person chooses and sustains, not from a purpose built into the world.',
-      zh: '生活中的意义来自一个人所选择并维持的承诺，而不是来自建造在世界之中的目的。',
+      zh: '生活的意义来自一个人选择并坚持下去的承诺，而不是来自世界本身固有的某种目的。',
     },
     rationale: {
       en: 'This statement describes meaning as conferred by commitment. It is not a statement that nothing is worth doing.',
-      zh: '这句话把意义描述为由承诺所赋予。它并不是在说没有什么值得去做。',
+      zh: '这句话把意义说成是由承诺赋予的。它并不是在说没有什么值得去做。',
     },
     tags: ['creation'],
   }),
@@ -628,14 +628,14 @@ export const questions: Question[] = [
     theme: { en: 'A universe without a purpose', zh: '没有目的的宇宙' },
     prompt: {
       en: 'Suppose the universe has no purpose of its own. This theme is associated with Albert Camus’s treatment of the absurd in The Myth of Sisyphus (1942). The question does not treat the creation of meaning as nihilism.',
-      zh: '假设宇宙自身没有目的。这一主题与阿尔贝·加缪在《西西弗神话》（1942）中对荒诞的讨论有关。这个问题并不把意义的创造当作虚无主义。',
+      zh: '假设宇宙本身没有目的。这一主题与阿尔贝·加缪在《西西弗神话》（1942）中对荒诞的讨论有关。这道题并不把创造意义看作虚无主义。',
     },
     dimensions: ['meaning'],
     primaryDimension: 'meaning',
     tags: ['absurd', 'nihilism'],
     rationale: {
       en: 'One response refuses both discovery and creation. That response is recorded as its own position and is not scored as the midpoint.',
-      zh: '有一个回应同时拒绝发现与创造。这个回应被记为其自身的立场，并不被计成中点。',
+      zh: '有一个回答同时拒绝发现和创造。这个回答被单独记为一种立场，而不会被算作中间点。',
     },
     references: [
       {
@@ -646,15 +646,15 @@ export const questions: Question[] = [
     options: [
       directional('a', {
         en: 'Meaning can still be found in values that hold without a cosmic purpose.',
-        zh: '意义仍然可以在并不依赖宇宙目的的价值中被发现。',
+        zh: '即使没有宇宙层面的目的，意义仍然可以在站得住脚的价值中找到。',
       }, { meaning: -2 }),
       directional('b', {
         en: 'Meaning is something people create by the projects and loyalties they sustain.',
-        zh: '意义是人们通过所维持的计划与忠诚而创造的。',
+        zh: '意义是人通过自己坚持的事业和忠诚创造出来的。',
       }, { meaning: 2 }),
       alternative('c', {
         en: 'Without a cosmic purpose, there is no sense in which a life is meaningful.',
-        zh: '如果没有宇宙目的，一种生活就没有任何意义上是有意义的。',
+        zh: '如果没有宇宙层面的目的，人生就谈不上有什么意义。',
       }, 'nihilism'),
       uncertain,
     ],
@@ -665,14 +665,14 @@ export const questions: Question[] = [
     theme: { en: 'Two paths', zh: '两条道路' },
     prompt: {
       en: 'One path fits a standard of a worthwhile life that you did not invent. Another path is yours alone and would not be recommended by any standard outside your choice.',
-      zh: '一条道路符合某种你并未发明的“值得过的生活”的标准。另一条道路只属于你，而且不会被你的选择之外的任何标准所推荐。',
+      zh: '一条道路符合某种“值得过的生活”的标准，而这个标准并不是你发明的。另一条道路只属于你，除了你自己的选择，没有任何外在标准会推荐它。',
     },
     dimensions: ['meaning'],
     primaryDimension: 'meaning',
     tags: ['vocation'],
     rationale: {
       en: 'The case asks which path you treat as more meaningful. It does not ask which path is more impressive.',
-      zh: '这个情境问的是你把哪条道路视为更有意义。它不问哪条道路更令人印象深刻。',
+      zh: '这个情境问的是：你把哪条道路看作更有意义，而不是哪条道路更让人印象深刻。',
     },
     options: [
       directional('a', {
@@ -681,7 +681,7 @@ export const questions: Question[] = [
       }, { meaning: -2 }),
       directional('b', {
         en: 'The second is more meaningful, because you are the one who gives it weight.',
-        zh: '第二条更有意义，因为是你赋予了它分量。',
+        zh: '第二条更有意义，因为它的分量是你给的。',
       }, { meaning: 2 }),
       uncertain,
     ],
@@ -689,26 +689,26 @@ export const questions: Question[] = [
   item({
     id: 'mea-05',
     type: 'forced-choice',
-    theme: { en: 'What a life is for', zh: '一种生活是为了什么' },
+    theme: { en: 'What a life is for', zh: '生活是为了什么' },
     prompt: {
       en: 'When someone asks what their life is for, which search do you treat as the more honest one?',
-      zh: '当有人问自己的生活是为了什么时，你把哪一种探问视为更诚实的？',
+      zh: '当一个人问自己的生活是为了什么时，你觉得哪一种追问更诚实？',
     },
     dimensions: ['meaning'],
     primaryDimension: 'meaning',
     tags: ['search'],
     rationale: {
       en: 'The question contrasts two searches. It does not say that one of them is morally better.',
-      zh: '这个问题对照的是两种探问。它并不说其中一种在道德上更好。',
+      zh: '这道题把两种追问放在一起对照，并不是说其中一种在道德上更高尚。',
     },
     options: [
       directional('a', {
         en: 'A search for what is worth loving and serving, whether or not one feels like it.',
-        zh: '探问什么值得去爱、去事奉，无论自己是否感觉想这样做。',
+        zh: '追问什么值得去爱、去奉献，无论自己当下有没有那个心情。',
       }, { meaning: -2 }),
       directional('b', {
         en: 'A search for what one is willing to stand for and build.',
-        zh: '探问自己愿意坚守什么、建造什么。',
+        zh: '追问自己愿意为什么站出来、愿意去建设什么。',
       }, { meaning: 2 }),
       uncertain,
     ],
@@ -717,14 +717,14 @@ export const questions: Question[] = [
     id: 'mea-06',
     dimension: 'meaning',
     reverseKeyed: true,
-    theme: { en: 'Worth without endorsement', zh: '未经认肯的价值' },
+    theme: { en: 'Worth without endorsement', zh: '无需认可的价值' },
     prompt: {
       en: 'Some things are worth pursuing even if no one chooses to value them.',
-      zh: '有些事情即使没有人选择去珍视它们，也仍然值得追求。',
+      zh: '有些东西，即使没有人选择去重视，也依然值得追求。',
     },
     rationale: {
       en: 'This statement asks whether worth can outrun endorsement. It does not ask whether commitment is unimportant.',
-      zh: '这句话问价值能否超出认肯。它并不问承诺是否不重要。',
+      zh: '这句话问的是：价值能否不依赖任何人的认可而存在。它并不是在问承诺重不重要。',
     },
     tags: ['discovery'],
   }),
@@ -735,11 +735,11 @@ export const questions: Question[] = [
     theme: { en: 'A person’s own direction', zh: '一个人自己的方向' },
     prompt: {
       en: 'A just society protects each person’s right to direct their own life, even when the community would prefer otherwise.',
-      zh: '一个公正的社会保护每个人主导自己生活的权利，即使共同体更希望不是这样。',
+      zh: '一个公正的社会会保护每个人主导自己生活的权利，即使共同体更希望他们不这么做。',
     },
     rationale: {
       en: 'This statement is about a limit on communal preference. It does not name a political party or a current policy.',
-      zh: '这句话关乎对共同体偏好的一种限制。它不指向任何政党或现行政策。',
+      zh: '这句话讲的是对共同体偏好的一种限制，它没有点名任何政党或现行政策。',
     },
     tags: ['rights'],
   }),
@@ -747,40 +747,40 @@ export const questions: Question[] = [
     id: 'soc-02',
     dimension: 'society',
     reverseKeyed: false,
-    theme: { en: 'Duties of membership', zh: '成员的义务' },
+    theme: { en: 'Duties of membership', zh: '成员身份带来的义务' },
     prompt: {
       en: 'A person owes real duties to their community that can outweigh a preference to be left alone.',
-      zh: '一个人对自己的共同体负有真实的义务，这些义务可以压过“希望被放开”的偏好。',
+      zh: '一个人对自己的共同体负有实实在在的义务，这些义务有时会压过“别来管我”的意愿。',
     },
     rationale: {
       en: 'This statement asks whether membership can generate duties. It does not say that personal direction is trivial.',
-      zh: '这句话问成员身份能否产生义务。它并不说个人的方向无足轻重。',
+      zh: '这句话问的是：成员身份能不能产生义务。它并没有说个人的方向无足轻重。',
     },
     tags: ['duty'],
   }),
   item({
     id: 'soc-03',
     type: 'scenario',
-    theme: { en: 'A shared hardship', zh: '共同的困苦' },
+    theme: { en: 'A shared hardship', zh: '共同面对的困苦' },
     prompt: {
       en: 'A community faces a shared hardship. One member can contribute at a personal cost, or refuse because the plan limits their freedom and they did not consent to it.',
-      zh: '一个共同体面临共同的困苦。其中一位成员可以付出个人代价来贡献，也可以拒绝，因为这个计划限制了他们的自由，而且他们并未同意。',
+      zh: '一个共同体面临共同的困难。其中一位成员可以付出个人代价来出力，也可以拒绝，因为这个方案限制了他们的自由，而且他们并没有同意过。',
     },
     dimensions: ['society'],
     primaryDimension: 'society',
     tags: ['consent'],
     rationale: {
       en: 'The case asks whether consent or a common need has priority in this setting. It is not a question about a named state.',
-      zh: '这个情境问的是：在这个场合里，同意与共同需要哪一个优先。它不是关于某个具名国家的问题。',
+      zh: '这个情境问的是：在这种情况下，是同意优先，还是共同的需要优先。它并不针对某个具体的国家。',
     },
     options: [
       directional('a', {
         en: 'The refusal should be honored. Consent and personal liberty come first.',
-        zh: '拒绝应当被尊重。同意与个人自由优先。',
+        zh: '应当尊重拒绝。同意和个人自由优先。',
       }, { society: -2 }),
       directional('b', {
         en: 'They can be required to contribute. The common need can override that preference.',
-        zh: '可以要求他们贡献。共同的需要可以压过那种偏好。',
+        zh: '可以要求他们出力。共同的需要可以压过那种意愿。',
       }, { society: 2 }),
       uncertain,
     ],
@@ -791,23 +791,23 @@ export const questions: Question[] = [
     theme: { en: 'Two kinds of legitimate demand', zh: '两种正当的要求' },
     prompt: {
       en: 'One law treats people as separate individuals and forbids using one person’s good for the group’s advantage. Another law asks each person to bear a burden so that the community can endure.',
-      zh: '一部法律把人们当作彼此分离的个人，并禁止为了群体的好处而使用一个人的善。另一部法律要求每个人承担一份负担，以便共同体能够存续。',
+      zh: '一部法律把每个人看作独立的个体，禁止为了群体的利益而牺牲某一个人。另一部法律要求每个人承担一份负担，好让共同体能够延续下去。',
     },
     dimensions: ['society'],
     primaryDimension: 'society',
     tags: ['legitimacy'],
     rationale: {
       en: 'The contrast asks which demand is closer to your view of legitimacy. Neither law is described as the decent one.',
-      zh: '这个对照问哪一种要求更接近你对正当性的看法。两部法律都没有被写成“更正派”的那一个。',
+      zh: '这个对照问的是：哪一种要求更接近你对正当性的理解。两部法律都没有被写成“更正确”的那一方。',
     },
     options: [
       directional('a', {
         en: 'The first is closer. Each person is a limit on what the group may do.',
-        zh: '第一部更接近。每个人都是群体可以做什么的界限。',
+        zh: '第一部更接近。每个人都是群体行为的界限。',
       }, { society: -2 }),
       directional('b', {
         en: 'The second is closer. Membership brings obligations the group may enforce for the common good.',
-        zh: '第二部更接近。成员身份带来群体可以为了共同善而施行的义务。',
+        zh: '第二部更接近。成员身份带来义务，群体可以为了共同利益而强制履行。',
       }, { society: 2 }),
       uncertain,
     ],
@@ -818,23 +818,23 @@ export const questions: Question[] = [
     theme: { en: 'The more basic social fact', zh: '更基本的社会事实' },
     prompt: {
       en: 'Which social fact do you treat as more basic?',
-      zh: '你把哪一种社会事实视为更基本的？',
+      zh: '你把哪一种社会事实看作更基本的？',
     },
     dimensions: ['society'],
     primaryDimension: 'society',
     tags: ['foundation'],
     rationale: {
       en: 'The question asks where you start, not which side you think is kinder.',
-      zh: '这个问题问的是你从哪里出发，而不是你认为哪一边更善良。',
+      zh: '这道题问的是你从哪里出发，而不是你觉得哪一边更仁慈。',
     },
     options: [
       directional('a', {
         en: 'Individuals, whose agreements and rights create any legitimate group.',
-        zh: '个人。他们的同意与权利产生任何正当的群体。',
+        zh: '个人。任何正当的群体，都是通过个人的同意和权利才得以形成。',
       }, { society: -2 }),
       directional('b', {
         en: 'Communities, within which individuals become who they are and acquire obligations.',
-        zh: '共同体。个人在其中成为他们所是的人，并获得义务。',
+        zh: '共同体。个人在共同体中成为自己，并获得义务。',
       }, { society: 2 }),
       uncertain,
     ],
@@ -843,14 +843,14 @@ export const questions: Question[] = [
     id: 'soc-06',
     dimension: 'society',
     reverseKeyed: false,
-    theme: { en: 'Duties one does not simply exit', zh: '不能径自退出的义务' },
+    theme: { en: 'Duties one does not simply exit', zh: '不能一走了之的义务' },
     prompt: {
       en: 'Belonging to a community is not only a benefit. It is a source of duties one does not simply opt out of.',
-      zh: '属于一个共同体并不只是一种好处。它是义务的来源，而这些义务并不是一个人可以径自退出的。',
+      zh: '属于一个共同体不只是一种好处，它也是义务的来源，而这些义务并不能说退出就退出。',
     },
     rationale: {
       en: 'This statement asks whether belonging itself creates duties. It does not ask you to endorse every demand a community makes.',
-      zh: '这句话问归属本身是否产生义务。它并不要求你赞同共同体提出的每一项要求。',
+      zh: '这句话问的是：归属本身是否会产生义务。它并不要求你赞同共同体提出的每一项要求。',
     },
     tags: ['belonging'],
   }),
@@ -860,13 +860,13 @@ export const questions: Question[] = [
     theme: { en: 'The experience machine', zh: '体验机' },
     prompt: {
       en: 'A machine can give you any experiences you choose. While you are connected, you will not be doing the things you seem to be doing. Robert Nozick posed a machine of this kind in Anarchy, State, and Utopia (1974), in the section “The Experience Machine.”',
-      zh: '一台机器可以给你任何你选择的经验。在连接期间，你并没有在做那些你仿佛正在做的事。罗伯特·诺齐克在《无政府、国家与乌托邦》（1974）的“体验机”一节提出了这样的机器。',
+      zh: '有一台机器能给你任何你想要的经验。可一旦接上它，你看起来在做的事，其实你并没有真的在做。罗伯特·诺齐克在《无政府、国家与乌托邦》（1974）的“体验机”一节中提出了这样的机器。',
     },
     dimensions: ['meaning', 'ontology'],
     tags: ['experience-machine'],
     rationale: {
       en: 'The case asks whether contact with reality matters beyond how life feels. The two responses emphasize different parts of that question.',
-      zh: '这个情境问的是：除了生活的感受之外，与实在的接触是否重要。两种回应强调这个问题的不同部分。',
+      zh: '这个情境问的是：除了感受好不好之外，与真实世界的接触是否也重要。两种回答强调了这个问题的不同侧面。',
     },
     references: [
       {
@@ -877,11 +877,11 @@ export const questions: Question[] = [
     options: [
       directional('a', {
         en: 'I would not enter. A life should stay in contact with what is real, not only with what is felt.',
-        zh: '我不会进入。一种生活应当保持与真实之物的接触，而不只是与所感受之物的接触。',
+        zh: '我不会进去。生活应当与真实的东西保持接触，而不只是与感受保持接触。',
       }, { meaning: -2, ontology: -1 }),
       directional('b', {
         en: 'I would enter if the experiences formed a life I could endorse as mine.',
-        zh: '如果这些经验构成一种我可以认作自己的生活，我会进入。',
+        zh: '如果这些经验能构成一种我愿意认作自己的生活，我会进去。',
       }, { meaning: 2, ontology: 1 }),
       uncertain,
     ],
@@ -892,13 +892,13 @@ export const questions: Question[] = [
     theme: { en: 'Organs and five patients', zh: '器官与五位病人' },
     prompt: {
       en: 'A surgeon can save five patients only by taking the organs of one healthy person who did not consent and who will die as a result. Judith Jarvis Thomson discussed a transplant case of this kind as a contrast to the tram.',
-      zh: '一位外科医生只有取走一个并未同意的健康人的器官，才能救活五位病人，而这个健康人会因此死去。朱迪丝·贾维斯·汤姆森讨论过这类移植案例，用来与电车相对照。',
+      zh: '一位外科医生只有取走一个健康人的器官，才能救五位病人；这个健康人并不同意，而且会因此丧命。朱迪丝·贾维斯·汤姆森讨论过这类移植案例，用它来与电车难题作对照。',
     },
     dimensions: ['ethics', 'society'],
     tags: ['transplant', 'rights'],
     rationale: {
       en: 'The case asks whether a gain in lives can license using one person. It is not a medical-knowledge question.',
-      zh: '这个情境问的是：生命数量上的收获能否许可使用一个人。它不是一道医学知识题。',
+      zh: '这个情境问的是：多救几条命，能否成为牺牲一个人的理由。它不是医学知识题。',
     },
     references: [
       {
@@ -909,11 +909,11 @@ export const questions: Question[] = [
     options: [
       directional('a', {
         en: 'Save the five. The outcomes decide it, and the group’s survival outweighs the one refusal.',
-        zh: '救那五个人。由结果来决定，而且群体的存续压过这一个人的拒绝。',
+        zh: '救那五个人。让结果来决定，群体的存续压过这一个人的拒绝。',
       }, { ethics: -2, society: 2 }),
       directional('b', {
         en: 'Do not take the organs. The healthy person is a limit on what may be done for the others.',
-        zh: '不要取走器官。这个健康的人是“可以为了他人做什么”的界限。',
+        zh: '不要取走器官。这个健康人就是为他人能做到哪一步的界限。',
       }, { ethics: 2, society: -2 }),
       uncertain,
     ],
@@ -924,26 +924,26 @@ export const questions: Question[] = [
     theme: { en: 'Responsibility under a full explanation', zh: '完整解释之下的责任' },
     prompt: {
       en: 'Someone has harmed another person. A full explanation of the harm can be given in terms of prior causes. What follows for blame?',
-      zh: '有人伤害了另一个人。关于这一伤害，可以用先前的原因给出完整解释。这对责备意味着什么？',
+      zh: '有人伤害了另一个人。这件事可以用先前的原因得到完整的解释。那么，责备还成立吗？',
     },
     dimensions: ['agency', 'ethics'],
     tags: ['responsibility', 'compatibilism'],
     rationale: {
       en: 'The compatibilist response is recorded without being turned into a midpoint between the other two.',
-      zh: '相容论的回应会被记下，而不会被变成另外两个回应之间的中点。',
+      zh: '相容论的回答会被单独记录，而不会被当成另外两个回答之间的中间点。',
     },
     options: [
       directional('a', {
         en: 'Blame is misplaced. The act could not have been otherwise, so the usual point of blame is gone.',
-        zh: '责备是放错了地方。行为本来不可能是另一个样子，所以责备的通常意义已经消失。',
+        zh: '责备用错了地方。这个行为本来不可能是别的样子，所以责备通常的意义就不存在了。',
       }, { agency: -2, ethics: -1 }),
       directional('b', {
         en: 'Blame fits only if the person had a libertarian power to do otherwise. The duty not to harm depends on that power.',
-        zh: '只有当这个人拥有自由意志论意义上的“本来可以另作”的能力时，责备才合适。不伤害的义务依赖于这种能力。',
+        zh: '只有当这个人具有自由意志论所说的“本来可以不做”的能力时，责备才成立。不伤害的义务取决于这种能力。',
       }, { agency: 2, ethics: 2 }),
       alternative('c', {
         en: 'Blame can still fit if the act expressed the person’s reasons, even though those reasons have causes.',
-        zh: '如果这个行为表达了这个人的理由，责备仍然可以合适，即便那些理由有原因。',
+        zh: '如果这个行为表达了这个人自己的理由，那么即使这些理由本身也有原因，责备仍然可以成立。',
       }, 'compatibilism'),
       uncertain,
     ],
@@ -954,22 +954,22 @@ export const questions: Question[] = [
     theme: { en: 'A report of consciousness', zh: '一份关于意识的报告' },
     prompt: {
       en: 'A robot reports that it is conscious. You may inspect its behavior and its physical workings for as long as you like.',
-      zh: '一个机器人报告说它是有意识的。你可以随意长时间地检查它的行为与物理运作。',
+      zh: '一个机器人报告说它有意识。你可以随意花多长时间，检查它的行为和它的物理构造。',
     },
     dimensions: ['ontology', 'epistemology'],
     tags: ['consciousness', 'machines'],
     rationale: {
       en: 'The case joins a question about evidence to a question about what consciousness is. It is not a test of technical knowledge about machines.',
-      zh: '这个情境把一个关于证据的问题与一个关于意识是什么的问题连在一起。它不是关于机器的技术知识测验。',
+      zh: '这个情境把一个关于证据的问题，和一个关于意识究竟是什么的问题连在一起。它不是考你对机器的技术知识。',
     },
     options: [
       directional('a', {
         en: 'Behavioral and physical evidence could be enough to settle the report.',
-        zh: '行为与物理证据可以足以解决这份报告。',
+        zh: '行为和物理层面的证据，或许就足以判定这份报告是真是假。',
       }, { ontology: -2, epistemology: -1 }),
       directional('b', {
         en: 'No amount of that observation settles whether there is an inner reality. The question is partly about what the concept allows.',
-        zh: '无论多少这类观察，都不能决定是否存在一种内在的实在。这个问题部分地关乎概念允许什么。',
+        zh: '无论观察多少，都无法确定它内部是否真有一种主观体验。这个问题有一部分取决于“意识”这个概念本身允许什么。',
       }, { ontology: 1, epistemology: 2 }),
       uncertain,
     ],
@@ -980,22 +980,22 @@ export const questions: Question[] = [
     theme: { en: 'Evidence of harm, and a rule', zh: '伤害的证据与一条规则' },
     prompt: {
       en: 'You have strong observational evidence that breaking a standing rule would prevent harm. You do not have an argument that shows the rule permits the exception.',
-      zh: '你有强的观察证据表明，打破一条既有规则可以防止伤害。你并没有一个论证表明这条规则允许该例外。',
+      zh: '你有很强的观察证据表明，打破一条现行规则可以避免伤害。但你并没有一个论证能说明，这条规则允许这个例外。',
     },
     dimensions: ['epistemology', 'ethics'],
     tags: ['rules', 'evidence'],
     rationale: {
       en: 'The tradeoff asks which shortfall you treat as more serious: a missing argument, or a harm the observations lead you to expect.',
-      zh: '这个取舍问的是你把哪一种欠缺看得更严重：缺少论证，还是观察让你预期到的伤害。',
+      zh: '这个取舍问的是：你把哪一种欠缺看得更严重——是缺少论证，还是观察让你预感到的伤害。',
     },
     options: [
       directional('a', {
         en: 'Act on the evidence of the outcomes.',
-        zh: '依照关于结果的证据去行动。',
+        zh: '根据关于结果的证据去行动。',
       }, { epistemology: -1, ethics: -2 }),
       directional('b', {
         en: 'Do not break the rule until there is a justification that survives reasoned scrutiny.',
-        zh: '在有一个经得起理性审视的证成之前，不要打破规则。',
+        zh: '在有一个经得起理性审视的正当理由之前，不要打破规则。',
       }, { epistemology: 1, ethics: 2 }),
       uncertain,
     ],
@@ -1003,16 +1003,16 @@ export const questions: Question[] = [
   item({
     id: 'x-06',
     type: 'thought-experiment',
-    theme: { en: 'A perfect copy', zh: '一个完美的复制' },
+    theme: { en: 'A perfect copy', zh: '一个完美的复制体' },
     prompt: {
       en: 'A device destroys your body and creates a perfect physical and psychological duplicate elsewhere. Derek Parfit discussed teletransportation of this kind in Reasons and Persons (1984), in the chapters on personal identity.',
-      zh: '一台装置摧毁了你的身体，并在别处造出一个物理与心理上都完美的复制体。德里克·帕菲特在《理与人》（1984）讨论个人同一性的章节中讨论过这类远距传输。',
+      zh: '一台装置摧毁了你的身体，并在别处造出一个在生理和心理上都与你一模一样的复制体。德里克·帕菲特在《理与人》（1984）讨论个人同一性的几章里，讨论过这类远距传送。',
     },
     dimensions: ['ontology', 'epistemology'],
     tags: ['identity'],
     rationale: {
       en: 'The case asks what you think settles whether a life continues. It does not have a trick answer.',
-      zh: '这个情境问的是你认为什么决定了一种生活是否继续。它没有诡计式的答案。',
+      zh: '这个情境问的是：你认为什么才决定了一个人的生命是否延续。它并没有一个设了圈套的答案。',
     },
     references: [
       {
@@ -1023,11 +1023,11 @@ export const questions: Question[] = [
     options: [
       directional('a', {
         en: 'The observable continuities are all there is to the question. The duplicate continues the life.',
-        zh: '可观察的连续性就是这个问题的全部。复制体继续了这一种生活。',
+        zh: '可观察到的连续性就是这个问题的全部。复制体延续了这条生命。',
       }, { ontology: -2, epistemology: -1 }),
       directional('b', {
         en: 'Who survives is not settled by observable continuity alone.',
-        zh: '谁存活下来，并不能仅由可观察的连续性来决定。',
+        zh: '谁活了下来，并不能只靠可观察的连续性来决定。',
       }, { ontology: 2, epistemology: 1 }),
       uncertain,
     ],
@@ -1038,22 +1038,22 @@ export const questions: Question[] = [
     theme: { en: 'A flood and a farm', zh: '洪水与一座农场' },
     prompt: {
       en: 'A flood plan will save a town only if one farm is taken without the owner’s consent. The owner is not personally to blame for the flood.',
-      zh: '一项防洪计划只有在未经主人同意而征用一座农场时，才能救下一座城镇。洪水并不是这位主人个人的过错。',
+      zh: '一项防洪方案只有征用一座农场才能救下一座城镇，而且征用没有得到农场主的同意。这场洪水并不是农场主个人的过错。',
     },
     dimensions: ['society', 'ethics'],
     tags: ['rights', 'common-good'],
     rationale: {
       en: 'The case puts a common emergency next to one person’s refusal. It is not a prompt about a real town or a party platform.',
-      zh: '这个情境把共同的紧急状况放在一个人的拒绝旁边。它不是关于一座真实城镇或一份党纲的提示。',
+      zh: '这个情境把共同的紧急情况，放到一个人的拒绝面前。它不是关于某座真实城镇或某个政党的纲领。',
     },
     options: [
       directional('a', {
         en: 'Take the farm. The town’s survival and the smaller harm decide it.',
-        zh: '征用农场。由城镇的存续和较小的伤害来决定。',
+        zh: '征用农场。城镇的存续和较小的损害决定了这一点。',
       }, { society: 2, ethics: -2 }),
       directional('b', {
         en: 'Do not take it. The owner’s right forbids the taking even to save the town.',
-        zh: '不要征用。即使为了拯救城镇，主人的权利也禁止这种征用。',
+        zh: '不要征用。即使是为了救城镇，农场主的权利也不允许这样做。',
       }, { society: -2, ethics: 2 }),
       uncertain,
     ],
@@ -1061,25 +1061,25 @@ export const questions: Question[] = [
   item({
     id: 'x-08',
     type: 'forced-choice',
-    theme: { en: 'The wrongness of cruelty', zh: '残忍之为错' },
+    theme: { en: 'The wrongness of cruelty', zh: '残忍为什么是错的' },
     prompt: {
       en: 'Is cruelty wrong only because people decide to treat it as wrong?',
-      zh: '残忍之为错，是否仅仅因为人们决定把它当作错的？',
+      zh: '残忍之所以是错的，仅仅是因为人们决定把它当成错的吗？',
     },
     dimensions: ['meaning', 'ethics'],
     tags: ['objectivity'],
     rationale: {
       en: 'The question separates a discovered wrong from a commitment against cruelty. Neither answer calls the other cruel.',
-      zh: '这个问题把一种被发现的错误与一种反对残忍的承诺分开。两个回答都没有把另一个称为残忍。',
+      zh: '这个问题把“被发现的错误”和“反对残忍的承诺”区分开来。两种回答都没有说对方残忍。',
     },
     options: [
       directional('a', {
         en: 'Cruelty is wrong whether or not anyone decides to call it wrong.',
-        zh: '无论是否有人决定称之为错，残忍都是错的。',
+        zh: '无论有没有人决定把它称为错的，残忍都是错的。',
       }, { meaning: -2, ethics: 1 }),
       directional('b', {
         en: 'Cruelty is wrong because agents commit themselves to a norm against it.',
-        zh: '残忍是错的，因为行动者把自己承诺于一条反对它的规范。',
+        zh: '残忍之所以是错的，是因为行动者自己承诺遵守一条反对残忍的规范。',
       }, { meaning: 2, ethics: -1 }),
       uncertain,
     ],
@@ -1087,25 +1087,25 @@ export const questions: Question[] = [
   item({
     id: 'x-09',
     type: 'thought-experiment',
-    theme: { en: 'An observation logic calls impossible', zh: '逻辑称为不可能的观察' },
+    theme: { en: 'An observation logic calls impossible', zh: '一个被逻辑判定为不可能的观察' },
     prompt: {
       en: 'You seem to observe something that a logical demonstration says is impossible. The demonstration still looks valid, and the observation still looks careful.',
-      zh: '你似乎观察到了某个东西，而一个逻辑证明说它是不可能的。这个证明看起来仍然有效，观察看起来也仍然仔细。',
+      zh: '你似乎观察到了某样东西，而一个逻辑证明说这不可能。这个证明看起来依然成立，你的观察看起来也依然仔细。',
     },
     dimensions: ['epistemology', 'ontology'],
     tags: ['necessity', 'observation'],
     rationale: {
       en: 'The case asks which check leads when necessity and observation conflict. It is not a logic exam.',
-      zh: '这个情境问的是：当必然性与观察冲突时，哪一种核对领头。它不是一场逻辑考试。',
+      zh: '这个情境问的是：当必然性和观察发生冲突时，该以哪一方的检验为准。它不是逻辑考试。',
     },
     options: [
       directional('a', {
         en: 'Trust the observation and revise the claim of impossibility. The world can refuse our demonstrations.',
-        zh: '信任观察，并修改“不可能”这一主张。世界可以拒绝我们的证明。',
+        zh: '相信观察，修改“不可能”的说法。世界可以不服从我们的证明。',
       }, { epistemology: -2, ontology: -1 }),
       directional('b', {
         en: 'Trust the demonstration and treat the observation as misleading. Reality does not violate a valid necessity.',
-        zh: '信任证明，并把观察视为误导。实在不会违反一种有效的必然性。',
+        zh: '相信证明，把观察当作误导。现实不会违反一条成立的必然性。',
       }, { epistemology: 2, ontology: 1 }),
       uncertain,
     ],
@@ -1113,25 +1113,25 @@ export const questions: Question[] = [
   item({
     id: 'x-10',
     type: 'scenario',
-    theme: { en: 'A role never chosen', zh: '一个从未选择的角色' },
+    theme: { en: 'A role never chosen', zh: '一个从未选择过的角色' },
     prompt: {
       en: 'Your community expects you to continue a role you never chose. Leaving would be possible. Staying would meet a need the community did not invent yesterday.',
-      zh: '你的共同体期望你继续一个你从未选择的角色。离开是可能的。留下则会满足一种并非共同体昨天才发明出来的需要。',
+      zh: '你的共同体期望你继续扮演一个你从未选择过的角色。你其实可以离开。如果留下，你满足的是一种由来已久的需要，而不是共同体昨天才编出来的需要。',
     },
     dimensions: ['society', 'agency'],
     tags: ['roles'],
     rationale: {
       en: 'The case asks whether an unchosen role can bind, and whether leaving is a real beginning. It does not praise either loyalty or exit.',
-      zh: '这个情境问一个未经选择的角色能否约束人，以及离开是否是一个真实的开端。它并不赞美忠诚或退出。',
+      zh: '这个情境问的是：一个未经选择的角色能否约束人，以及离开是否真的意味着重新开始。它既不赞美忠诚，也不赞美离开。',
     },
     options: [
       directional('a', {
         en: 'You may leave. A life path is yours to set, and the role does not outrank that.',
-        zh: '你可以离开。生活的道路由你来定，这个角色并不能压过这一点。',
+        zh: '你可以离开。人生道路由你自己决定，这个角色并不能凌驾于此。',
       }, { society: -2, agency: 1 }),
       directional('b', {
         en: 'The role binds you. Your choice already sits inside relationships that shape what you can responsibly do.',
-        zh: '这个角色约束着你。你的选择已经处在那些塑造“你可以负责任地做什么”的关系之中。',
+        zh: '这个角色对你有约束力。你的选择本来就处在各种关系之中，而这些关系决定了你能负责任地做什么。',
       }, { society: 2, agency: -1 }),
       uncertain,
     ],
@@ -1139,25 +1139,25 @@ export const questions: Question[] = [
   item({
     id: 'x-11',
     type: 'forced-choice',
-    theme: { en: 'A project and a prohibition', zh: '一个计划与一条禁止' },
+    theme: { en: 'A project and a prohibition', zh: '一个计划与一条禁令' },
     prompt: {
       en: 'A rule forbids an action that would give you a project you deeply want. Following the rule will not give you a different project of equal appeal.',
-      zh: '一条规则禁止一个行为，而这个行为会给你一个你深深想要的计划。遵守规则并不会给你另一个同样吸引人的计划。',
+      zh: '有一条规则禁止你做某件事，而这件事会给你带来一个你非常想要的计划。遵守规则，也不会让你得到另一个同样有吸引力的计划。',
     },
     dimensions: ['meaning', 'ethics'],
     tags: ['projects', 'constraints'],
     rationale: {
       en: 'The tradeoff asks whether a wanted project can override a prohibition. Wanting the project is not treated as a flaw.',
-      zh: '这个取舍问一个被渴望的计划能否压过一条禁止。渴望这个计划并没有被当成缺陷。',
+      zh: '这个取舍问的是：一个你渴望的计划能否压过一条禁令。渴望这个计划本身并没有被当成缺点。',
     },
     options: [
       directional('a', {
         en: 'The project’s meaning can override the rule if the life it makes is better.',
-        zh: '如果这个计划所造就的生活更好，它的意义可以压过规则。',
+        zh: '如果这个计划带来的生活更好，它的意义就可以压过这条规则。',
       }, { meaning: 1, ethics: -2 }),
       directional('b', {
         en: 'The rule can make the project one you should not pursue, even though it feels like your purpose.',
-        zh: '即使这个计划感觉像是你的目的，规则仍然可以使它成为你不应当追求的东西。',
+        zh: '即使这个计划让你觉得那就是你的目的，规则仍然可以让它成为你不该追求的东西。',
       }, { meaning: -1, ethics: 2 }),
       uncertain,
     ],
@@ -1165,29 +1165,29 @@ export const questions: Question[] = [
   item({
     id: 'x-12',
     type: 'thought-experiment',
-    theme: { en: 'If physics were complete', zh: '如果物理学是完整的' },
+    theme: { en: 'If physics were complete', zh: '如果物理学已经完备' },
     prompt: {
       en: 'Suppose physics is a complete account of the motions of matter. What follows for consciousness and choice?',
-      zh: '假设物理学是对物质运动的完整说明。这对意识与选择意味着什么？',
+      zh: '假设物理学已经完整地说明了物质的运动。那么，这对意识和选择意味着什么？',
     },
     dimensions: ['ontology', 'agency'],
     tags: ['consciousness', 'determinism'],
     rationale: {
       en: 'The responses separate a fully physical and determined picture from pictures that leave room for choice, for mind, or for both. More than one of those pictures is philosophically serious.',
-      zh: '这些回应把一种完全物理且被决定的图景，与那些为选择、为心灵或为二者留出余地的图景分开。其中不止一种图景在哲学上是严肃的。',
+      zh: '这些回答把一种纯物理、被决定的图景，与另外一些为选择、为心灵或者为两者留出空间的图景区分开来。这几种图景中，不止一种在哲学上是严肃的。',
     },
     options: [
       directional('a', {
         en: 'Consciousness and choice are physical processes, and the choice could not have been otherwise.',
-        zh: '意识与选择都是物理过程，而且选择本来不可能是另一个样子。',
+        zh: '意识和选择都是物理过程，而且那个选择本来不可能是别的样子。',
       }, { ontology: -2, agency: -2 }),
       directional('b', {
         en: 'The mind is physical, but a genuine choice is an opening that physics has not already closed.',
-        zh: '心灵是物理的，但一个真正的选择是物理学尚未关闭的开口。',
+        zh: '心灵是物理的，但一个真正的选择，是物理学尚未封死的余地。',
       }, { ontology: -1, agency: 2 }),
       directional('c', {
         en: 'Conscious choice is a reason to think the physical account is not complete.',
-        zh: '有意识的选择本身就是一个理由，让人认为物理说明并不完整。',
+        zh: '有意识的选择本身就足以让人认为，物理的说明还不完整。',
       }, { ontology: 2, agency: 1 }),
       uncertain,
     ],

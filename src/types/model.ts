@@ -124,6 +124,7 @@ export interface Archetype {
   name: Localized;
   thesis: Localized;
   worldview: Localized[];
+  personality: Localized[];
   strengths: Localized[];
   blindSpots: Localized[];
   pairingPressure: Localized;

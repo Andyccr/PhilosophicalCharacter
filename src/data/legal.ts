@@ -102,8 +102,8 @@ export const legalPages: LegalPage[] = [
       {
         heading: { en: 'An exploratory questionnaire', zh: '一份探索性问卷' },
         body: {
-          en: 'The result is a structured reading of answers to philosophical questions. It is not a scientifically validated psychometric instrument. It has no norms, no percentiles, and no confidence percentage. Ambiguous axes are labeled as mixed, provisional, or withheld.',
-          zh: '结果是对哲学问题之回答的一种有结构的阅读。它不是经过科学验证的心理测量工具。它没有常模，没有百分位，也没有置信百分比。含糊的轴会被标为混合、暂定，或被保留不给。',
+          en: 'The result is a structured reading of answers to philosophical questions. It is not a scientifically validated psychometric instrument. It has no norms, no percentiles, and no confidence percentage. Ambiguous axes are labeled as mixed or provisional; a six-letter code is always given.',
+          zh: '结果是对哲学问题之回答的一种有结构的阅读。它不是经过科学验证的心理测量工具。它没有常模，没有百分位，也没有置信百分比。含糊的轴会被标为混合或暂定；六字母代码始终会给出。',
         },
       },
       {

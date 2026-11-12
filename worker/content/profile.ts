@@ -4,17 +4,31 @@ import { dimensions } from '@/data/dimensions';
 import { readings } from '@/data/readings';
 import { getTensionRule } from '@/data/tensions/rules';
 import { standingIssues } from '@/data/tensions/standing';
-import type { PaidProfile, ProfileRequest } from '@/lib/api/contract';
+import type { PaidPhilosopher, PaidProfile, ProfileRequest } from '@/lib/api/contract';
+import { featuredPhilosopher, rankPhilosophers } from '@/lib/interpretation/correspondence';
 import { disagreementLabel, describeScore, narrativeFor } from '@/lib/interpretation/describe';
 import { localePath } from '@/lib/localization/path';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
-import type { DimensionScore } from '@/types/model';
+import type { DimensionScore, Locale, Philosopher } from '@/types/model';
+
+function toPaidPhilosopher(figure: Philosopher, locale: Locale): PaidPhilosopher {
+  return {
+    slug: figure.slug,
+    name: figure.name[locale],
+    dates: figure.dates[locale],
+    themes: figure.themes.map((theme) => theme[locale]).join(locale === 'zh' ? '、' : ', '),
+    readingNote: figure.readingNote[locale],
+    path: localePath(locale, `/philosophers/${figure.slug}`),
+  };
+}
 
 export class PaidContent {
   static assemble(request: ProfileRequest): PaidProfile {
     const locale = request.locale === 'en' ? 'en' : 'zh';
     const code = request.assignment.code;
     const archetype = code ? getArchetype(code) : undefined;
+    const featured = code ? featuredPhilosopher(code) : undefined;
+    const related = code ? rankPhilosophers(code).slice(0, 6) : [];
     const family = archetype ? families[archetype.familyId] : undefined;
     const axes = DIMENSION_IDS.map((id) => {
       const input = request.dimensions[id];
@@ -61,10 +75,13 @@ export class PaidContent {
       summary: archetype ? archetype.thesis[locale] : null,
       axes,
       worldview: archetype ? archetype.worldview.map((item) => item[locale]) : [],
+      personality: archetype ? archetype.personality.map((item) => item[locale]) : [],
       strengths: archetype ? archetype.strengths.map((item) => item[locale]) : [],
       blindSpots: archetype ? archetype.blindSpots.map((item) => item[locale]) : [],
       pairingPressure: archetype ? archetype.pairingPressure[locale] : null,
       reflection: archetype ? archetype.reflection.map((item) => item[locale]) : [],
+      featuredPhilosopher: featured ? toPaidPhilosopher(featured, locale) : null,
+      philosophers: related.map((item) => toPaidPhilosopher(item.philosopher, locale)),
       tensions: request.tensionIds.flatMap((id) => {
         const rule = getTensionRule(id);
         if (!rule) return [];

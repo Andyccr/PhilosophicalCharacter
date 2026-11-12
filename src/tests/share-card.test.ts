@@ -6,7 +6,7 @@ import { drawShareCard, type Canvas2D } from '@/lib/share-card/draw';
 import { shareCardHost } from '@/lib/share-card/host';
 import { buildShareCardInput } from '@/lib/share-card/input';
 import { wrapLines } from '@/lib/share-card/text';
-import { LAYOUTS, WITHHELD_CODE } from '@/lib/share-card/types';
+import { LAYOUTS } from '@/lib/share-card/types';
 import { assignmentFromShared, parseShareHash, type SharedProfile } from '@/lib/sharing/link';
 import { DIMENSION_IDS } from '@/lib/scoring/config';
 
@@ -77,14 +77,15 @@ describe('share card input', () => {
     expect(zh.title).toBe(getPublicType(profile.assignment.code)?.name.zh);
   });
 
-  it('uses withheld copy and em-dash code when no archetype is assigned', () => {
+  it('assigns a provisional code when a shared index is missing', () => {
     const profile = shared([null, 12, 12, 12, 12, 12]);
-    expect(profile.assignment.status).toBe('withheld');
+    expect(profile.assignment.status).toBe('provisional');
+    expect(profile.assignment.code).toBe('IECDFI');
     const input = buildShareCardInput(profile, 'en', 'host.example');
-    expect(input.code).toBe(WITHHELD_CODE);
-    expect(input.title).toBe('No archetype assigned');
-    expect(input.family).toBe('');
-    expect(input.summary).toContain('too little directional evidence');
+    expect(input.status).toBe('provisional');
+    expect(input.code).toBe('IECDFI');
+    expect(input.title).toBe(getPublicType('IECDFI')?.name.en);
+    expect(input.summary).not.toContain('No archetype assigned');
   });
 
   it('rebuilds from a share hash without answers', () => {

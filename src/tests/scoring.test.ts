@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { questions } from '@/data/questions/bank';
-import { DIMENSION_IDS, classifyInclination } from '@/lib/scoring/config';
+import { DIMENSION_IDS, classifyInclination, nearestSide, poleFromIndex } from '@/lib/scoring/config';
 import { primaryPoleAnswers, scoreAssessment } from '@/lib/scoring/score';
 
 describe('scoring', () => {
@@ -38,9 +38,17 @@ describe('scoring', () => {
       expect(uncertain.dimensions[dimension].score).toBeNull();
       expect(uncertain.dimensions[dimension].uncertainCount).toBeGreaterThan(0);
     }
-    expect(skipped.assignment.status).toBe('withheld');
-    expect(uncertain.assignment.status).toBe('withheld');
-    expect(skipped.assignment.code).toBeNull();
+    expect(skipped.assignment.status).toBe('provisional');
+    expect(uncertain.assignment.status).toBe('provisional');
+    expect(skipped.assignment.code).toBe('IRDLCC');
+    expect(uncertain.assignment.code).toBe('IRDLCC');
+  });
+
+  it('names the right pole at the midpoint and when an index is missing', () => {
+    expect(poleFromIndex(49)).toBe('left');
+    expect(poleFromIndex(50)).toBe('right');
+    expect(poleFromIndex(null)).toBe('right');
+    expect(nearestSide(50)).toBe('right');
   });
 
   it('is deterministic and ignores unknown answers', () => {
