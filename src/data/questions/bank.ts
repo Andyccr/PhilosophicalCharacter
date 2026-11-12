@@ -1,6 +1,7 @@
+import { QUESTION_VERSION } from '@/lib/versions';
 import type { DimensionId, Localized, Question, QuestionOption } from '@/types/model';
 
-export const QUESTION_VERSION = '1.0.0';
+export { QUESTION_VERSION };
 
 const uncertain: QuestionOption = {
   id: 'u',
@@ -77,7 +78,7 @@ export const questions: Question[] = [
     },
     rationale: {
       en: 'This statement concerns whether a physical description is enough for mental life. It belongs to the reality axis. Agreement and disagreement are both intelligible philosophical responses.',
-      zh: '这句话关乎物理解释是否足以说明精神生活。它属于实在之轴。同意与不同意都是可以理解的哲学回应。',
+      zh: '这句话关乎物理解释是否足以说明精神生活。它属于「实在」这一轴。同意与不同意都是可以理解的哲学回应。',
     },
     tags: ['reduction', 'consciousness'],
   }),
@@ -92,7 +93,7 @@ export const questions: Question[] = [
     },
     rationale: {
       en: 'This statement asks whether experience remains after a physical account is finished. It belongs to the reality axis and does not ask about religion or spirituality.',
-      zh: '这句话问的是：物理解释做完之后，体验是否仍有剩下来的部分。它属于实在之轴，与宗教或灵性无关。',
+      zh: '这句话问的是：物理解释做完之后，体验是否仍有剩下来的部分。它属于「实在」这一轴，与宗教或灵性无关。',
     },
     tags: ['consciousness'],
   }),
@@ -194,7 +195,7 @@ export const questions: Question[] = [
     },
     rationale: {
       en: 'This statement concerns whether the world’s structure depends on mind. It belongs to the reality axis. It does not equate mind-dependence with spirituality.',
-      zh: '这句话关乎世界的结构是否依赖于心灵。它属于实在之轴。它并不把对心灵的依赖等同于灵性。',
+      zh: '这句话关乎世界的结构是否依赖于心灵。它属于「实在」这一轴。它并不把对心灵的依赖等同于灵性。',
     },
     tags: ['realism'],
   }),

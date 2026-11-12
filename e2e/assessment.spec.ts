@@ -41,22 +41,25 @@ test('homepage, questionnaire, results, share, and retake', async ({ page }) => 
   await expect(page.getByTestId('assessment')).toBeVisible();
   await expect(page.getByText('Directional index')).toHaveCount(0);
 
-  await page.locator('input[type="radio"]').first().check();
-  await page.getByTestId('next').click();
+  await page.getByTestId('assessment-option').first().click();
   await expect(page.getByText('Question 2 of 48')).toBeVisible();
   await page.getByRole('button', { name: 'Back' }).click();
   await expect(page.getByText('Question 1 of 48')).toBeVisible();
   await expect(page.locator('input[type="radio"]').first()).toBeChecked();
+  await page.getByTestId('next').click();
+  await expect(page.getByText('Question 2 of 48')).toBeVisible();
+  await page.getByRole('button', { name: 'Back' }).click();
 
   await page.reload();
   await expect(page.getByText('Question 1 of 48')).toBeVisible();
   await expect(page.locator('input[type="radio"]').first()).toBeChecked();
 
   for (let step = 0; step < 47; step += 1) {
-    await page.locator('input[type="radio"]').first().check();
-    await page.getByTestId('next').click();
+    await expect(page.getByText(`Question ${step + 1} of 48`)).toBeVisible();
+    await page.getByTestId('assessment-option').first().click();
   }
-  await page.locator('input[type="radio"]').first().check();
+  await expect(page.getByText('Question 48 of 48')).toBeVisible();
+  await page.getByTestId('assessment-option').first().click();
   await page.getByTestId('finish').click();
 
   await expect(page.getByTestId('free-preview')).toBeVisible();
@@ -135,6 +138,15 @@ test('language switcher saves English and later visits keep it', async ({ page }
   await expect(page.getByRole('heading', { level: 1 })).toContainText('You are more than a personality type.');
 });
 
+test('chinese questionnaire advances on the first tap', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('start').click();
+  await expect(page.getByTestId('assessment')).toBeVisible();
+  await expect(page.getByText('第 1 题，共 48 题')).toBeVisible();
+  await page.getByTestId('assessment-option').first().click();
+  await expect(page.getByText('第 2 题，共 48 题')).toBeVisible();
+});
+
 test('chinese home and mobile navigation', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('你不只是一种人格类型');
@@ -182,6 +194,9 @@ function mockPaidProfile() {
       axis('society', 'Social life'),
     ],
     worldview: ['A worldview paragraph.'],
+    personality: ['A personality paragraph.'],
+    featuredPhilosopher: null,
+    philosophers: [],
     strengths: ['A strength.'],
     blindSpots: ['A blind spot.'],
     pairingPressure: 'A pressure.',

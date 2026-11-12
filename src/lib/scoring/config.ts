@@ -1,6 +1,7 @@
+import { MODEL_VERSION } from '@/lib/versions';
 import type { DimensionId, Inclination, Localized } from '@/types/model';
 
-export const MODEL_VERSION = '1.0.0';
+export { MODEL_VERSION };
 
 /**
  * Design thresholds, not empirically validated cutoffs.
