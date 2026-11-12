@@ -102,6 +102,20 @@ a:hover { color: var(--iris); }
   background: color-mix(in srgb, var(--paper) 88%, var(--soft));
 }
 
+.option-choice {
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+.option-choice:hover {
+  border-color: var(--iris);
+}
+.option-choice[data-selected="true"] {
+  border-color: var(--iris);
+  background: color-mix(in srgb, var(--iris) 10%, var(--paper));
+}
+@media (prefers-reduced-motion: reduce) {
+  .option-choice { transition: none; }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

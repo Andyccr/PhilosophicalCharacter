@@ -1,10 +1,9 @@
 import { getTensionRule } from '@/data/tensions/rules';
 import type { ProfileRequest } from '@/lib/api/contract';
 import { DIMENSION_IDS, MODEL_VERSION } from '@/lib/scoring/config';
+import { QUESTION_VERSION } from '@/lib/versions';
 import type { AssessmentResult, DimensionId, DimensionScore } from '@/types/model';
 
-/** Keep in sync with `QUESTION_VERSION` in `src/data/questions/bank.ts`. Do not import the bank here — it would ship the item text into the Worker. */
-const QUESTION_VERSION = '1.0.0';
 const DEFAULT_TOTAL_QUESTIONS = 48;
 
 /**

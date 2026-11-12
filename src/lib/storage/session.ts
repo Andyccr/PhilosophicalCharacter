@@ -1,5 +1,4 @@
-import { MODEL_VERSION } from '@/lib/scoring/config';
-import { QUESTION_VERSION } from '@/data/questions/bank';
+import { MODEL_VERSION, QUESTION_VERSION } from '@/lib/versions';
 import type { Locale } from '@/types/model';
 
 export const STORAGE_KEY = 'noema.assessment.v1';

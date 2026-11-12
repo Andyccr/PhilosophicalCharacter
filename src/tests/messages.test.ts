@@ -133,5 +133,10 @@ describe('report UI strings for PR #4', () => {
     expect(tensionKindLabel('zh', 'logical-inconsistency')).toBe(
       messages.zh.tensionKindLogicalInconsistency,
     );
+    for (const key of tensionKindKeys) {
+      expect(messages.en[key]).not.toContain('TODO');
+      expect(messages.zh[key]).not.toContain('TODO');
+      expect(messages.zh[key]).toMatch(/\p{Script=Han}/u);
+    }
   });
 });

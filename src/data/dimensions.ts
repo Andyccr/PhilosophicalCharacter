@@ -11,11 +11,11 @@ export const dimensionList: DimensionDefinition[] = [
     rightPole: { en: 'Idealism', zh: '观念论' },
     question: {
       en: 'What has to be true of the world for a description of it to be finished?',
-      zh: '一份关于世界的描述要算完成，世界必须是什么样的？',
+      zh: '要把世界说清楚，世界本身得是什么样的？',
     },
     summary: {
       en: 'This axis records a stated inclination about the fundamental character of reality. The left pole treats the physical as basic. The right pole treats mind, experience, or an ideal order as basic. Spirituality is not a synonym for the right pole.',
-      zh: '这一轴记录的是关于实在之根本性格的一种陈述倾向。左极把物理的东西当作基本的。右极把心灵、经验或一种理想秩序当作基本的。灵性不是右极的同义词。',
+      zh: '这一轴记录你对「实在根本上是什么」的倾向。左极把物理的东西当作基本；右极把心灵、经验或某种理念秩序当作基本。右极不等于灵性或宗教信仰。',
     },
     leftEssay: {
       en: 'Physicalism, as scored here, is the inclination to say that what exists is physical, or depends on the physical in a way that leaves no second kind of substance. A person can hold this and still think consciousness is difficult. The score does not say they have solved that difficulty.',
@@ -47,11 +47,11 @@ export const dimensionList: DimensionDefinition[] = [
     rightPole: { en: 'Rationalism', zh: '理性论' },
     question: {
       en: 'When observation and reasoning pull apart, which one do you let lead?',
-      zh: '当观察与推理拉开时，你让哪一个领头？',
+      zh: '观察和推理意见不合时，你让哪一边领头？',
     },
     summary: {
       en: 'This axis is about sources of justification, not about a forced choice between evidence and logic. Both can matter. The score records which one you treat as more authoritative when they conflict or when a starting point has to be chosen.',
-      zh: '这一轴关乎证成的来源，而不是在证据与逻辑之间作被迫的单选。二者都可以重要。分数记录的是：当它们冲突，或必须选择一个起点时，你把哪一个视为更有权威。',
+      zh: '这一轴问的是理由从哪里来，而不是逼你在证据和逻辑之间只留一个。两者都可以重要。分数记录的是：当它们冲突、或必须选一个起点时，你更信任哪一边。',
     },
     leftEssay: {
       en: 'The empiricist inclination gives observation the power to revise a theory. It does not say that reasoning is decoration. Hume is a central reference, with the caution that his empiricism is not a slogan about “trusting science” in the twenty-first-century sense.',
@@ -82,11 +82,11 @@ export const dimensionList: DimensionDefinition[] = [
     rightPole: { en: 'Deontology', zh: '义务论' },
     question: {
       en: 'When a constraint and a better outcome conflict, which one gives way?',
-      zh: '当一条约束与一个更好的结果冲突时，哪一个退让？',
+      zh: '规则约束和一个更好的结果冲突时，哪一边让步？',
     },
     summary: {
       en: 'This axis sets outcomes against constraints such as duties and rights. Virtue ethics is a major alternative and is not the midpoint. The score is not a verdict on whether you are kind.',
-      zh: '这一轴把结果与义务、权利之类的约束相对。德性伦理是一种主要的替代，而不是中点。分数不是对你是否善良的裁决。',
+      zh: '这一轴把结果，和义务、权利这类约束对放。德性伦理是一种重要的替代立场，但不是中间值。分数不是在评判你善不善良。',
     },
     leftEssay: {
       en: 'The consequentialist inclination makes rightness depend primarily on what an act brings about. Mill’s utilitarianism is one developed form. It can still defend rules, if the rules are justified by the outcomes of having them.',
@@ -117,11 +117,11 @@ export const dimensionList: DimensionDefinition[] = [
     rightPole: { en: 'Libertarian free will', zh: '自由意志论' },
     question: {
       en: 'Was there an open alternative at the moment of choice, or only the appearance of one?',
-      zh: '在选择的时刻，是否有一种开放的替代可能，还是只有替代可能的表象？',
+      zh: '做选择的那一刻，是真的还有别的可能，还是只是看起来有？',
     },
     summary: {
       en: 'The left pole says the past and the laws settle the choice. The right pole says a genuine decision is not settled until the person settles it. Compatibilism — the view that responsibility does not require that kind of open alternative — is not a midpoint and is not given a letter.',
-      zh: '左极认为过去与法则决定了选择。右极认为一个真正的决定在这个人决定它之前并未被决定。相容论——即责任并不需要那种开放的替代可能——不是中点，也没有被给予一个字母。',
+      zh: '左极认为过去和自然法则已经决定了选择。右极认为真正的决定在当事人做出之前并没有被定下来。相容论——认为责任并不需要那种「本来也可以不这样做」——不是中间位置，也没有单独的字母。',
     },
     leftEssay: {
       en: 'Determinism here is a claim about choice, not a mood of fatalism. A person can think choices are fixed by prior causes and still ask what institutions, education, and reasons can change. The questionnaire does not convert that claim into “no one is responsible” unless an answer says so.',
@@ -153,11 +153,11 @@ export const dimensionList: DimensionDefinition[] = [
     rightPole: { en: 'Creation', zh: '创造' },
     question: {
       en: 'Is the point of a life found, or instituted by commitment?',
-      zh: '一种生活的要旨是被发现的，还是由承诺所确立的？',
+      zh: '人生的意义是被发现的，还是靠承诺和计划建立起来的？',
     },
     summary: {
       en: 'The left pole treats meaning as answerable to values or purposes that are not merely chosen. The right pole treats meaning as something conferred by projects and loyalties a person or a community sustains. Creation is not nihilism. A separate answer records the view that, without a cosmic purpose, meaning does not get a foothold.',
-      zh: '左极把意义看作对并非仅仅被选择的价值或目的的回应。右极把意义看作由一个人或一个共同体所维持的计划与忠诚所赋予的东西。创造不是虚无主义。另有一个单独的回答记录这种看法：如果没有宇宙目的，意义就无处立足。',
+      zh: '左极认为意义要回应那些并非只因你选择才存在的价值或目的。右极认为意义来自一个人或一个共同体持续投入的计划与忠诚。创造不是虚无主义。另有一个单独选项记录这种看法：若没有宇宙目的，意义就无处立足。',
     },
     leftEssay: {
       en: 'Discovery does not require a cosmic plan written in advance. It requires that some things are worth living for whether or not one has decided to value them. Aristotle’s account of a life that goes well is one traditional place this thought appears, and it is not a religious test.',
@@ -188,11 +188,11 @@ export const dimensionList: DimensionDefinition[] = [
     rightPole: { en: 'Communal priority', zh: '共同体优先' },
     question: {
       en: 'When a person’s refusal and a community’s need conflict, which one limits the other?',
-      zh: '当一个人的拒绝与一个共同体的需要冲突时，哪一个限制另一个？',
+      zh: '个人拒绝和群体需要冲突时，哪一边给另一边设限？',
     },
     summary: {
       en: 'The left pole treats the person as a limit on what the group may do. The right pole treats membership as a source of duties that can outweigh a preference to be left alone. The axis does not infer a political party, a nation, or an ideology.',
-      zh: '左极把个人当作群体可以做什么的界限。右极把成员身份当作义务的来源，这些义务可以压过“希望被放开”的偏好。这一轴不推断政党、民族或意识形态。',
+      zh: '左极把个人当作群体不能越过的界限。右极把成员身份看作义务的来源，这些义务可以压过「别来管我」的愿望。这一轴不推断政党、民族或意识形态。',
     },
     leftEssay: {
       en: 'Individual priority, here, is a claim about legitimate demands. Mill’s liberty and Nozick’s constraints are different arguments for a related limit. The score does not say which argument you accept, and it does not place you on a left-right political spectrum.',

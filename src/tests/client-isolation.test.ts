@@ -4,6 +4,11 @@ import { PaidContent } from '../../worker/content/profile';
 import { primaryPoleAnswers, scoreAssessment } from '@/lib/scoring/score';
 import { freePreview } from '@/lib/interpretation/preview';
 
+const questionnaireIslandFiles = [
+  'src/components/assessment/AssessmentApp.tsx',
+  'src/lib/storage/session.ts',
+];
+
 const islandFiles = [
   'src/components/results/ResultsApp.tsx',
   'src/components/results/PremiumPreview.tsx',
@@ -16,6 +21,15 @@ const islandFiles = [
   'src/lib/share-card/catalog.ts',
   'src/lib/share-card/draw.ts',
 ];
+
+describe('questionnaire island stays small', () => {
+  it('does not import the item bank or scoring essays', () => {
+    const sources = questionnaireIslandFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
+    expect(sources).not.toContain("from '@/data/questions/bank'");
+    expect(sources).not.toContain("from '@/lib/scoring/config'");
+    expect(sources).not.toContain("from '@/data/questions/view'");
+  });
+});
 
 describe('paid copy stays off the results islands', () => {
   it('does not import archetype essays, dimension essays, or tension copy', () => {
